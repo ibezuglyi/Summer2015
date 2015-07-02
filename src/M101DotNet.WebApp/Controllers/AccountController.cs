@@ -84,25 +84,6 @@ namespace WebApp.Controllers
             await blogContext.Users.InsertOneAsync(user);
             return RedirectToAction("Index", "Home");
         }
-        [HttpPost]
-        public async Task<ActionResult> RegisterAdmin(RegisterModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var blogContext = new BlogContext();
-            var user = new AdminUser
-            {
-                Name = model.Name,
-                Email = model.Email,
-                PhoneNumber = "1245"
-            };
-
-            await blogContext.AdminUsers.InsertOneAsync(user);
-            return RedirectToAction("Index", "Home");
-        }
 
         private string GetRedirectUrl(string returnUrl)
         {
