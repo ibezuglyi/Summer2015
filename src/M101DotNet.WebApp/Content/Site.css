@@ -5,8 +5,7 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 20px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -21,4 +20,24 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+
+.main-photo{
+    display: inline-block;
+    width:60%;
+
+}
+.main-photo > img{
+    width:100%;
+    height: auto;
+}
+
+.main-buttons{
+    display:inline-block;
+    padding: 0 0 20px 0;
+}
+
+.main-buttons a {
+   margin: 10px;
 }
