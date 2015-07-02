@@ -4,11 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>LoginRecruiter</h2>
 
 @Html.ValidationSummary()
 
-<h2>@ViewBag.Title as a recruiter.</h2>
+<h4>@ViewBag.Title as a recruiter</h4>
 
 @using (Html.BeginForm("Login", "Recruiter"))
 {
