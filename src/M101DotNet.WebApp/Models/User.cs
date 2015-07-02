@@ -20,4 +20,9 @@ namespace WebApp.Models
 
         public string CompanyProfile { get; set; }  
     }
+
+    public class CandidateUser : User
+    {
+        //keep an open mind :)
+    }
 }
