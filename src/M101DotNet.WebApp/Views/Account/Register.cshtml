@@ -2,7 +2,7 @@
     ViewBag.Title = "Register";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title as a candidate.</h2>
 
 @Html.ValidationSummary(true)
 
@@ -15,12 +15,4 @@
     </p>
 }
 
-@using (Html.BeginForm("RegisterAdmin", "Account"))
-{
-    @Html.EditorForModel()
-
-    <p>
-        <button type="submit" class="btn btn-default">Register &raquo;</button>
-    </p>
-}
 

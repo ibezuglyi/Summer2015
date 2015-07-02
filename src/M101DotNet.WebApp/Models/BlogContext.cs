@@ -10,6 +10,7 @@ namespace WebApp.Models
         public const string CONNECTION_STRING_NAME = "Blog";
         public const string DATABASE_NAME = "blog";
         public const string USERS_COLLECTION_NAME = "users";
+        public const string RECRUITER_USERS_COLLECTION_NAME = "recruiterUsers";
 
         private static readonly IMongoClient _client;
         private static readonly IMongoDatabase _database;
@@ -32,9 +33,9 @@ namespace WebApp.Models
         }
 
 
-        public IMongoCollection<AdminUser> AdminUsers
+        public IMongoCollection<RecruiterUser> RecruiterUsers
         {
-            get { return _database.GetCollection<AdminUser>(USERS_COLLECTION_NAME); }
+            get { return _database.GetCollection<RecruiterUser>(RECRUITER_USERS_COLLECTION_NAME); }
         }
     }
 }

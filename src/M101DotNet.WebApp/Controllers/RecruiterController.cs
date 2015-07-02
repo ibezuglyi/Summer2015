@@ -9,7 +9,7 @@ using WebApp.Models.Account;
 namespace WebApp.Controllers
 {
     [AllowAnonymous]
-    public class AccountController : Controller
+    public class RecruiterController : Controller
     {
         [HttpGet]
         public ActionResult Login(string returnUrl)
@@ -19,7 +19,7 @@ namespace WebApp.Controllers
                 ReturnUrl = returnUrl
             };
 
-            return View(model);
+            return View("Login", model);
         }
 
         [HttpPost]
@@ -31,7 +31,7 @@ namespace WebApp.Controllers
             }
 
             var blogContext = new BlogContext();
-            var user = await blogContext.Users.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
+            var user = await blogContext.RecruiterUsers.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
             if (user == null)
             {
                 ModelState.AddModelError("Email", "Email address has not been registered.");
@@ -49,6 +49,8 @@ namespace WebApp.Controllers
 
             return Redirect(GetRedirectUrl(model.ReturnUrl));
         }
+
+
 
         [HttpPost]
         public ActionResult Logout()
@@ -75,15 +77,15 @@ namespace WebApp.Controllers
             }
 
             var blogContext = new BlogContext();
-            var user = new User
+            var user = new RecruiterUser
             {
                 Name = model.Name,
                 Email = model.Email
             };
 
-            await blogContext.Users.InsertOneAsync(user);
+            await blogContext.RecruiterUsers.InsertOneAsync(user);
             return RedirectToAction("Index", "Home");
-        }
+        }       
 
         private string GetRedirectUrl(string returnUrl)
         {
