@@ -9,18 +9,8 @@ using WebApp.Models.Account;
 namespace WebApp.Controllers
 {
     [AllowAnonymous]
-    public class CandidateController : Controller
+    public class CandidateController : UserController
     {
-        [HttpGet]
-        public ActionResult Login(string returnUrl)
-        {
-            var model = new LoginModel
-            {
-                ReturnUrl = returnUrl
-            };
-
-            return View("Login", model);
-        }
 
         [HttpPost]
         public async Task<ActionResult> Login(LoginModel model)
@@ -29,45 +19,17 @@ namespace WebApp.Controllers
             {
                 return View(model);
             }
-
-            
             var blogContext = new BlogContext();
-            
             var user = await blogContext.CandidateUsers.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
             if (user == null)
             {
                 ModelState.AddModelError("Email", "Email address has not been registered.");
                 return View(model);
             }
-
-            var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Email, user.Email)
-                }, "ApplicationCookie");
-
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            authManager.SignIn(identity);
+            var identity = CreateIdentity(user);
+            SignIn(identity);
 
             return Redirect(GetRedirectUrl(model.ReturnUrl));
-        }
-
-
-
-        [HttpPost]
-        public ActionResult Logout()
-        {
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-
-            authManager.SignOut("ApplicationCookie");
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return View(new RegisterModel());
         }
 
         [HttpPost]
@@ -85,6 +47,12 @@ namespace WebApp.Controllers
                 ModelState.AddModelError("Email", "User with this email already exists.");
                 return View(model);
             }
+            await CreateCandidateUser(model, blogContext);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public static async Task CreateCandidateUser(RegisterModel model, BlogContext blogContext)
+        {
             var user = new CandidateUser
             {
                 Name = model.Name,
@@ -92,17 +60,6 @@ namespace WebApp.Controllers
             };
 
             await blogContext.CandidateUsers.InsertOneAsync(user);
-            return RedirectToAction("Index", "Home");
-        }
-
-        private string GetRedirectUrl(string returnUrl)
-        {
-            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
-            {
-                return Url.Action("index", "home");
-            }
-
-            return returnUrl;
         }
     }
 }

@@ -9,27 +9,15 @@ using WebApp.Models.Account;
 namespace WebApp.Controllers
 {
     [AllowAnonymous]
-    public class RecruiterController : Controller
+    public class RecruiterController : Controllers.UserController
     {
-        [HttpGet]
-        public ActionResult Login(string returnUrl)
-        {
-            var model = new LoginModel
-            {
-                ReturnUrl = returnUrl
-            };
-
-            return View("Login", model);
-        }
-
         [HttpPost]
-        public async Task<ActionResult> Login(LoginModel model)
+        public async Task<ActionResult> Login(LoginModel model )
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
             var blogContext = new BlogContext();
             var user = await blogContext.RecruiterUsers.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
             if (user == null)
@@ -38,34 +26,10 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Email, user.Email)
-                }, "ApplicationCookie");
-
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            authManager.SignIn(identity);
+            var identity = CreateIdentity(user);
+            SignIn(identity);
 
             return Redirect(GetRedirectUrl(model.ReturnUrl));
-        }
-
-
-
-        [HttpPost]
-        public ActionResult Logout()
-        {
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-
-            authManager.SignOut("ApplicationCookie");
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return View(new RegisterModel());
         }
 
         [HttpPost]
@@ -83,6 +47,13 @@ namespace WebApp.Controllers
                 ModelState.AddModelError("Email", "User with this email already exists.");
                 return View(model);
             }
+            await CreateRecruiterUser(model, blogContext);
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        public static async Task CreateRecruiterUser(RegisterModel model, BlogContext blogContext)
+        {
             var user = new RecruiterUser
             {
                 Name = model.Name,
@@ -90,17 +61,6 @@ namespace WebApp.Controllers
             };
 
             await blogContext.RecruiterUsers.InsertOneAsync(user);
-            return RedirectToAction("Index", "Home");
-        }       
-
-        private string GetRedirectUrl(string returnUrl)
-        {
-            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
-            {
-                return Url.Action("index", "home");
-            }
-
-            return returnUrl;
         }
     }
 }
