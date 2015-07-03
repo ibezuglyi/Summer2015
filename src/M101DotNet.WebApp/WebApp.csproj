@@ -150,6 +150,8 @@
     <Compile Include="Models\Account\RegisterModel.cs" />
     <Compile Include="Models\BlogContext.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
+    <Compile Include="Models\JobOffer.cs" />
+    <Compile Include="Models\RecruiterUser.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

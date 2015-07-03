@@ -27,6 +27,7 @@ textarea {
     display: inline-block;
     width:60%;
     float: left;
+    min-width: 250px;
 
 }
 .main-photo > img{
@@ -38,6 +39,7 @@ textarea {
     display:inline-block;
     padding: 0 0 20px 0;
     float:left;
+    min-width: 270px;
 }
 
 .main-buttons a {
