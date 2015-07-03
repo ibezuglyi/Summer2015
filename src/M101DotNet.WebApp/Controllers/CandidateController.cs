@@ -79,6 +79,12 @@ namespace WebApp.Controllers
             }
 
             var blogContext = new BlogContext();
+            var userFound = await blogContext.CandidateUsers.Find(x => x.Email == model.Email).FirstOrDefaultAsync();
+            if (userFound != null)
+            {
+                ModelState.AddModelError("Email", "User with this email already exists.");
+                return View(model);
+            }
             var user = new CandidateUser
             {
                 Name = model.Name,
