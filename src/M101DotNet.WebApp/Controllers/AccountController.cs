@@ -5,6 +5,8 @@ using System.Web.Mvc;
 using MongoDB.Driver;
 using WebApp.Models;
 using WebApp.Models.Account;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WebApp.Controllers
 {
@@ -34,20 +36,27 @@ namespace WebApp.Controllers
             var user = await blogContext.Users.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
             if (user == null)
             {
-                ModelState.AddModelError("Email", "Email address has not been registered.");
+                ModelState.AddModelError("Email", "Wrong email address and password.");
                 return View(model);
             }
 
-            var identity = new ClaimsIdentity(new[] {
+            var hashPassword = GenerateHashPassword(model.Password, user);
+            if (hashPassword == user.Password)
+            {
+                var identity = new ClaimsIdentity(new[] {
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email)
                 }, "ApplicationCookie");
 
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            authManager.SignIn(identity);
+                var context = Request.GetOwinContext();
+                var authManager = context.Authentication;
+                authManager.SignIn(identity);
 
-            return Redirect(GetRedirectUrl(model.ReturnUrl));
+                return Redirect(GetRedirectUrl(model.ReturnUrl));
+            }
+
+            ModelState.AddModelError("Email", "Wrong email address and password.");
+            return View(model);      
         }
 
         [HttpPost]
@@ -80,6 +89,8 @@ namespace WebApp.Controllers
                 Name = model.Name,
                 Email = model.Email
             };
+            
+            user.Password = GenerateHashPassword(model.Password, user);
 
             await blogContext.Users.InsertOneAsync(user);
             return RedirectToAction("Index", "Home");
@@ -94,5 +105,18 @@ namespace WebApp.Controllers
 
             return returnUrl;
         }
+
+        private string GenerateHashPassword(string password, User user)
+        {
+            SHA1 sha1 = SHA1.Create();
+            string dataToHash = user.Name + password + user.Email;
+            byte[] hashData = sha1.ComputeHash(Encoding.Default.GetBytes(dataToHash));
+            StringBuilder returnValue = new StringBuilder();
+            for (int i = 0; i < hashData.Length; i++)
+            {
+                returnValue.Append(hashData[i].ToString());
+            }
+            return returnValue.ToString();
+        }   
     }
 }
