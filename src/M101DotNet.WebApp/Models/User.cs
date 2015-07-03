@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Xml.Linq;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace WebApp.Models
@@ -13,18 +14,5 @@ namespace WebApp.Models
         public string Email { get; set; }
 
         public string Password { get; set; }
-    }
-
-
-    public class RecruiterUser : User
-    {
-        public string PhoneNumber { get; set; }
-
-        public string CompanyProfile { get; set; }  
-    }
-
-    public class CandidateUser : User
-    {
-        //keep an open mind :)
     }
 }

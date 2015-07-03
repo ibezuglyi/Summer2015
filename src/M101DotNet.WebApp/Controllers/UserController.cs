@@ -14,6 +14,7 @@ namespace WebApp.Controllers
     public class UserController : Controller
     {
         [HttpGet]
+
         public ActionResult Login(string returnUrl)
         {
             var model = new LoginModel
