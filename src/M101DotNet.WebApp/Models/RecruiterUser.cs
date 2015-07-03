@@ -12,6 +12,12 @@ namespace WebApp.Models
         public string CompanyDescription { get; set; }
 
         public List<JobOffer> JobOffers { get; set; }
+
+        public RecruiterUser()
+        {
+            JobOffers = new List<JobOffer>();
+        }
+
     }
 
 }
