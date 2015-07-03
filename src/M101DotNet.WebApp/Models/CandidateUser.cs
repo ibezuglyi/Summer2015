@@ -11,7 +11,6 @@ namespace WebApp.Models
         public List<Skill> Skills { get; set; }
 
 
-
         public CandidateUser()
         {
             Skills = new List<Skill>();
