@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -84,19 +85,7 @@ namespace WebApp.Controllers
             ModelState.AddModelError("Email", "User with this email already exists.");
         }
 
-        public string GenerateHashPassword(string password, User user)
-        {
-            SHA1 sha1 = SHA1.Create();
-            string dataToHash = user.Name + password + user.Email;
-            byte[] hashData = sha1.ComputeHash(Encoding.Default.GetBytes(dataToHash));
-            StringBuilder returnValue = new StringBuilder();
-            for (int i = 0; i < hashData.Length; i++)
-            {
-                returnValue.Append(hashData[i].ToString());
-            }
-            return returnValue.ToString();
-        }
-
+        
         public async Task<object> GetRecruiter()
         {
             var dbcontext = new JobContext();
@@ -105,7 +94,22 @@ namespace WebApp.Controllers
             var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
             var recruiter = await dbcontext.RecruiterUsers.Find(r => r.Id == id.Value).SingleOrDefaultAsync();
             return recruiter;
+        }
 
+        public async Task<Object> Update()
+        {
+            var dbcontext = new JobContext();
+            var context = Request.GetOwinContext();
+            var authManager = context.Authentication;
+            var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
+            var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, id.Value);
+            var update = Builders<RecruiterUser>
+                .Update
+                .Set(r => r.CompanyName, "company")
+                .Set(r => r.CompanyDescription, "description");
+
+            await dbcontext.RecruiterUsers.UpdateOneAsync(filter, update);
+            return null;
         }
     }
 }

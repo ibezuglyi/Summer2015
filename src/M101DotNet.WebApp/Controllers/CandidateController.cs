@@ -7,12 +7,19 @@ using WebApp.Models;
 using WebApp.Models.Account;
 using System.Security.Cryptography;
 using System.Text;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
     [AllowAnonymous]
     public class CandidateController : UserController
     {
+        private IApplicationService service;
+
+        public CandidateController(IApplicationService applicationService)
+        {
+            service = applicationService;
+        }
 
         [HttpPost]
         public async Task<ActionResult> Login(LoginModel model)
@@ -21,17 +28,15 @@ namespace WebApp.Controllers
             {
                 return View(model);
             }
-                        
-            var blogContext = new JobContext();
-            var user = await blogContext.CandidateUsers.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
+            var user = await service.GetCandidateByEmailAsync(model.Email);
             if (user == null)
             {
                 WrongEmailPasswordError();
                 return View(model);
             }
 
-            var hashPassword = GenerateHashPassword(model.Password, user);
-            if(hashPassword == user.Password)
+            var hashPassword = service.GenerateHashPassword(model.Password, user);
+            if (hashPassword == user.Password)
             {
                 var identity = CreateIdentity(user, "Candidate");
                 SignIn(identity);
@@ -40,7 +45,7 @@ namespace WebApp.Controllers
             }
 
             WrongEmailPasswordError();
-            return View(model);            
+            return View(model);
         }
 
         [HttpPost]
@@ -51,28 +56,15 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            var blogContext = new JobContext();
-            var userFound = await blogContext.CandidateUsers.Find(x => x.Email == model.Email).FirstOrDefaultAsync();
-            if (userFound != null)
+            var user = await service.GetCandidateByEmailAsync(model.Email);
+            if (user != null)
             {
                 ModelState.AddModelError("Email", "User with this email already exists.");
                 return View(model);
             }
-            await CreateCandidateUser(model, blogContext);
+            await service.CreateCandidateUserAsync(model);
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task CreateCandidateUser(RegisterModel model, JobContext jobContext)
-        {
-            var user = new CandidateUser
-            {
-                Name = model.Name,
-                Email = model.Email,
-            };
-
-            user.Password = GenerateHashPassword(model.Password, user);
-
-            await jobContext.CandidateUsers.InsertOneAsync(user);
-        }
     }
 }
