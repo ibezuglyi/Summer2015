@@ -141,6 +141,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
+    <Compile Include="Controllers\CandidateProfileController.cs" />
     <Compile Include="Controllers\RecruiterController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -237,6 +238,7 @@
     <Content Include="Views\Recruiter\Register.cshtml" />
     <Content Include="Views\Candidate\Login.cshtml" />
     <Content Include="Views\Candidate\Register.cshtml" />
+    <Content Include="Views\CandidateProfile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

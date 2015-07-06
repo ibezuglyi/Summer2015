@@ -14,9 +14,9 @@ namespace WebApp.Controllers
     {
         //
         // GET: /CandidateProfile/
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var user = GetCandidate();
+            var user = await GetCandidate();
             return View(user);
         }
 
@@ -38,8 +38,7 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            var dbContext = new JobContext();
-
+            Update();
             return View();
         }
 
@@ -56,7 +55,25 @@ namespace WebApp.Controllers
             var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
             var candidate = await dbcontext.CandidateUsers.Find(r => r.Id == id.Value).SingleOrDefaultAsync();
             return candidate;
+        }
 
+        public async Task<CandidateUser> Update()
+        {
+            var dbcontext = new JobContext();
+            var context = Request.GetOwinContext();
+            var authManager = context.Authentication;
+            var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
+            var filter = Builders<CandidateUser>.Filter.Eq(r => r.Id, id.Value);
+            var update = Builders<CandidateUser>
+                .Update
+                .Set(r => r.ExperienceDescription, "descryption")
+                .Set(r => r.ExperienceInYears, 0)
+                .Set(r => r.LastName, "lastname")
+                .Set(r => r.Surname, "surname")
+                .Set(r => r.Salary, 0);            
+
+            await dbcontext.CandidateUsers.UpdateOneAsync(filter, update);
+            return null;
         }
     }
 }
