@@ -5,6 +5,30 @@
 }
 
 
-@Model.Name
-@Model.Email
-@Model.Password
+Name: @Model.Name<br />
+Email: @Model.Email
+
+
+@using (Html.BeginForm())
+{
+    <div>
+        @Html.Label("Surname:")
+        @Html.TextBox("lastname", Model.LastName)
+    </div>
+    <div>
+        @Html.Label("Experience in Years:")
+        @Html.TextBox("experienceInYears", Model.ExperienceInYears)
+    </div>  
+    <div>  
+        @Html.Label("Experience Description")
+        @Html.TextArea("experienceDescription", Model.ExperienceDescription)
+    </div>    
+    <div>
+        @Html.Label("Salary")
+        @Html.TextBox("salary", Model.Salary)
+    </div>
+    
+    <p>
+        <button type="submit" class="btn">Zapisz &raquo;</button>
+    </p>
+}

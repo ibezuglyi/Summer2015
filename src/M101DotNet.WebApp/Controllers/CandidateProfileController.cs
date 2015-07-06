@@ -23,8 +23,8 @@ namespace WebApp.Controllers
         // GET: /CandidateProfile/
         public async Task<ActionResult> Index()
         {
-            var user = await GetCandidate();
-            return View(user);
+            var candidate = await GetCandidate();
+            return View(candidate);
         }
 
         [HttpPost]
@@ -34,19 +34,19 @@ namespace WebApp.Controllers
             {
                 return View(model);
             }
-            if(model.Salary < 0)
+            if (model.Salary < 0)
             {
-                WrongSalaryExperienceError("Salary");
+                WrongSalaryExperienceError("salary");
                 return View(model);
             }
             if (model.ExperienceInYears < 0)
             {
-                WrongSalaryExperienceError("ExperienceInYears");
+                WrongSalaryExperienceError("experienceInYears");
                 return View(model);
             }
 
-            await UpdateCandidate(model);
-            return View();
+            var updatedModel = await UpdateCandidate(model);
+            return View(updatedModel);
         }
 
         public void WrongSalaryExperienceError(string field)
@@ -54,10 +54,10 @@ namespace WebApp.Controllers
             ModelState.AddModelError(field, "It can't be a negative number");
         }
 
-        public async Task<CandidateUser> GetCandidate()
+        public Task<CandidateUser> GetCandidate()
         {
             var id = GetIdFromRequest();
-            return await service.GetCandidateByIdAsync(id.Value);
+            return service.GetCandidateByIdAsync(id.Value);
         }
 
         public Claim GetIdFromRequest()
@@ -68,10 +68,10 @@ namespace WebApp.Controllers
         }
 
         
-        public async Task UpdateCandidate(CandidateUser model)
+        public async Task<CandidateUser> UpdateCandidate(CandidateUser model)
         {
             var id = GetIdFromRequest();
-            await service.UpdateCandidateUserAsync(model, id.Value);
+            return await service.UpdateCandidateUserAsync(model, id.Value);
         }
     }
 }
