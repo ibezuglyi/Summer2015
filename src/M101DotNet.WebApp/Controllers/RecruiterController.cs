@@ -29,7 +29,7 @@ namespace WebApp.Controllers
             var hashPassword = GenerateHashPassword(model.Password, user);
             if (hashPassword == user.Password)
             {
-                var identity = CreateIdentity(user);
+                var identity = CreateIdentity(user, "Recruiter");
                 SignIn(identity);
 
                 return Redirect(GetRedirectUrl(model.ReturnUrl));

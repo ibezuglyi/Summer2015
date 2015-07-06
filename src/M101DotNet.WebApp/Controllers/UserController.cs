@@ -56,11 +56,12 @@ namespace WebApp.Controllers
             authManager.SignIn(identity);
         }
 
-        public static ClaimsIdentity CreateIdentity(User user)
+        public static ClaimsIdentity CreateIdentity(User user, string role)
         {
             var identity = new ClaimsIdentity(new[] {
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Sid, user.Id),
+                    new Claim(ClaimTypes.Role, role),
                     new Claim(ClaimTypes.Email, user.Email)
                 }, "ApplicationCookie");
             return identity;
