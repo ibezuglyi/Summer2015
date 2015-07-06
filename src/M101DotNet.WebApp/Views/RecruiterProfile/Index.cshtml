@@ -11,15 +11,15 @@ Email: @Model.Email
 @using (Html.BeginForm())
 {
     <div>
-        <label>Surname:</label>
+        @Html.Label("Surname")
         @Html.TextBox("surname", Model.Surname)
     </div>
     <div>
-        <label>Company Name:</label>
+        @Html.Label("Company Name")
         @Html.TextBox("companyName", Model.CompanyName)
     </div>
     <div>
-        <label>Company Description:</label><br/>
+        @Html.Label("Company Description")
         @Html.TextArea("companyDescription", Model.CompanyDescription)
     </div>
     <p>

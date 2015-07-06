@@ -12,6 +12,8 @@ namespace WebApp.Services
         string GenerateHashPassword(string password, User user);
         Task CreateCandidateUserAsync(RegisterModel model);
         Task<RecruiterUser> GetRecruiterByIdAsync(string id);
+        Task<CandidateUser> GetCandidateByIdAsync(string id);
         Task<RecruiterUser> UpdateRecruiterUserAsync(RecruiterUser model, string id);
+        Task UpdateCandidateUserAsync(CandidateUser model, string id);
     }
 }
