@@ -37,6 +37,12 @@ namespace WebApp.Services
             return recruiter;
         }
 
+        public async Task<CandidateUser> GetCandidateByIdAsync(string id)
+        {
+            var candidate = await dbContext.CandidateUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            return candidate;
+        }
+
         public async Task CreateRecruiterUserAsync(RegisterModel model)
         {
             var user = new RecruiterUser
@@ -86,6 +92,20 @@ namespace WebApp.Services
 
             user.Password = GenerateHashPassword(model.Password, user);
             await dbContext.CandidateUsers.InsertOneAsync(user);
+        }
+
+        public async Task UpdateCandidateUserAsync(CandidateUser model, string id)
+        {            
+            var filter = Builders<CandidateUser>.Filter.Eq(r => r.Id, id);
+            var update = Builders<CandidateUser>
+                .Update
+                .Set(r => r.ExperienceDescription, model.ExperienceDescription)
+                .Set(r => r.ExperienceInYears, model.ExperienceInYears)
+                .Set(r => r.LastName, model.LastName)
+                .Set(r => r.Surname, model.Surname)
+                .Set(r => r.Salary, model.Salary);
+
+            await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
         }
     }
 }
