@@ -11,7 +11,7 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
-    public class CandidateProfileController : Controller
+    public class CandidateProfileController : UserProfileController
     {
         private IApplicationService service;
 
@@ -23,8 +23,23 @@ namespace WebApp.Controllers
         // GET: /CandidateProfile/
         public async Task<ActionResult> Index()
         {
-            var candidate = await GetCandidate();
-            return View(candidate);
+            if (IsAuthenticated())
+            {
+                var role = GetRoleFromRequest();
+                if(role.Value == "Candidate")
+                {
+                    var candidate = await GetCandidate();
+                    return View(candidate);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]

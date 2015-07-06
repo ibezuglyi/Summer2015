@@ -11,7 +11,7 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
-    public class RecruiterProfileController : Controller
+    public class RecruiterProfileController : UserProfileController
     {
         private IApplicationService service;
 
@@ -65,25 +65,6 @@ namespace WebApp.Controllers
             return service.GetRecruiterByIdAsync(id.Value);
         }
 
-        public Claim GetIdFromRequest()
-        {
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
-        }
-
-        public Claim GetRoleFromRequest()
-        {
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Role);
-        }
-
-        public bool IsAuthenticated()
-        {
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            return authManager.User.Identity.IsAuthenticated;
-        }
+        
 	}
 }
