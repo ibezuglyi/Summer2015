@@ -255,6 +255,7 @@
     <Content Include="Views\Recruiter\Register.cshtml" />
     <Content Include="Views\Candidate\Login.cshtml" />
     <Content Include="Views\Candidate\Register.cshtml" />
+    <Content Include="Views\CandidateProfile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

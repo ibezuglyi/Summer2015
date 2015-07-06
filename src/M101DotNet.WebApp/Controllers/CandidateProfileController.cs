@@ -7,11 +7,18 @@ using System.Web;
 using System.Web.Mvc;
 using WebApp.Models;
 using MongoDB.Driver;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
     public class CandidateProfileController : Controller
     {
+        private IApplicationService service;
+
+        public CandidateProfileController(IApplicationService applicationService)
+        {
+            service = applicationService;
+        }
         //
         // GET: /CandidateProfile/
         public async Task<ActionResult> Index()
@@ -21,7 +28,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(CandidateUser model)
+        public async Task<ActionResult> Index(CandidateUser model)
         {
             if (!ModelState.IsValid)
             {
@@ -38,7 +45,7 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            Update();
+            await UpdateCandidate(model);
             return View();
         }
 
@@ -47,33 +54,24 @@ namespace WebApp.Controllers
             ModelState.AddModelError(field, "It can't be a negative number");
         }
 
-        public async Task<object> GetCandidate()
+        public async Task<CandidateUser> GetCandidate()
         {
-            var dbcontext = new JobContext();
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
-            var candidate = await dbcontext.CandidateUsers.Find(r => r.Id == id.Value).SingleOrDefaultAsync();
-            return candidate;
+            var id = GetIdFromRequest();
+            return await service.GetCandidateByIdAsync(id.Value);
         }
 
-        public async Task<CandidateUser> Update()
+        public Claim GetIdFromRequest()
         {
-            var dbcontext = new JobContext();
             var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
-            var filter = Builders<CandidateUser>.Filter.Eq(r => r.Id, id.Value);
-            var update = Builders<CandidateUser>
-                .Update
-                .Set(r => r.ExperienceDescription, "descryption")
-                .Set(r => r.ExperienceInYears, 0)
-                .Set(r => r.LastName, "lastname")
-                .Set(r => r.Surname, "surname")
-                .Set(r => r.Salary, 0);            
+            var authManager = context.Authentication;            
+            return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
+        }
 
-            await dbcontext.CandidateUsers.UpdateOneAsync(filter, update);
-            return null;
+        
+        public async Task UpdateCandidate(CandidateUser model)
+        {
+            var id = GetIdFromRequest();
+            await service.UpdateCandidateUserAsync(model, id.Value);
         }
     }
 }
