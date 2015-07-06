@@ -34,7 +34,6 @@ namespace WebApp.Controllers
                 return View(model);
             }
             var updatedModel = await UpdateRecruiter(model);
-            //TODO: zaciągnąc reszte z bazy danych 
             return View(updatedModel);
         }
 
