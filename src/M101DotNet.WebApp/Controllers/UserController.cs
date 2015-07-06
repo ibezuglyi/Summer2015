@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -59,6 +60,7 @@ namespace WebApp.Controllers
         {
             var identity = new ClaimsIdentity(new[] {
                     new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Sid, user.Id),
                     new Claim(ClaimTypes.Email, user.Email)
                 }, "ApplicationCookie");
             return identity;
@@ -92,6 +94,17 @@ namespace WebApp.Controllers
                 returnValue.Append(hashData[i].ToString());
             }
             return returnValue.ToString();
-        }  
+        }
+
+        public async Task<object> GetRecruiter()
+        {
+            var dbcontext = new JobContext();
+            var context = Request.GetOwinContext();
+            var authManager = context.Authentication;
+            var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
+            var recruiter = await dbcontext.RecruiterUsers.Find(r => r.Id == id.Value).SingleOrDefaultAsync();
+            return recruiter;
+
+        }
     }
 }

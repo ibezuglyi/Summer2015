@@ -5,13 +5,11 @@ using System.Web.Mvc;
 using MongoDB.Driver;
 using WebApp.Models;
 using WebApp.Models.Account;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace WebApp.Controllers
 {
     [AllowAnonymous]
-    public class RecruiterController : Controllers.UserController
+    public class RecruiterController : UserController
     {
         [HttpPost]
         public async Task<ActionResult> Login(LoginModel model )
@@ -20,7 +18,7 @@ namespace WebApp.Controllers
             {
                 return View(model);
             }
-            var blogContext = new BlogContext();
+            var blogContext = new JobContext();
             var user = await blogContext.RecruiterUsers.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
             if (user == null)
             {
@@ -49,7 +47,7 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            var blogContext = new BlogContext();
+            var blogContext = new JobContext();
             var userFound = await blogContext.RecruiterUsers.Find(x => x.Email == model.Email).FirstOrDefaultAsync();
             if (userFound != null)
             {
@@ -60,7 +58,7 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task CreateRecruiterUser(RegisterModel model, BlogContext blogContext)
+        public async Task CreateRecruiterUser(RegisterModel model, JobContext jobContext)
         {
             var user = new RecruiterUser
             {
@@ -70,7 +68,7 @@ namespace WebApp.Controllers
 
             user.Password = GenerateHashPassword(model.Password, user);
 
-            await blogContext.RecruiterUsers.InsertOneAsync(user);
+            await jobContext.RecruiterUsers.InsertOneAsync(user);
         }
   
     }

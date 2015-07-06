@@ -22,7 +22,7 @@ namespace WebApp.Controllers
                 return View(model);
             }
                         
-            var blogContext = new BlogContext();
+            var blogContext = new JobContext();
             var user = await blogContext.CandidateUsers.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
             if (user == null)
             {
@@ -51,7 +51,7 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            var blogContext = new BlogContext();
+            var blogContext = new JobContext();
             var userFound = await blogContext.CandidateUsers.Find(x => x.Email == model.Email).FirstOrDefaultAsync();
             if (userFound != null)
             {
@@ -62,7 +62,7 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task CreateCandidateUser(RegisterModel model, BlogContext blogContext)
+        public async Task CreateCandidateUser(RegisterModel model, JobContext jobContext)
         {
             var user = new CandidateUser
             {
@@ -72,7 +72,7 @@ namespace WebApp.Controllers
 
             user.Password = GenerateHashPassword(model.Password, user);
 
-            await blogContext.CandidateUsers.InsertOneAsync(user);
+            await jobContext.CandidateUsers.InsertOneAsync(user);
         }
     }
 }
