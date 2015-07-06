@@ -31,6 +31,12 @@ namespace WebApp.Services
             return user;
         }
 
+        public async Task<RecruiterUser> GetRecruiterByIdAsync(string id)
+        {
+            var recruiter = await dbContext.RecruiterUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            return recruiter;
+        }
+
         public async Task<CandidateUser> GetCandidateByIdAsync(string id)
         {
             var candidate = await dbContext.CandidateUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
@@ -48,6 +54,19 @@ namespace WebApp.Services
             user.Password = GenerateHashPassword(model.Password, user);
             await dbContext.RecruiterUsers.InsertOneAsync(user);
         }
+
+        public async Task UpdateRecruiterUserAsync(RecruiterUser model, string id)
+        {
+            var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, id);
+            var update = Builders<RecruiterUser>
+                .Update
+                .Set(r => r.CompanyDescription, model.CompanyDescription)
+                .Set(r => r.CompanyName, model.CompanyName)
+                .Set(r => r.Surname, model.Surname);
+
+            await dbContext.RecruiterUsers.UpdateOneAsync(filter, update);
+        }
+
 
         public string GenerateHashPassword(string password, User user)
         {
