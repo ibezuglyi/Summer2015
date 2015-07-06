@@ -22,8 +22,24 @@ namespace WebApp.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var recruiter = await GetRecruiter();
-            return View(recruiter);
+            if (IsAuthenticated())
+            {
+                var role = GetRoleFromRequest();
+                if (role.Value == "Recruiter")
+                {
+                    var recruiter = await GetRecruiter();
+                    return View(recruiter);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
 
         [HttpPost]
@@ -55,6 +71,19 @@ namespace WebApp.Controllers
             var authManager = context.Authentication;
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
         }
-      
+
+        public Claim GetRoleFromRequest()
+        {
+            var context = Request.GetOwinContext();
+            var authManager = context.Authentication;
+            return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Role);
+        }
+
+        public bool IsAuthenticated()
+        {
+            var context = Request.GetOwinContext();
+            var authManager = context.Authentication;
+            return authManager.User.Identity.IsAuthenticated;
+        }
 	}
 }
