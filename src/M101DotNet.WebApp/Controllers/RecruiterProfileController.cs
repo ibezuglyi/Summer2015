@@ -33,14 +33,15 @@ namespace WebApp.Controllers
             {
                 return View(model);
             }
-            await UpdateRecruiter(model);
-            return View(model);
+            var updatedModel = await UpdateRecruiter(model);
+            //TODO: zaciągnąc reszte z bazy danych 
+            return View(updatedModel);
         }
 
-        public async Task UpdateRecruiter(RecruiterUser model)
+        public async Task<RecruiterUser> UpdateRecruiter(RecruiterUser model)
         {
             var id = GetIdFromRequest();
-            await service.UpdateRecruiterUserAsync(model, id.Value);
+            return await service.UpdateRecruiterUserAsync(model, id.Value);
         }
 
         public Task<RecruiterUser> GetRecruiter()

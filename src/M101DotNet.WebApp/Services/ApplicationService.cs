@@ -49,7 +49,7 @@ namespace WebApp.Services
             await dbContext.RecruiterUsers.InsertOneAsync(user);
         }
 
-        public async Task UpdateRecruiterUserAsync(RecruiterUser model, string id)
+        public async Task<RecruiterUser> UpdateRecruiterUserAsync(RecruiterUser model, string id)
         {
             var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, id);
             var update = Builders<RecruiterUser>
@@ -59,6 +59,7 @@ namespace WebApp.Services
                 .Set(r => r.Surname, model.Surname);
 
             await dbContext.RecruiterUsers.UpdateOneAsync(filter, update);
+            return await dbContext.RecruiterUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
         }
 
 
