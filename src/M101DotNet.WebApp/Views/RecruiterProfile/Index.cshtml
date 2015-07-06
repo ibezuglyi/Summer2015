@@ -4,22 +4,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-Name: @Model.Name<br/>
-Email: @Model.Email
-
+<div class="form-part">
+    <label>Name: </label>@Model.Name
+</div>
+<div class="form-part">
+    <label>Email: </label>@Model.Email
+</div>
 @using (Html.BeginForm())
 {
-    <div>
-        @Html.Label("Surname")
+    <div class="form-part">
+        @Html.Label("Surname:")<br/>
         @Html.TextBox("surname", Model.Surname)
     </div>
-    <div>
-        @Html.Label("Company Name")
+    <div class="form-part">
+        @Html.Label("Company Name:")<br/>
         @Html.TextBox("companyName", Model.CompanyName)
     </div>
-    <div>
-        @Html.Label("Company Description")
+    <div class="form-part">
+        @Html.Label("Company Description:")<br/>
         @Html.TextArea("companyDescription", Model.CompanyDescription)
     </div>
     <p>
