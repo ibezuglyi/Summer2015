@@ -164,6 +164,7 @@
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CandidateProfileController.cs" />
     <Compile Include="Controllers\RecruiterController.cs" />
+    <Compile Include="Controllers\RecruiterProfileController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -173,10 +174,10 @@
     <Compile Include="Models\JobOffer.cs" />
     <Compile Include="Models\JobContext.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
-    <Compile Include="Models\Users\CandidateUser.cs" />
-    <Compile Include="Models\Users\RecruiterUser.cs" />
+    <Compile Include="Models\CandidateUser.cs" />
+    <Compile Include="Models\RecruiterUser.cs" />
     <Compile Include="Models\Skill.cs" />
-    <Compile Include="Models\Users\User.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\IApplicationService.cs" />
@@ -255,6 +256,7 @@
     <Content Include="Views\Recruiter\Register.cshtml" />
     <Content Include="Views\Candidate\Login.cshtml" />
     <Content Include="Views\Candidate\Register.cshtml" />
+    <Content Include="Views\RecruiterProfile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

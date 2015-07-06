@@ -1,54 +1,60 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApp.Models;
-using System.Threading.Tasks;
-using MongoDB.Driver;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
     public class RecruiterProfileController : Controller
     {
-        //
-        // GET: /RecruiterProfile/
-        public async  Task<ActionResult> Index()
+        private IApplicationService service;
+
+        public RecruiterProfileController(IApplicationService applicationService)
+        {
+            service = applicationService;
+        }
+
+        public async Task<ActionResult> Index()
         {
             var recruiter = await GetRecruiter();
             return View(recruiter);
         }
 
         [HttpPost]
-        public ActionResult Index(RecruiterUser model)
+        public async Task<ActionResult> Index(RecruiterUser model)
         {
-            if (!ModelState.IsValid){
-                return View();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
             }
-            var dbcontext = new JobContext();
+            await UpdateRecruiter(model);
             return View(model);
         }
 
-        public async Task UpdateRecruiter()
+        public async Task UpdateRecruiter(RecruiterUser model)
         {
-            var dbcontext = new JobContext();
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
+            var id = GetIdFromRequest();
+            await service.UpdateRecruiterUserAsync(model, id.Value);
         }
 
-        public async Task<RecruiterUser> GetRecruiter()
+        public Task<RecruiterUser> GetRecruiter()
         {
-            var dbcontext = new JobContext();
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
-            var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
-            var recruiter = await dbcontext.RecruiterUsers.Find(r => r.Id == id.Value).SingleOrDefaultAsync();
-
-            return recruiter;
+            var id = GetIdFromRequest();
+            return service.GetRecruiterByIdAsync(id.Value);
         }
 
-
+        public Claim GetIdFromRequest()
+        {
+            var context = Request.GetOwinContext();
+            var authManager = context.Authentication;
+            return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
+        }
+      
 	}
 }

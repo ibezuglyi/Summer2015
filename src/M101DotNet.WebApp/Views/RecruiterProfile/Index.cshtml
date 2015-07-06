@@ -5,4 +5,15 @@
 }
 
 
-@Model.Name
+Name: @Model.Name<br/>
+Surname: @Model.Surname<br/>
+Email: @Model.Email
+
+@using (Html.BeginForm())
+{
+    @Html.EditorForModel()
+
+    <p>
+        <button type="submit" class="btn">Register &raquo;</button>
+    </p>
+}
