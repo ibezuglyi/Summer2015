@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -105,7 +106,22 @@ namespace WebApp.Controllers
             var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
             var recruiter = await dbcontext.RecruiterUsers.Find(r => r.Id == id.Value).SingleOrDefaultAsync();
             return recruiter;
+        }
 
+        public async Task<Object> Update()
+        {
+            var dbcontext = new JobContext();
+            var context = Request.GetOwinContext();
+            var authManager = context.Authentication;
+            var id = authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
+            var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, id.Value);
+            var update = Builders<RecruiterUser>
+                .Update
+                .Set(r => r.CompanyName, "company")
+                .Set(r => r.CompanyDescription, "description");
+
+            await dbcontext.RecruiterUsers.UpdateOneAsync(filter, update);
+            return null;
         }
     }
 }
