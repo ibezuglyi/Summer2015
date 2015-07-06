@@ -1,32 +1,40 @@
-﻿using System.Security.Claims;
+﻿using System.Runtime.Remoting.Messaging;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using MongoDB.Driver;
 using WebApp.Models;
 using WebApp.Models.Account;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
     [AllowAnonymous]
     public class RecruiterController : UserController
     {
+        private IApplicationService service;
+      
+        public RecruiterController(IApplicationService applicationService)
+        {
+            service = applicationService;
+        }
         [HttpPost]
-        public async Task<ActionResult> Login(LoginModel model )
+        public async Task<ActionResult> Login(LoginModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var blogContext = new JobContext();
-            var user = await blogContext.RecruiterUsers.Find(x => x.Email == model.Email).SingleOrDefaultAsync();
+            var user = await service.GetRecruterByEmailAsync(model.Email);
             if (user == null)
             {
                 WrongEmailPasswordError();
                 return View(model);
             }
 
-            var hashPassword = GenerateHashPassword(model.Password, user);
+            var hashPassword = service.GenerateHashPassword(model.Password, user);
             if (hashPassword == user.Password)
             {
                 var identity = CreateIdentity(user, "Recruiter");
@@ -36,7 +44,7 @@ namespace WebApp.Controllers
             }
 
             WrongEmailPasswordError();
-            return View(model);           
+            return View(model);
         }
 
         [HttpPost]
@@ -47,29 +55,14 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            var blogContext = new JobContext();
-            var userFound = await blogContext.RecruiterUsers.Find(x => x.Email == model.Email).FirstOrDefaultAsync();
-            if (userFound != null)
+            var user = await service.GetRecruterByEmailAsync(model.Email);
+            if (user != null)
             {
                 DuplicateEmailError();
                 return View(model);
             }
-            await CreateRecruiterUser(model, blogContext);
+            await service.CreateRecruiterUserAsync(model);
             return RedirectToAction("Index", "Home");
         }
-
-        public async Task CreateRecruiterUser(RegisterModel model, JobContext jobContext)
-        {
-            var user = new RecruiterUser
-            {
-                Name = model.Name,
-                Email = model.Email,
-            };
-
-            user.Password = GenerateHashPassword(model.Password, user);
-
-            await jobContext.RecruiterUsers.InsertOneAsync(user);
-        }
-  
     }
 }

@@ -85,19 +85,7 @@ namespace WebApp.Controllers
             ModelState.AddModelError("Email", "User with this email already exists.");
         }
 
-        public string GenerateHashPassword(string password, User user)
-        {
-            SHA1 sha1 = SHA1.Create();
-            string dataToHash = user.Name + password + user.Email;
-            byte[] hashData = sha1.ComputeHash(Encoding.Default.GetBytes(dataToHash));
-            StringBuilder returnValue = new StringBuilder();
-            for (int i = 0; i < hashData.Length; i++)
-            {
-                returnValue.Append(hashData[i].ToString());
-            }
-            return returnValue.ToString();
-        }
-
+        
         public async Task<object> GetRecruiter()
         {
             var dbcontext = new JobContext();
