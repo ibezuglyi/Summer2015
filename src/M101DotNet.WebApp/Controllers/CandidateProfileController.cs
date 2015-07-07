@@ -34,15 +34,19 @@ namespace WebApp.Controllers
                     };
                     return View(candidate);
                 }
-            }
+                }
 
-            return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
 
         }
 
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUser model)
-        {
+        {            
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             if (model.ExperienceInYears < 0)
             {
                 WrongSalaryExperienceError("experienceInYearsError");
@@ -55,10 +59,7 @@ namespace WebApp.Controllers
                 var candidate = await GetCandidateAsync();
                 return View(candidate);
             }
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            
             var updatedModel = await UpdateCandidate(model);
             return View(updatedModel);
         }
@@ -78,11 +79,11 @@ namespace WebApp.Controllers
         public Claim GetIdFromRequest()
         {
             var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
+            var authManager = context.Authentication;            
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
         }
 
-
+        
         public async Task<CandidateUser> UpdateCandidate(CandidateUser model)
         {
             var id = GetIdFromRequest();
