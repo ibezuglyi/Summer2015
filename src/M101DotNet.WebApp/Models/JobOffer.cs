@@ -15,9 +15,10 @@ namespace WebApp.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string IdRecruiter { get; set; }
         
-        public string Name { get; set; }
-        
+        [Required]
         public int Salary { get; set; }
+        [Required]
+        public string Name { get; set; }
         public List<Skill> Skills { get; set; }
         
 
