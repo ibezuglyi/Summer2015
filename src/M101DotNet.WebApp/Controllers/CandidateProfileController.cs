@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApp.Models;
-using MongoDB.Driver;
 using WebApp.Services;
 
 namespace WebApp.Controllers
@@ -26,25 +24,25 @@ namespace WebApp.Controllers
             if (IsAuthenticated())
             {
                 var role = GetRoleFromRequest();
-                if(role.Value == "Candidate")
+                if (role.Value == "Candidate")
                 {
                     var candidate = await GetCandidateAsync();
+                    candidate.Skills = new List<Skill>()
+                    {
+                        new Skill() {Level = 1, Name = "C#"},
+                        new Skill() {Level = 2, Name = "PHP"}
+                    };
                     return View(candidate);
                 }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
-                }
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+
+            return RedirectToAction("Index", "Home");
+
         }
 
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUser model)
-        {            
+        {
             if (model.ExperienceInYears < 0)
             {
                 WrongSalaryExperienceError("experienceInYearsError");
@@ -73,17 +71,18 @@ namespace WebApp.Controllers
         public Task<CandidateUser> GetCandidateAsync()
         {
             var id = GetIdFromRequest();
-            return service.GetCandidateByIdAsync(id.Value);
+            var candidate = service.GetCandidateByIdAsync(id.Value);
+            return candidate;
         }
 
         public Claim GetIdFromRequest()
         {
             var context = Request.GetOwinContext();
-            var authManager = context.Authentication;            
+            var authManager = context.Authentication;
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
         }
 
-        
+
         public async Task<CandidateUser> UpdateCandidate(CandidateUser model)
         {
             var id = GetIdFromRequest();
