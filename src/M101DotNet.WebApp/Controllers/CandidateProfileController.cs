@@ -49,17 +49,16 @@ namespace WebApp.Controllers
             {
                 return View(model);
             }
-            if (model.Salary < 0)
-            {
-                WrongSalaryExperienceError("salary");
-                return View(model);
-            }
             if (model.ExperienceInYears < 0)
             {
-                WrongSalaryExperienceError("experienceInYears");
+                WrongSalaryExperienceError("experienceInYearsError");
                 return View(model);
             }
-
+            else if (model.Salary < 0)
+            {
+                WrongSalaryExperienceError("salaryError");
+                return View(model);
+            }
             var updatedModel = await UpdateCandidate(model);
             return View(updatedModel);
         }
