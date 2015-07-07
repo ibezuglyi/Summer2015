@@ -10,6 +10,7 @@ namespace WebApp.Models
         public string Name { get; set; }
 
         [Required]
+        [Range(1, 10, ErrorMessage = "Can only be between 1 .. 10")]
         public int Level { get; set; }
     }
 }

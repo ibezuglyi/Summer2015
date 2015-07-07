@@ -34,34 +34,72 @@ namespace WebApp.Controllers
                     };
                     return View(candidate);
                 }
-                }
+            }
 
-                return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
 
         }
 
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUser model)
-        {            
+        {
+            if (ValidateForm(model))
+            {
+                var updatedModel = await UpdateCandidate(model);
+                return View(updatedModel);
+            }
+            else
+            {
+                var oldModel = await GetCandidateAsync();
+                return View(oldModel);
+            }
+
+        }
+
+        private bool ValidateForm(CandidateUser model)
+        {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                AddWrongFieldValueError("wrongFieldValue");
             }
             if (model.ExperienceInYears < 0)
             {
                 WrongSalaryExperienceError("experienceInYearsError");
-                var candidate = await GetCandidateAsync();
-                return View(candidate);
             }
-            else if (model.Salary < 0)
+            if (model.Salary < 0)
             {
                 WrongSalaryExperienceError("salaryError");
-                var candidate = await GetCandidateAsync();
-                return View(candidate);
             }
-            
-            var updatedModel = await UpdateCandidate(model);
-            return View(updatedModel);
+            for (int i = 0; i < model.Skills.Count; i++)
+            {
+                for (int j = i; j < model.Skills.Count; j++)
+                {
+                    if (i != j && model.Skills[i].Name == model.Skills[j].Name)
+                    {
+                        AddDuplicateSkillError("duplicateSkills");
+                    }
+                }
+                if (model.Skills[i].Level < 1 || model.Skills[i].Level > 10)
+                {
+                    AddWrongLevelError("wrongLevel");
+                }
+            }
+            return ModelState.IsValid;
+        }
+
+        private void AddWrongFieldValueError(string field)
+        {
+            ModelState.AddModelError(field, "One of the fields has wrong value");
+        }
+
+        private void AddWrongLevelError(string field)
+        {
+            ModelState.AddModelError(field, "Wrong level");
+        }
+
+        public void AddDuplicateSkillError(string field)
+        {
+            ModelState.AddModelError(field, "You can't have repeated skills");
         }
 
         public void WrongSalaryExperienceError(string field)
@@ -76,12 +114,7 @@ namespace WebApp.Controllers
             return candidate;
         }
 
-        public Claim GetIdFromRequest()
-        {
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;            
-            return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
-        }
+
 
         
         public async Task<CandidateUser> UpdateCandidate(CandidateUser model)
