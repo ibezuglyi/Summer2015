@@ -17,12 +17,12 @@
     {
         <div class="form-part">
             @Html.Label("Surname:") <br />
-            @Html.TextBox("lastname", Model.LastName)
+            @Html.TextBox("surname", Model.Surname)
         </div>
         <div class="form-part">
             @Html.Label("Experience in Years:") <br />
-            @Html.TextBox("experienceInYears", Model.ExperienceInYears)
-            @Html.ValidationMessage("experienceInYearsError")
+            @Html.TextBox("experienceInYears", Model.ExperienceInYears)  
+            <span class="red-text text-darken-2">@Html.ValidationMessage("experienceInYearsError")</span>          
         </div>
         <div class="form-part">        
             @Html.Label("Experience Description:") <br />
@@ -31,8 +31,8 @@
         <div class="form-part">
             @Html.Label("Salary:") <br />
             @Html.TextBox("salary", Model.Salary)
-            @Html.ValidationMessage("salaryError")
-        </div>
+            <span class="red-text text-darken-2">@Html.ValidationMessage("salaryError")</span>
+</div>
 
         <p>
             <button type="submit" class="btn">Save &raquo;</button>

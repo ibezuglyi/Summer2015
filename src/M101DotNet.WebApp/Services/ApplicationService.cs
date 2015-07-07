@@ -101,7 +101,6 @@ namespace WebApp.Services
                 .Update
                 .Set(r => r.ExperienceDescription, model.ExperienceDescription)
                 .Set(r => r.ExperienceInYears, model.ExperienceInYears)
-                .Set(r => r.LastName, model.LastName)
                 .Set(r => r.Surname, model.Surname)
                 .Set(r => r.Salary, model.Salary);
 
