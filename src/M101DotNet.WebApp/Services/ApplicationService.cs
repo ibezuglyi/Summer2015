@@ -106,7 +106,8 @@ namespace WebApp.Services
                 .Set(r => r.Salary, model.Salary);
 
             await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
-            return await dbContext.CandidateUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            var candidate = await dbContext.CandidateUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            return candidate;
         }
     }
 }

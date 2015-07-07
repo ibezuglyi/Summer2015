@@ -5,30 +5,36 @@
 }
 
 
-Name: @Model.Name<br />
-Email: @Model.Email
 
+<div class="form-part">
+    <label>Name: </label> @Model.Name 
+</div>
+<div class="form-part">
+    <label>Email: </label> @Model.Email 
+</div>
 
-@using (Html.BeginForm())
-{
-    <div>
-        @Html.Label("Surname:")
-        @Html.TextBox("lastname", Model.LastName)
-    </div>
-    <div>
-        @Html.Label("Experience in Years:")
-        @Html.TextBox("experienceInYears", Model.ExperienceInYears)
-    </div>  
-    <div>  
-        @Html.Label("Experience Description")
-        @Html.TextArea("experienceDescription", Model.ExperienceDescription)
-    </div>    
-    <div>
-        @Html.Label("Salary")
-        @Html.TextBox("salary", Model.Salary)
-    </div>
-    
-    <p>
-        <button type="submit" class="btn">Zapisz &raquo;</button>
-    </p>
-}
+    @using (Html.BeginForm())
+    {
+        <div class="form-part">
+            @Html.Label("Surname:") <br />
+            @Html.TextBox("lastname", Model.LastName)
+        </div>
+        <div class="form-part">
+            @Html.Label("Experience in Years:") <br />
+            @Html.TextBox("experienceInYears", Model.ExperienceInYears)
+            @Html.ValidationMessage("experienceInYearsError")
+        </div>
+        <div class="form-part">        
+            @Html.Label("Experience Description:") <br />
+            @Html.TextArea("experienceDescription", Model.ExperienceDescription)
+        </div>
+        <div class="form-part">
+            @Html.Label("Salary:") <br />
+            @Html.TextBox("salary", Model.Salary)
+            @Html.ValidationMessage("salaryError")
+        </div>
+
+        <p>
+            <button type="submit" class="btn">Save &raquo;</button>
+        </p>
+    }
