@@ -64,11 +64,11 @@ namespace WebApp.Controllers
             }
             if (model.ExperienceInYears < 0)
             {
-                WrongSalaryExperienceError("experienceInYearsError");
+                AddWrongSalaryExperienceError("experienceInYearsError");
             }
             if (model.Salary < 0)
             {
-                WrongSalaryExperienceError("salaryError");
+                AddWrongSalaryExperienceError("salaryError");
             }
             for (int i = 0; i < model.Skills.Count; i++)
             {
