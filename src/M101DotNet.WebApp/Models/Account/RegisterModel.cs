@@ -10,6 +10,7 @@ namespace WebApp.Models.Account
 
         [Required]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Email is not valid")]
         public string Email { get; set; }
 
         [Required]
