@@ -27,7 +27,7 @@ namespace WebApp.Controllers
                 var role = GetRoleFromRequest();
                 if (role.Value == "Recruiter")
                 {
-                    var recruiter = await GetRecruiter();
+                    var recruiter = await GetRecruiterAsync();
                     return View(recruiter);
                 }
                 else
@@ -59,7 +59,7 @@ namespace WebApp.Controllers
             return await service.UpdateRecruiterUserAsync(model, id.Value);
         }
 
-        public Task<RecruiterUser> GetRecruiter()
+        public Task<RecruiterUser> GetRecruiterAsync()
         {
             var id = GetIdFromRequest();
             return service.GetRecruiterByIdAsync(id.Value);

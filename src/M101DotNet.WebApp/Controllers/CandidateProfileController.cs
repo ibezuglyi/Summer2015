@@ -28,7 +28,7 @@ namespace WebApp.Controllers
                 var role = GetRoleFromRequest();
                 if(role.Value == "Candidate")
                 {
-                    var candidate = await GetCandidate();
+                    var candidate = await GetCandidateAsync();
                     return View(candidate);
                 }
                 else
@@ -68,7 +68,7 @@ namespace WebApp.Controllers
             ModelState.AddModelError(field, "It can't be a negative number");
         }
 
-        public Task<CandidateUser> GetCandidate()
+        public Task<CandidateUser> GetCandidateAsync()
         {
             var id = GetIdFromRequest();
             return service.GetCandidateByIdAsync(id.Value);
