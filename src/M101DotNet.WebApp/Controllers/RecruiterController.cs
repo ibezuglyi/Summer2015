@@ -30,7 +30,7 @@ namespace WebApp.Controllers
             var user = await service.GetRecruterByEmailAsync(model.Email);
             if (user == null)
             {
-                WrongEmailPasswordError();
+                AddWrongEmailPasswordError();
                 return View(model);
             }
 
@@ -42,8 +42,8 @@ namespace WebApp.Controllers
 
                 return Redirect(GetRedirectUrl(model.ReturnUrl));
             }
-
-            WrongEmailPasswordError();
+            
+            AddWrongEmailPasswordError();
             return View(model);
         }
 
@@ -58,7 +58,7 @@ namespace WebApp.Controllers
             var user = await service.GetRecruterByEmailAsync(model.Email);
             if (user != null)
             {
-                DuplicateEmailError();
+                AddDuplicatedEmailError();
                 return View(model);
             }
             await service.CreateRecruiterUserAsync(model);
