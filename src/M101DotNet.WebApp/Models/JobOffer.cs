@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -13,8 +14,9 @@ namespace WebApp.Models
         public string Id { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string IdRecruiter { get; set; }
-
+        
         public string Name { get; set; }
+        
         public int Salary { get; set; }
         public List<Skill> Skills { get; set; }
         

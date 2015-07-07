@@ -163,6 +163,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CandidateProfileController.cs" />
+    <Compile Include="Controllers\OfferController.cs" />
     <Compile Include="Controllers\RecruiterController.cs" />
     <Compile Include="Controllers\RecruiterProfileController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -260,6 +261,7 @@
     <Content Include="Views\RecruiterProfile\Index.cshtml" />
     <Content Include="Views\CandidateProfile\Index.cshtml" />
     <Content Include="Views\Shared\_SkillFormPartial.cshtml" />
+    <Content Include="Views\Offer\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

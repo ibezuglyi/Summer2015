@@ -1,0 +1,24 @@
+﻿@model WebApp.Models.JobOffer
+
+@{
+    ViewBag.Title = "CreateOffer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>CreateOffer</h4>
+
+@using (Html.BeginForm())
+{
+    <div class="form-part">
+        @Html.Label("Offer Name:")<br />
+        @Html.TextBox("name", Model.Name)
+    </div>
+    <div class="form-part">
+        @Html.Label("Salary:")<br />
+        @Html.TextBox("salary", Model.Salary)
+    </div>
+    <p>
+        <button type="submit" class="btn">Save &raquo;</button>
+    </p>
+}
+
