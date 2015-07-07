@@ -26,7 +26,7 @@
         </div>
         <div class="form-part">        
             @Html.Label("Experience Description:") <br />
-            @Html.TextArea("experienceDescription", Model.ExperienceDescription)
+            @Html.TextArea("experienceDescription", Model.ExperienceDescription, new { @class = "materialize-textarea" })
         </div>
         <div class="form-part">
             @Html.Label("Salary:") <br />
