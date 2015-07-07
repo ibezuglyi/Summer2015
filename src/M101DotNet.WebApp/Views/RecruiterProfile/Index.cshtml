@@ -22,7 +22,7 @@
     </div>
     <div class="form-part">
         @Html.Label("Company Description:")<br/>
-        @Html.TextArea("companyDescription", Model.CompanyDescription)
+        @Html.TextArea("companyDescription", Model.CompanyDescription, new { @class = "materialize-textarea" })
     </div>
     <p>
         <button type="submit" class="btn">Save &raquo;</button>
