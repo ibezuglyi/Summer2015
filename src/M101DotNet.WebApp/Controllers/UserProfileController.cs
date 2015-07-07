@@ -9,25 +9,28 @@ namespace WebApp.Controllers
 {
     public class UserProfileController : Controller
     {
-        public Claim GetIdFromRequest()
+        private  Microsoft.Owin.Security.IAuthenticationManager authManager;
+        
+        public UserProfileController()
         {
             var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
+            authManager = context.Authentication;
+        }
+
+        public Claim GetIdFromRequest()
+        {
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
         }
 
         public Claim GetRoleFromRequest()
         {
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Role);
         }
 
         public bool IsAuthenticated()
         {
-            var context = Request.GetOwinContext();
-            var authManager = context.Authentication;
             return authManager.User.Identity.IsAuthenticated;
         }
+      
 	}
 }
