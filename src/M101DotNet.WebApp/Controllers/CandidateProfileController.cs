@@ -49,13 +49,13 @@ namespace WebApp.Controllers
             }
             if (model.ExperienceInYears < 0)
             {
-                WrongSalaryExperienceError("experienceInYearsError");
+                AddWrongSalaryExperienceError("experienceInYearsError");
                 var candidate = await GetCandidateAsync();
                 return View(candidate);
             }
             else if (model.Salary < 0)
             {
-                WrongSalaryExperienceError("salaryError");
+                AddWrongSalaryExperienceError("salaryError");
                 var candidate = await GetCandidateAsync();
                 return View(candidate);
             }
@@ -64,7 +64,7 @@ namespace WebApp.Controllers
             return View(updatedModel);
         }
 
-        public void WrongSalaryExperienceError(string field)
+        public void AddWrongSalaryExperienceError(string field)
         {
             ModelState.AddModelError(field, "It can't be a negative number");
         }

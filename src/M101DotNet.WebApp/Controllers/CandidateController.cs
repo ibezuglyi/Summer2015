@@ -31,7 +31,7 @@ namespace WebApp.Controllers
             var user = await service.GetCandidateByEmailAsync(model.Email);
             if (user == null)
             {
-                WrongEmailPasswordError();
+                AddWrongEmailPasswordError();
                 return View(model);
             }
 
@@ -44,7 +44,7 @@ namespace WebApp.Controllers
                 return Redirect(GetRedirectUrl(model.ReturnUrl));
             }
 
-            WrongEmailPasswordError();
+            AddWrongEmailPasswordError();
             return View(model);
         }
 

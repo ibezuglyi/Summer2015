@@ -75,12 +75,12 @@ namespace WebApp.Controllers
             return authManager;
         }
 
-        public void WrongEmailPasswordError()
+        public void AddWrongEmailPasswordError()
         {
             ModelState.AddModelError("Email", "Wrong email address or password.");
         }
 
-        public void DuplicateEmailError()
+        public void AddDuplicatedEmailError()
         {
             ModelState.AddModelError("Email", "User with this email already exists.");
         }
