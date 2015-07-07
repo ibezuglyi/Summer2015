@@ -65,7 +65,8 @@ namespace WebApp.Services
                 .Set(r => r.Surname, model.Surname);
 
             await dbContext.RecruiterUsers.UpdateOneAsync(filter, update);
-            return await dbContext.RecruiterUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            var recruiter = await dbContext.RecruiterUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            return recruiter;
         }
 
 
@@ -94,27 +95,6 @@ namespace WebApp.Services
             await dbContext.CandidateUsers.InsertOneAsync(user);
         }
 
-        public async Task CreateSkillAsync(Skill model, string candidateId)
-        {
-            var skill = new Skill
-            {
-                Name = model.Name,
-                Level = model.Level,
-            };
-            var candidate = await GetCandidateByIdAsync(candidateId);
-            candidate.Skills.Add(skill);
-            await UpdateCandidateSkillsAsync(candidate, candidateId);          
-        }
-
-        private async Task UpdateCandidateSkillsAsync(CandidateUser model, string id)
-        {
-            var filter = Builders<CandidateUser>.Filter.Eq(r => r.Id, id);
-            var update = Builders<CandidateUser>
-                .Update
-                .Set(r => r.Skills, model.Skills);
-
-            await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
-        }
 
         public async Task<CandidateUser> UpdateCandidateUserAsync(CandidateUser model, string id)
         {            
@@ -124,7 +104,8 @@ namespace WebApp.Services
                 .Set(r => r.ExperienceDescription, model.ExperienceDescription)
                 .Set(r => r.ExperienceInYears, model.ExperienceInYears)
                 .Set(r => r.Surname, model.Surname)
-                .Set(r => r.Salary, model.Salary);
+                .Set(r => r.Salary, model.Salary)
+                .Set(r => r.Skills, model.Skills);
 
             await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
             var candidate = await dbContext.CandidateUsers.Find(r => r.Id == id).SingleOrDefaultAsync();

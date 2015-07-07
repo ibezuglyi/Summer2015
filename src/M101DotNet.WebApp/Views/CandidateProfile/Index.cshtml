@@ -12,6 +12,7 @@
 <div class="form-part">
     <label>Email: </label> @Model.Email 
 </div>
+<span class="red-text text-darken-2">@Html.ValidationMessage("wrongFieldValue")</span> 
 
     @using (Html.BeginForm())
     {
