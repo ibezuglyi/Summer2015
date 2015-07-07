@@ -4,7 +4,6 @@ namespace WebApp.Models
 {
     public class CandidateUser : User
     {
-        public string LastName { get; set; }
         public string ExperienceDescription { get; set; }
         public int ExperienceInYears { get; set; }
         public int Salary { get; set; }

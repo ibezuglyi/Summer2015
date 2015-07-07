@@ -44,19 +44,21 @@ namespace WebApp.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUser model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        {            
             if (model.ExperienceInYears < 0)
             {
                 WrongSalaryExperienceError("experienceInYearsError");
-                return View(model);
+                var candidate = await GetCandidateAsync();
+                return View(candidate);
             }
             else if (model.Salary < 0)
             {
                 WrongSalaryExperienceError("salaryError");
+                var candidate = await GetCandidateAsync();
+                return View(candidate);
+            }
+            if (!ModelState.IsValid)
+            {
                 return View(model);
             }
             var updatedModel = await UpdateCandidate(model);
