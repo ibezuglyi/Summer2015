@@ -4,6 +4,7 @@ using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Account;
 using WebApp.Models.Candidate;
+using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
 {
@@ -16,10 +17,11 @@ namespace WebApp.Services
         Task CreateCandidateUserAsync(RegisterModel model);
         Task CreateJobOfferAsync(JobOffer model);
         Task<RecruiterUser> GetRecruiterByIdAsync(string id);
-        Task<RecruiterUser> UpdateRecruiterUserAsync(RecruiterUser model, string id);
         Task<CandidateUser> GetCandidateByIdAsync(string id);
         Task<CandidateUser> UpdateCandidateUserAsync(CandidateUser model, string id);
+        Task UpdateRecruiterModelAsync(RecruiterModel model, string id);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId);
-        Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id);
+        Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(string recruiterId);
+        Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string idRecruiter);
     }
 }

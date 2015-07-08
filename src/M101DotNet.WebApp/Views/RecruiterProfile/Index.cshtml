@@ -1,4 +1,4 @@
-﻿@model WebApp.Entities.RecruiterUser
+﻿@model WebApp.Models.Recruiter.RecruiterViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,11 +14,11 @@
 {
     <div class="form-part">
         @Html.Label("Company Name:")<br />
-        @Html.TextBox("companyName", Model.CompanyName)
+        @Html.TextBox("companyName", Model.Recruiter.CompanyName)
     </div>
     <div class="form-part">
         @Html.Label("Company Description:")<br />
-        @Html.TextArea("companyDescription", Model.CompanyDescription, new { @class = "materialize-textarea" })
+        @Html.TextArea("companyDescription", Model.Recruiter.CompanyDescription, new { @class = "materialize-textarea" })
     </div>
     <p>
         <button type="submit" class="btn">Save &raquo;</button>

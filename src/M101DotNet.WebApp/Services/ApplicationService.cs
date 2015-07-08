@@ -10,6 +10,7 @@ using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Account;
 using WebApp.Models.Candidate;
+using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
 {
@@ -76,7 +77,7 @@ namespace WebApp.Services
             await dbContext.JobOffers.InsertOneAsync(offer);
         }
 
-        public async Task<RecruiterUser> UpdateRecruiterUserAsync(RecruiterUser model, string id)
+        public async Task UpdateRecruiterModelAsync(RecruiterModel model, string id)
         {
             var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, id);
             var update = Builders<RecruiterUser>
@@ -85,8 +86,6 @@ namespace WebApp.Services
                 .Set(r => r.CompanyName, model.CompanyName);
 
             await dbContext.RecruiterUsers.UpdateOneAsync(filter, update);
-            var recruiter = await dbContext.RecruiterUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
-            return recruiter;
         }
 
 
@@ -137,6 +136,20 @@ namespace WebApp.Services
             var candidateModel = MapToCandidateUserModel(candidate);
             var candiateViewModel = new CandidateViewModel(candidateModel, candidate.Name, candidate.Email);
             return candiateViewModel;
+        }
+
+        public async Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(string recruiterId)
+        {
+            var recruiter = await GetRecruiterByIdAsync(recruiterId);
+            var recruiterModel = MapToRecruiterModel(recruiter);
+            var recruiterViewModel = new RecruiterViewModel(recruiterModel, recruiter.Name, recruiter.Email);
+            return recruiterViewModel;
+        }
+
+        private static RecruiterModel MapToRecruiterModel(RecruiterUser recruiter)
+        {
+            var recruiterModel = new RecruiterModel(recruiter.CompanyName, recruiter.CompanyDescription);
+            return recruiterModel;
         }
 
         private static CandidateUserModel MapToCandidateUserModel(CandidateUser candidate)
