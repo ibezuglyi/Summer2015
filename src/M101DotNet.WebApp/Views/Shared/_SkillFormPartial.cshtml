@@ -1,12 +1,18 @@
 ﻿@model List<WebApp.Models.Candidate.SkillModel>
 
+<div class="row red-text text-darken-2">
+    @Html.ValidationMessage("notEnoughSkills")
+    @Html.ValidationMessage("duplicateSkills")
+</div>
+
+
 @for (int i = 0; i < Model.Count; i++)
 {
     var nameInputName = string.Format("Skills[{0}].Name", i);
     var levelInputName = string.Format("Skills[{0}].Level", i);
     
-    <div>
-        <div class="row" id="skill-row-@i">
+    <div class="skill-row">
+        <div class="row">
             <input type="hidden" name="Skills.Index" value="@i" />
             <span class="col s3">
                 <input id="@nameInputName" name="@nameInputName" value="@Model[i].Name" type="text" />
