@@ -120,6 +120,13 @@ namespace WebApp.Services
             return candiateViewModel;
         }
 
+        public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId)
+        {
+            var candidate = await GetCandidateByIdAsync(candidateId);
+            var candiateViewModel = new CandidateViewModel(candidateModel, candidate.Name, candidate.Email);
+            return candiateViewModel;
+        }
+
         private static CandidateUserModel MapToCandidateUserModel(CandidateUser candidate)
         {
             var skillModels = MapToSkillModels(candidate);
@@ -137,5 +144,11 @@ namespace WebApp.Services
             }
             return skillModels;
         }
+
+        public async Task<CandidateUser> UpdateCandidateUserAsync(CandidateUserModel model,string p)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -48,4 +48,25 @@
 
 
     }
+
+<div class="skill-row blank-row hidden">
+    <div class="row">
+        <input type="hidden" name="Skills.Index" value="@Model.Candidate.Skills.Count" />
+        <span class="col s3 skill-name">
+            <input value="" type="text" />
+        </span>
+        <span class="col s3 skill-level">
+            <input value="" type="text" />
+        </span>
+        <button onclick="return false" class="btn delete-skill red lighten-3">Delete</button>
+    </div>
+    <div class="row red-text text-darken-2">
+        <span class="col s3">
+            @Html.ValidationMessage("Skills[" + @Model.Candidate.Skills.Count + "].Name")
+        </span>
+        <span class="col s3">
+            @Html.ValidationMessage("Skills[" + @Model.Candidate.Skills.Count + "].Level")
+        </span>
+    </div>
+</div>
 @Scripts.Render("~/bundles/site")

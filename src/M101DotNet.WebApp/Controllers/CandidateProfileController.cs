@@ -40,7 +40,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUserModel model)
         {
-            var viewModel = "jakoś pobierz VM z model przyszedł w param";
+            var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
             //if (ValidateForm(model))
             //{
             //    var updatedModel = await UpdateCandidate(model);
@@ -61,7 +61,7 @@ namespace WebApp.Controllers
             var isduplicated = model.Skills.Count != model.Skills.Select(r => r.Name.ToLower()).Distinct().Count();
             if (isduplicated)
             {
-
+                AddDuplicateSkillError("duplicateSkills");
             }
             return ModelState.IsValid;
         }
@@ -80,11 +80,17 @@ namespace WebApp.Controllers
         public async Task<CandidateViewModel> GetCandidateAsync()
         {
             var id = GetIdFromRequest();
-            var candidateModel = await service.GetCandidateViewModelByIdAsync(id.Value);
-            return candidateModel;
+            var candidateViewModel = await service.GetCandidateViewModelByIdAsync(id.Value);
+            return candidateViewModel;
+        }
+        public async Task<CandidateViewModel> GetCandidateModelAndBindWithStaticAsync(CandidateUserModel candidateModel)
+        {
+            var id = GetIdFromRequest();
+            var candidateViewModel = await service.GetCandidateViewModelByIdAsync(candidateModel, id.Value);
+            return candidateViewModel;
         }
 
-        public async Task<CandidateUser> UpdateCandidate(CandidateUser model)
+        public async Task<CandidateUser> UpdateCandidate(CandidateUserModel model)
         {
             var id = GetIdFromRequest();
             return await service.UpdateCandidateUserAsync(model, id.Value);

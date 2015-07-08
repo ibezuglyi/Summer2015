@@ -18,5 +18,6 @@ namespace WebApp.Services
         Task<CandidateUser> GetCandidateByIdAsync(string id);
         Task<CandidateUser> UpdateCandidateUserAsync(CandidateUser model, string id);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId);
-    }
+        Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId);
+        Task<CandidateUser> UpdateCandidateUserAsync(CandidateUserModel model,string p);}
 }

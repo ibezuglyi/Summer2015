@@ -55,3 +55,7 @@ select{
 .form-part{
     margin: 15px 0;
 }
+
+.hidden{
+    display:none;
+}
