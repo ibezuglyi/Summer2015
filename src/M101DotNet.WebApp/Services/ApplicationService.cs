@@ -145,6 +145,13 @@ namespace WebApp.Services
             return candiateViewModel;
         }
 
+        public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId)
+        {
+            var candidate = await GetCandidateByIdAsync(candidateId);
+            var candiateViewModel = new CandidateViewModel(candidateModel, candidate.Name, candidate.Email);
+            return candiateViewModel;
+        }
+
         public async Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(string recruiterId)
         {
             var recruiter = await GetRecruiterByIdAsync(recruiterId);
@@ -190,5 +197,11 @@ namespace WebApp.Services
             }
             return skillModels;
         }
+
+        public async Task<CandidateUser> UpdateCandidateUserAsync(CandidateUserModel model,string p)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

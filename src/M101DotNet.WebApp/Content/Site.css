@@ -60,3 +60,6 @@ select{
     float: left;
 }
 
+.hidden{
+    display:none;
+}
