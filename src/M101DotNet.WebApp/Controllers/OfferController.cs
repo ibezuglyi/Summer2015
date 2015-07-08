@@ -7,18 +7,18 @@ using System.Web;
 using System.Web.Mvc;
 using WebApp.Entities;
 using WebApp.Models;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
     public class OfferController : Controller
     {
-        private JobContext dbContext;
+        private IApplicationService service;
 
-        public OfferController()
+        public OfferController(IApplicationService applicationService)
         {
-            dbContext = new JobContext();
+            service = applicationService;
         }
-
 
         public ActionResult Create()
         {
@@ -41,11 +41,49 @@ namespace WebApp.Controllers
                 return View(model);
             }
                         
-            model.IdRecruiter = GetIdFromRequest().Value;
-            await CreateJobOfferAsync(model);
+            model.IdRecruiter = GetIdRecruiterFromRequest().Value;
+            
+            //temporary solution
+            
+            model.Skills = new List<Skill>()
+                    {
+                        new Skill() {Level = 1, Name = "C#"},
+                        new Skill() {Level = 2, Name = "PHP"},
+                        new Skill() {Level = 2, Name = "Java"}
+                    };
+
+            await service.CreateJobOfferAsync(model);
             return RedirectToAction("Index", "Home");
         }
 
+        public async Task<ActionResult> OffersList()
+        {
+            if (IsAuthenticated())
+            {
+                var role = GetRoleFromRequest();
+                if (role.Value == "Recruiter")
+                {
+                    var offers = await GetRecruiterOffersAsync();
+                    return View(offers);
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult OffersList(JobOffer model)
+        {
+
+            return View(model);
+        }
+
+        private Task<List<JobOffer>> GetRecruiterOffersAsync()
+        {            
+            var IdRecruiter = GetIdRecruiterFromRequest().Value;
+            var offersRecruiter = service.GetOffersByIdRecruiterAsync(IdRecruiter);
+
+            return offersRecruiter;
+        }        
 
         private bool ValidateForm(JobOffer model)
         {
@@ -73,38 +111,28 @@ namespace WebApp.Controllers
             ModelState.AddModelError(field, "The Salary must have a numeric not negative value");
         }
 
-        public async Task CreateJobOfferAsync(JobOffer model)
-        {
-            var offer = new JobOffer
-            {
-                Name = model.Name,
-                Salary = model.Salary,
-                IdRecruiter = model.IdRecruiter
-            };
+        
 
-            await dbContext.JobOffers.InsertOneAsync(offer);
-        }
-
-        public Claim GetIdFromRequest()
+        private Claim GetIdRecruiterFromRequest()
         {
-            var authManager = getAuthManager();
+            var authManager = GetAuthManager();
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
         }
 
         //I know that methods below are opposite to DRY
-        public Claim GetRoleFromRequest()
+        private Claim GetRoleFromRequest()
         {
-            var authManager = getAuthManager();
+            var authManager = GetAuthManager();
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Role);
         }
 
-        public bool IsAuthenticated()
+        private bool IsAuthenticated()
         {
-            var authManager = getAuthManager();
+            var authManager = GetAuthManager();
             return authManager.User.Identity.IsAuthenticated;
         }
 
-        public Microsoft.Owin.Security.IAuthenticationManager getAuthManager()
+        private Microsoft.Owin.Security.IAuthenticationManager GetAuthManager()
         {
             var context = Request.GetOwinContext();
             return context.Authentication;

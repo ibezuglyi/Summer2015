@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApp.Entities;
 using WebApp.Models;
+using WebApp.Models.Recruiter;
 using WebApp.Services;
 
 namespace WebApp.Controllers
@@ -23,47 +24,40 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (IsAuthenticated())
+            if (IsAuthenticated() && IsRecruiter())
             {
-                var role = GetRoleFromRequest();
-                if (role.Value == "Recruiter")
-                {
-                    var recruiter = await GetRecruiterAsync();
-                    return View(recruiter);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+                var recruiterViewModel = await GetRecruiterAsync();
+                return View(recruiterViewModel);                
             }
             else
             {
                 return RedirectToAction("Index", "Home");
-            }
-            
+            }            
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(RecruiterUser model)
+        public async Task<ActionResult> Index(RecruiterModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
-            }
-            var updatedModel = await UpdateRecruiter(model);
-            return View(updatedModel);
+                var viewModel = GetRecruiterAsync();
+                return View(viewModel);
+            }            
+            await UpdateRecruiter(model);
+            return RedirectToAction("Index", "Home");
         }
 
-        public async Task<RecruiterUser> UpdateRecruiter(RecruiterUser model)
+        public async Task UpdateRecruiter(RecruiterModel model)
         {
             var id = GetIdFromRequest();
-            return await service.UpdateRecruiterUserAsync(model, id.Value);
+            await service.UpdateRecruiterModelAsync(model, id.Value);
         }
 
-        public Task<RecruiterUser> GetRecruiterAsync()
+        public Task<RecruiterViewModel> GetRecruiterAsync()
         {
             var id = GetIdFromRequest();
-            return service.GetRecruiterByIdAsync(id.Value);
+            var recruiterModel = service.GetRecruiterViewModelByIdAsync(id.Value);
+            return recruiterModel;
         }
 
         
