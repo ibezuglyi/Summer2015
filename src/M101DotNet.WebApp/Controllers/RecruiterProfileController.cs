@@ -31,7 +31,7 @@ namespace WebApp.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("DeniedPermision", "Home");
             }            
         }
 
@@ -45,6 +45,12 @@ namespace WebApp.Controllers
             }            
             await UpdateRecruiter(model);
             return RedirectToAction("Index", "Home");
+        }
+
+        public bool IsRecruiter()
+        {
+            var role = GetRoleFromRequest();
+            return (role.Value == "Recruiter") ? true : false;
         }
 
         public async Task UpdateRecruiter(RecruiterModel model)

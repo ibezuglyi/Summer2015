@@ -23,18 +23,12 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (IsAuthenticated())
+            if (IsAuthenticated() && IsCandidate())
             {
-                var role = GetRoleFromRequest();
-                if (role.Value == "Candidate")
-                {
-                    var candidateViewModel = await GetCandidateAsync();
-                    return View(candidateViewModel);
-                }
+                 var candidateViewModel = await GetCandidateAsync();
+                 return View(candidateViewModel);
             }
-
-            return RedirectToAction("Index", "Home");
-
+            return RedirectToAction("DeniedPermision", "Home");
         }
 
         [HttpPost]
@@ -66,7 +60,11 @@ namespace WebApp.Controllers
             return ModelState.IsValid;
         }
 
-
+        public bool IsCandidate()
+        {
+            var role = GetRoleFromRequest();
+            return (role.Value == "Candidate") ? true : false;
+        }
         private void AddWrongNumberOfSkillsError(string field)
         {
             ModelState.AddModelError(field, "Choose one or more skills");

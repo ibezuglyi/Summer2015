@@ -16,7 +16,10 @@ namespace WebApp.Controllers
             return View();
         }
 
-
+        public async Task<ActionResult> DeniedPermision()
+        {
+            return View();
+        }
      
     }
 }

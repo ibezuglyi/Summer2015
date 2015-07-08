@@ -21,12 +21,6 @@ namespace WebApp.Controllers
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Role);
         }
 
-        public bool IsRecruiter()
-        {
-            var role = GetRoleFromRequest();
-            return (role.Value == "Recruiter")?true:false;         
-        }
-
         public bool IsAuthenticated()
         {
             var authManager = getAuthManager();
