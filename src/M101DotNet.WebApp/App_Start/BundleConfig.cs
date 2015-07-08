@@ -23,6 +23,10 @@ namespace WebApp
                       "~/Scripts/materialize.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/site").Include(
+                        "~/Scripts/Site/candidateProfile.js"));
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/materialize.css",
                       "~/Content/site.css"));

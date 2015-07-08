@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Services;
 
@@ -19,7 +20,7 @@ namespace WebApp.Controllers
         {
             service = applicationService;
         }
-
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
             if (IsAuthenticated())

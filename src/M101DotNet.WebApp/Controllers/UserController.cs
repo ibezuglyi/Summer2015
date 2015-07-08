@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using MongoDB.Driver;
+using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Account;
 using System.Security.Cryptography;
