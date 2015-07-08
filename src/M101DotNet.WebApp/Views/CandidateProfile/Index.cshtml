@@ -12,7 +12,6 @@
 <div class="form-part">
     <label>Email: </label> @Model.Email 
 </div>
-<span class="red-text text-darken-2">@Html.ValidationMessage("wrongFieldValue")</span> 
 
     @using (Html.BeginForm())
     {
@@ -21,18 +20,18 @@
             @Html.TextBox("surname", Model.Surname)
         </div>
         <div class="form-part">
-        @Html.Label("Experience in Years:") <br>
+        @Html.Label("Experience in years:") <br>
             @Html.TextBox("experienceInYears", Model.ExperienceInYears)
-            <span class="red-text text-darken-2">@Html.ValidationMessage("experienceInYearsError")</span>          
+            <span class="red-text text-darken-2">@Html.ValidationMessage("experienceInYears")</span>          
         </div>
         <div class="form-part">        
-            @Html.Label("Experience Description:") <br />
+            @Html.Label("Experience description:") <br />
             @Html.TextArea("experienceDescription", Model.ExperienceDescription, new { @class = "materialize-textarea" })
         </div>
         <div class="form-part">
             @Html.Label("Salary:") <br />
             @Html.TextBox("salary", Model.Salary)
-            <span class="red-text text-darken-2">@Html.ValidationMessage("salaryError")</span>
+            <span class="red-text text-darken-2">@Html.ValidationMessage("salary")</span>
         </div>
 
     @*for (int i = 0; i < Model.Skills.Count; i++)

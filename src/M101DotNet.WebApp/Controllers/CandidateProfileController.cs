@@ -55,21 +55,6 @@ namespace WebApp.Controllers
 
         private bool ValidateForm(CandidateUser model)
         {
-
-            if (model.ExperienceInYears < 0)
-            {
-                AddWrongSalaryExperienceError("experienceInYearsError");
-            }
-            if (model.Salary < 0)
-            {
-                AddWrongSalaryExperienceError("salaryError");
-            }
-            ValidateSkillsForm(model);
-            return ModelState.IsValid;
-        }
-
-        private void ValidateSkillsForm(CandidateUser model)
-        {
             if (model.Skills.Count < 1)
             {
                 AddWrongNumberOfSkillsError("notEnoughSkills");
@@ -83,36 +68,19 @@ namespace WebApp.Controllers
                         AddDuplicateSkillError("duplicateSkills");
                     }
                 }
-                //if (model.Skills[i].Level < 1 || model.Skills[i].Level > 10)
-                //{
-                //    AddWrongLevelError("wrongLevel");
-                //}
-            }
+            }  
+            return ModelState.IsValid;
         }
+
 
         private void AddWrongNumberOfSkillsError(string field)
         {
             ModelState.AddModelError(field, "Choose one or more skills");
         }
 
-        private void AddWrongFieldValueError(string field)
-        {
-            ModelState.AddModelError(field, "One of the fields has wrong value");
-        }
-
-        private void AddWrongLevelError(string field)
-        {
-            ModelState.AddModelError(field, "Wrong level");
-        }
-
         public void AddDuplicateSkillError(string field)
         {
             ModelState.AddModelError(field, "You can't have repeated skills");
-        }
-
-        public void AddWrongSalaryExperienceError(string field)
-        {
-            ModelState.AddModelError(field, "It can't be a negative number");
         }
 
         public Task<CandidateUser> GetCandidateAsync()
@@ -121,9 +89,6 @@ namespace WebApp.Controllers
             var candidate = service.GetCandidateByIdAsync(id.Value);
             return candidate;
         }
-
-
-
 
         public async Task<CandidateUser> UpdateCandidate(CandidateUser model)
         {
