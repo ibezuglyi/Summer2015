@@ -1,12 +1,9 @@
-﻿@model List<WebApp.Models.JobOffer>
+﻿@model List<WebApp.Entities.JobOffer>
 
 @{
     ViewBag.Title = "OffersList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h4>OffersList</h4>
-
 
 @for (int i = 0; i < Model.Count; i++)
 {
@@ -15,8 +12,6 @@
             <div class="offer-title">
                  @Html.Label("Name: " + Model[i].Name, new { @class = "card-panel red lighten-3" })
                  @Html.Label("Salary: " + Model[i].Salary, new { @class = "card-panel red lighten-4" })
-            </div> 
-            <div class="option-buttons">
                  @Html.ActionLink("Edit", "Edit", "Offer", null, new { @class = "btn-large waves-effect waves-light" })
                  @Html.ActionLink("Remove", "Remove", "Offer", null, new { @class = "btn-large waves-effect waves-light" })
             </div>

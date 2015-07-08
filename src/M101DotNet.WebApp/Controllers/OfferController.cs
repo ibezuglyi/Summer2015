@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApp.Entities;
 using WebApp.Models;
+using WebApp.Models.Offer;
 using WebApp.Services;
 
 namespace WebApp.Controllers
@@ -22,37 +23,30 @@ namespace WebApp.Controllers
 
         public ActionResult Create()
         {
-            if (IsAuthenticated())
+            if (IsAuthenticated() && IsRecruiter())
             {
-                var role = GetRoleFromRequest();
-                if (role.Value == "Recruiter")
-                {
-                    return View(new JobOffer());
-                }
+                return View(new OfferViewModel());
             }
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(JobOffer model)
+        public async Task<ActionResult> Create(OfferModel model)
         {
             if (ValidateForm(model))
             {
                 return View(model);
-            }
-                        
-            model.IdRecruiter = GetIdRecruiterFromRequest().Value;
-            
-            //temporary solution
-            
+            }         
+            //temporary solution            
             model.Skills = new List<Skill>()
                     {
                         new Skill() {Level = 1, Name = "C#"},
                         new Skill() {Level = 2, Name = "PHP"},
-                        new Skill() {Level = 2, Name = "Java"}
+                        new Skill() {Level = 3, Name = "Java"}
                     };
 
-            await service.CreateJobOfferAsync(model);
+            var idRecruiter = GetIdRecruiterFromRequest().Value;
+            await service.CreateJobOfferAsync(model, idRecruiter);
             return RedirectToAction("Index", "Home");
         }
 
@@ -85,7 +79,7 @@ namespace WebApp.Controllers
             return offersRecruiter;
         }        
 
-        private bool ValidateForm(JobOffer model)
+        private bool ValidateForm(OfferModel model)
         {
             bool isError = false;
             if(model.Salary<=0)
@@ -119,7 +113,21 @@ namespace WebApp.Controllers
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
         }
 
+        public Task<OfferViewModel> GetOfferAsync(string offerId)
+        {
+            var offerModel = service.GetOfferViewModelByIdAsync(offerId);
+            return offerModel;
+        }
+
         //I know that methods below are opposite to DRY
+        
+        
+        public bool IsRecruiter()
+        {
+            var role = GetRoleFromRequest();
+            return (role.Value == "Recruiter") ? true : false;
+        }
+
         private Claim GetRoleFromRequest()
         {
             var authManager = GetAuthManager();

@@ -183,6 +183,8 @@
     <Compile Include="Entities\RecruiterUser.cs" />
     <Compile Include="Entities\Skill.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Models\Offer\OfferModel.cs" />
+    <Compile Include="Models\Offer\OfferViewModel.cs" />
     <Compile Include="Models\Recruiter\RecruiterModel.cs" />
     <Compile Include="Models\Recruiter\RecruiterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -24,10 +24,7 @@ namespace WebApp.Controllers
         public bool IsRecruiter()
         {
             var role = GetRoleFromRequest();
-            if (role.Value == "Recruiter")
-                return true;
-            else
-                return false;
+            return (role.Value == "Recruiter")?true:false;         
         }
 
         public bool IsAuthenticated()

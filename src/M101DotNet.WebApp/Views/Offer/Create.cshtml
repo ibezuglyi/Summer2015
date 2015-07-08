@@ -1,4 +1,4 @@
-﻿@model WebApp.Entities.JobOffer
+﻿@model WebApp.Models.Offer.OfferViewModel
 
 @{
     ViewBag.Title = "CreateOffer";
@@ -11,12 +11,12 @@
 {
     <div class="form-part">
         @Html.Label("Offer Name:")<br />
-        @Html.TextBox("name", Model.Name)
+        @Html.TextBox("name", Model.Offer.Name)
         <span class="red-text text-darken-2">@Html.ValidationMessage("emptyName")</span>
 </div>
     <div class="form-part">
         @Html.Label("Salary:")<br />
-        @Html.TextBox("salary", Model.Salary)
+        @Html.TextBox("salary", Model.Offer.Salary)
         <span class="red-text text-darken-2">@Html.ValidationMessage("salaryError")</span>
 </div>
     <p>

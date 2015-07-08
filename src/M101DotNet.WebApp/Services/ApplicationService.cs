@@ -11,6 +11,7 @@ using WebApp.Models;
 using WebApp.Models.Account;
 using WebApp.Models.Candidate;
 using WebApp.Models.Recruiter;
+using WebApp.Models.Offer;
 
 namespace WebApp.Services
 {
@@ -46,6 +47,12 @@ namespace WebApp.Services
             return candidate;
         }
 
+        public async Task<JobOffer> GetJobOfferByIdAsync(string id)
+        {
+            var jobOffer = await dbContext.JobOffers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            return jobOffer;
+        }
+
         public async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id)
         {
             var offerList = await dbContext.JobOffers.Find(r => r.IdRecruiter == id).ToListAsync();
@@ -64,13 +71,13 @@ namespace WebApp.Services
             await dbContext.RecruiterUsers.InsertOneAsync(user);
         }
 
-        public async Task CreateJobOfferAsync(JobOffer model)
+        public async Task CreateJobOfferAsync(OfferModel model, string id)
         {
             var offer = new JobOffer
             {
                 Name = model.Name,
                 Salary = model.Salary,
-                IdRecruiter = model.IdRecruiter,
+                IdRecruiter = id,
                 Skills = model.Skills
             };
 
@@ -144,6 +151,20 @@ namespace WebApp.Services
             var recruiterModel = MapToRecruiterModel(recruiter);
             var recruiterViewModel = new RecruiterViewModel(recruiterModel, recruiter.Name, recruiter.Email);
             return recruiterViewModel;
+        }
+
+        public async Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId)
+        {
+            var offer = await GetJobOfferByIdAsync(offerId);
+            var offerModel = MapToOfferModel(offer);
+            var offerViewModel = new OfferViewModel(offerModel, offer.Id, offer.IdRecruiter);
+            return offerViewModel;
+        }
+
+        private static OfferModel MapToOfferModel(JobOffer offer)
+        {
+            var offerModel = new OfferModel(offer.Name, offer.Salary, offer.Skills);
+            return offerModel;
         }
 
         private static RecruiterModel MapToRecruiterModel(RecruiterUser recruiter)

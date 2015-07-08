@@ -4,6 +4,7 @@ using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Account;
 using WebApp.Models.Candidate;
+using WebApp.Models.Offer;
 using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
@@ -15,13 +16,15 @@ namespace WebApp.Services
         Task CreateRecruiterUserAsync(RegisterModel model);
         string GenerateHashPassword(string password, User user);
         Task CreateCandidateUserAsync(RegisterModel model);
-        Task CreateJobOfferAsync(JobOffer model);
-        Task<RecruiterUser> GetRecruiterByIdAsync(string id);
-        Task<CandidateUser> GetCandidateByIdAsync(string id);
-        Task<CandidateUser> UpdateCandidateUserAsync(CandidateUser model, string id);
-        Task UpdateRecruiterModelAsync(RecruiterModel model, string id);
+        Task CreateJobOfferAsync(OfferModel model, string idRecruiter);
+        Task<RecruiterUser> GetRecruiterByIdAsync(string recruiterId);
+        Task<CandidateUser> GetCandidateByIdAsync(string candidateId);
+        Task<CandidateUser> UpdateCandidateUserAsync(CandidateUser model, string candidateId);
+        Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId);
         Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(string recruiterId);
         Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string idRecruiter);
+        Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId);
+        Task<JobOffer> GetJobOfferByIdAsync(string offerId);
     }
 }
