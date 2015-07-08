@@ -1,4 +1,4 @@
-﻿@model WebApp.Models.CandidateUser
+﻿@model  WebApp.Models.Candidate.CandidateViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -17,16 +17,16 @@
     {
         <div class="form-part">
         @Html.Label("Experience in years:") <br>
-            @Html.TextBox("experienceInYears", Model.ExperienceInYears)
+            @Html.TextBox("experienceInYears", Model.Candidate.ExperienceInYears)
             <span class="red-text text-darken-2">@Html.ValidationMessage("experienceInYears")</span>          
         </div>
         <div class="form-part">        
             @Html.Label("Experience description:") <br />
-            @Html.TextArea("experienceDescription", Model.ExperienceDescription, new { @class = "materialize-textarea" })
+            @Html.TextArea("experienceDescription", Model.Candidate.ExperienceDescription, new { @class = "materialize-textarea" })
         </div>
         <div class="form-part">
             @Html.Label("Salary:") <br />
-            @Html.TextBox("salary", Model.Salary)
+            @Html.TextBox("salary", Model.Candidate.Salary)
             <span class="red-text text-darken-2">@Html.ValidationMessage("salary")</span>
         </div>
 
@@ -43,7 +43,7 @@
         </div>
     }*@
 
-    @Html.Partial("_SkillFormPartial", Model.Skills)
+    @Html.Partial("_SkillFormPartial", Model.Candidate.Skills)
 
 
 

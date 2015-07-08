@@ -4,7 +4,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApp.Entities;
 using WebApp.Models;
+using WebApp.Models.Candidate;
 using WebApp.Services;
 
 namespace WebApp.Controllers
@@ -17,8 +19,8 @@ namespace WebApp.Controllers
         {
             service = applicationService;
         }
-        //
-        // GET: /CandidateProfile/
+
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
             if (IsAuthenticated())
@@ -26,13 +28,8 @@ namespace WebApp.Controllers
                 var role = GetRoleFromRequest();
                 if (role.Value == "Candidate")
                 {
-                    var candidate = await GetCandidateAsync();
-                    candidate.Skills = new List<Skill>()
-                    {
-                        new Skill() {Level = 1, Name = "C#"},
-                        new Skill() {Level = 2, Name = "PHP"}
-                    };
-                    return View(candidate);
+                    var candidateViewModel = await GetCandidateAsync();
+                    return View(candidateViewModel);
                 }
             }
 
@@ -41,15 +38,16 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(CandidateUser model)
+        public async Task<ActionResult> Index(CandidateUserModel model)
         {
-            if (ValidateForm(model))
-            {
-                var updatedModel = await UpdateCandidate(model);
-                return View(updatedModel);
-            }
-            
-            return View(model);
+            var viewModel = "jakoś pobierz VM z model przyszedł w param";
+            //if (ValidateForm(model))
+            //{
+            //    var updatedModel = await UpdateCandidate(model);
+            //    return View(updatedModel);
+            //}
+
+            return View(viewModel);
 
         }
 
@@ -59,16 +57,12 @@ namespace WebApp.Controllers
             {
                 AddWrongNumberOfSkillsError("notEnoughSkills");
             }
-            for (int i = 0; i < model.Skills.Count; i++)
+
+            var isduplicated = model.Skills.Count != model.Skills.Select(r => r.Name.ToLower()).Distinct().Count();
+            if (isduplicated)
             {
-                for (int j = i; j < model.Skills.Count; j++)
-                {
-                    if (i != j && model.Skills[i].Name == model.Skills[j].Name)
-                    {
-                        AddDuplicateSkillError("duplicateSkills");
-                    }
-                }
-            }  
+
+            }
             return ModelState.IsValid;
         }
 
@@ -83,11 +77,11 @@ namespace WebApp.Controllers
             ModelState.AddModelError(field, "You can't have repeated skills");
         }
 
-        public Task<CandidateUser> GetCandidateAsync()
+        public async Task<CandidateViewModel> GetCandidateAsync()
         {
             var id = GetIdFromRequest();
-            var candidate = service.GetCandidateByIdAsync(id.Value);
-            return candidate;
+            var candidateModel = await service.GetCandidateViewModelByIdAsync(id.Value);
+            return candidateModel;
         }
 
         public async Task<CandidateUser> UpdateCandidate(CandidateUser model)

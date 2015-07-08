@@ -163,9 +163,12 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CandidateProfileController.cs" />
+    <Compile Include="Models\Candidate\CandidateViewModel.cs" />
+    <Compile Include="Models\Candidate\CandidateUserModel.cs" />
     <Compile Include="Controllers\OfferController.cs" />
     <Compile Include="Controllers\RecruiterController.cs" />
     <Compile Include="Controllers\RecruiterProfileController.cs" />
+    <Compile Include="Models\Candidate\SkillModel.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
@@ -173,13 +176,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account\RegisterModel.cs" />
-    <Compile Include="Models\JobOffer.cs" />
+    <Compile Include="Entities\JobOffer.cs" />
     <Compile Include="Models\JobContext.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
-    <Compile Include="Models\Users\CandidateUser.cs" />
-    <Compile Include="Models\Users\RecruiterUser.cs" />
-    <Compile Include="Models\Skill.cs" />
-    <Compile Include="Models\Users\User.cs" />
+    <Compile Include="Entities\CandidateUser.cs" />
+    <Compile Include="Entities\RecruiterUser.cs" />
+    <Compile Include="Entities\Skill.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\IApplicationService.cs" />

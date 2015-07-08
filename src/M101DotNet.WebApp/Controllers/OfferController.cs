@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApp.Entities;
 using WebApp.Models;
 
 namespace WebApp.Controllers

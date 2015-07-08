@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebApp.Models;
 
-namespace WebApp.Models
+namespace WebApp.Entities
 {
     public class CandidateUser : User
     {

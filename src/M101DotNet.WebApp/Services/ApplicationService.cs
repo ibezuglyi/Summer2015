@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using MongoDB.Driver;
+using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Account;
+using WebApp.Models.Candidate;
 
 namespace WebApp.Services
 {
@@ -96,7 +98,7 @@ namespace WebApp.Services
 
 
         public async Task<CandidateUser> UpdateCandidateUserAsync(CandidateUser model, string id)
-        {            
+        {
             var filter = Builders<CandidateUser>.Filter.Eq(r => r.Id, id);
             var update = Builders<CandidateUser>
                 .Update
@@ -108,6 +110,32 @@ namespace WebApp.Services
             await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
             var candidate = await dbContext.CandidateUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
             return candidate;
+        }
+
+        public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId)
+        {
+            var candidate = await GetCandidateByIdAsync(candidateId);
+            var candidateModel = MapToCandidateUserModel(candidate);
+            var candiateViewModel = new CandidateViewModel(candidateModel, candidate.Name, candidate.Email);
+            return candiateViewModel;
+        }
+
+        private static CandidateUserModel MapToCandidateUserModel(CandidateUser candidate)
+        {
+            var skillModels = MapToSkillModels(candidate);
+            var candidateModel = new CandidateUserModel(candidate.Salary, candidate.ExperienceDescription, candidate.ExperienceInYears, skillModels);
+            return candidateModel;
+        }
+
+        private static List<SkillModel> MapToSkillModels(CandidateUser candidate)
+        {
+            var skillModels = new List<SkillModel>();
+            foreach (var skill in candidate.Skills)
+            {
+                var skillModel = new SkillModel(skill.Name, skill.Level);
+                skillModels.Add(skillModel);
+            }
+            return skillModels;
         }
     }
 }

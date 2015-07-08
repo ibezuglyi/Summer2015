@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Account;
+using WebApp.Models.Candidate;
 
 namespace WebApp.Services
 {
@@ -15,5 +17,6 @@ namespace WebApp.Services
         Task<RecruiterUser> UpdateRecruiterUserAsync(RecruiterUser model, string id);
         Task<CandidateUser> GetCandidateByIdAsync(string id);
         Task<CandidateUser> UpdateCandidateUserAsync(CandidateUser model, string id);
+        Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId);
     }
 }
