@@ -34,31 +34,28 @@ namespace WebApp.Controllers
                     };
                     return View(candidate);
                 }
-                }
+            }
 
-                return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
 
         }
 
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUser model)
-        {            
+        {
             if (ValidateForm(model))
             {
                 var updatedModel = await UpdateCandidate(model);
                 return View(updatedModel);
             }
-            else
-            {
-
-                return View(model);
-            }
+            
+            return View(model);
 
         }
 
         private bool ValidateForm(CandidateUser model)
         {
-            
+
             if (model.ExperienceInYears < 0)
             {
                 AddWrongSalaryExperienceError("experienceInYearsError");
@@ -106,8 +103,8 @@ namespace WebApp.Controllers
         private void AddWrongLevelError(string field)
         {
             ModelState.AddModelError(field, "Wrong level");
-            }
-            
+        }
+
         public void AddDuplicateSkillError(string field)
         {
             ModelState.AddModelError(field, "You can't have repeated skills");
@@ -127,7 +124,7 @@ namespace WebApp.Controllers
 
 
 
-        
+
         public async Task<CandidateUser> UpdateCandidate(CandidateUser model)
         {
             var id = GetIdFromRequest();
