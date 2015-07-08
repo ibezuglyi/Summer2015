@@ -61,8 +61,7 @@ namespace WebApp.Services
             var update = Builders<RecruiterUser>
                 .Update
                 .Set(r => r.CompanyDescription, model.CompanyDescription)
-                .Set(r => r.CompanyName, model.CompanyName)
-                .Set(r => r.Surname, model.Surname);
+                .Set(r => r.CompanyName, model.CompanyName);
 
             await dbContext.RecruiterUsers.UpdateOneAsync(filter, update);
             var recruiter = await dbContext.RecruiterUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
@@ -103,7 +102,6 @@ namespace WebApp.Services
                 .Update
                 .Set(r => r.ExperienceDescription, model.ExperienceDescription)
                 .Set(r => r.ExperienceInYears, model.ExperienceInYears)
-                .Set(r => r.Surname, model.Surname)
                 .Set(r => r.Salary, model.Salary)
                 .Set(r => r.Skills, model.Skills);
 
