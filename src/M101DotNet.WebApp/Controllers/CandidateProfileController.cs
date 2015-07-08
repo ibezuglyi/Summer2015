@@ -50,18 +50,15 @@ namespace WebApp.Controllers
             }
             else
             {
-                var oldModel = await GetCandidateAsync();
-                return View(oldModel);
+
+                return View(model);
             }
 
         }
 
         private bool ValidateForm(CandidateUser model)
         {
-            if (!ModelState.IsValid)
-            {
-                AddWrongFieldValueError("wrongFieldValue");
-            }
+            
             if (model.ExperienceInYears < 0)
             {
                 AddWrongSalaryExperienceError("experienceInYearsError");
@@ -69,6 +66,16 @@ namespace WebApp.Controllers
             if (model.Salary < 0)
             {
                 AddWrongSalaryExperienceError("salaryError");
+            }
+            ValidateSkillsForm(model);
+            return ModelState.IsValid;
+        }
+
+        private void ValidateSkillsForm(CandidateUser model)
+        {
+            if (model.Skills.Count < 1)
+            {
+                AddWrongNumberOfSkillsError("notEnoughSkills");
             }
             for (int i = 0; i < model.Skills.Count; i++)
             {
@@ -79,12 +86,16 @@ namespace WebApp.Controllers
                         AddDuplicateSkillError("duplicateSkills");
                     }
                 }
-                if (model.Skills[i].Level < 1 || model.Skills[i].Level > 10)
-                {
-                    AddWrongLevelError("wrongLevel");
-                }
+                //if (model.Skills[i].Level < 1 || model.Skills[i].Level > 10)
+                //{
+                //    AddWrongLevelError("wrongLevel");
+                //}
             }
-            return ModelState.IsValid;
+        }
+
+        private void AddWrongNumberOfSkillsError(string field)
+        {
+            ModelState.AddModelError(field, "Choose one or more skills");
         }
 
         private void AddWrongFieldValueError(string field)

@@ -8,3 +8,4 @@
 /// <reference path="bootstrap.min.js" />
 /// <reference path="jquery.validate.unobtrusive.min.js" />
 /// <reference path="materialize.js" />
+/// <reference path="site/candidateprofile.js" />
