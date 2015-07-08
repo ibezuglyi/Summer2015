@@ -43,6 +43,12 @@ namespace WebApp.Services
             return candidate;
         }
 
+        public async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id)
+        {
+            var offerList = await dbContext.JobOffers.Find(r => r.IdRecruiter == id).ToListAsync();
+            return offerList;
+        }
+
         public async Task CreateRecruiterUserAsync(RegisterModel model)
         {
             var user = new RecruiterUser
@@ -53,6 +59,19 @@ namespace WebApp.Services
 
             user.Password = GenerateHashPassword(model.Password, user);
             await dbContext.RecruiterUsers.InsertOneAsync(user);
+        }
+
+        public async Task CreateJobOfferAsync(JobOffer model)
+        {
+            var offer = new JobOffer
+            {
+                Name = model.Name,
+                Salary = model.Salary,
+                IdRecruiter = model.IdRecruiter,
+                Skills = model.Skills
+            };
+
+            await dbContext.JobOffers.InsertOneAsync(offer);
         }
 
         public async Task<RecruiterUser> UpdateRecruiterUserAsync(RecruiterUser model, string id)

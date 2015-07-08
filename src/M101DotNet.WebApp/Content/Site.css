@@ -52,6 +52,11 @@ select{
     margin-bottom: 3%;
 }
 
-.form-part{
-    margin: 15px 0;
+.option-buttons{
+    float: right;
 }
+
+.offer-title{
+    float: left;
+}
+

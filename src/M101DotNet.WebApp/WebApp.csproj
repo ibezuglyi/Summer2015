@@ -262,6 +262,7 @@
     <Content Include="Views\CandidateProfile\Index.cshtml" />
     <Content Include="Views\Shared\_SkillFormPartial.cshtml" />
     <Content Include="Views\Offer\Create.cshtml" />
+    <Content Include="Views\Offer\OffersList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

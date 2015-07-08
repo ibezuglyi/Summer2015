@@ -1,0 +1,34 @@
+﻿@model List<WebApp.Models.JobOffer>
+
+@{
+    ViewBag.Title = "OffersList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>OffersList</h4>
+
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    <div class="offer">
+        <div class="row">
+            <div class="offer-title">
+                 @Html.Label("Name: " + Model[i].Name, new { @class = "card-panel red lighten-3" })
+                 @Html.Label("Salary: " + Model[i].Salary, new { @class = "card-panel red lighten-4" })
+            </div> 
+            <div class="option-buttons">
+                 @Html.ActionLink("Edit", "Edit", "Offer", null, new { @class = "btn-large waves-effect waves-light" })
+                 @Html.ActionLink("Remove", "Remove", "Offer", null, new { @class = "btn-large waves-effect waves-light" })
+            </div>
+        </div>
+        <div class="row">
+            @for (int j = 0; j < Model[i].Skills.Count; j++)
+            {            
+                <div class="card-panel red lighten-5">
+                    @Html.Label("Name: " + Model[i].Skills[j].Name)
+                    @Html.Label("Level: " + Model[i].Skills[j].Level)
+                </div>            
+            }
+        </div> 
+    </div> 
+}
