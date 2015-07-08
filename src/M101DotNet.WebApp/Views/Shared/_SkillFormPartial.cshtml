@@ -1,30 +1,30 @@
 ﻿@model List<WebApp.Models.Skill>
 
-    <div class="red-text text-darken-2">
-        @Html.ValidationSummary()
-    </div>
-
-    @for (int i = 0; i < Model.Count; i++)
-    {
+@for (int i = 0; i < Model.Count; i++)
+{
     var nameInputName = string.Format("Skills[{0}].Name", i);
     var levelInputName = string.Format("Skills[{0}].Level", i);
-
-
     
     <div class="row" id="skill-row-@i">
         <input type="hidden" name="Skills.Index" value="@i" />
-        <span>
+        <span class="col s3">
             <input id="@nameInputName" name="@nameInputName" value="@Model[i].Name" type="text" />
-            @Html.ValidationMessageFor(r=>r[i].Name)
         </span>
-        <span>
+        <span class="col s3">
             <input id="@levelInputName" name="@levelInputName" value="@Model[i].Level" type="text" />
-            @Html.ValidationMessageFor(r => r[i].Level)
         </span>
         <button class="btn delete-skill red lighten-3">Delete</button>
     </div>
-    }
+    <div class="row red-text text-darken-2">
+        <span class="col s3">
+            @Html.ValidationMessage(nameInputName)
+        </span>
+        <span class="col s3">
+            @Html.ValidationMessage(levelInputName)
+        </span>
+    </div>
+}
 
-    <p>
-        <button type="submit" class="btn">Save &raquo;</button>
-    </p>
+<p>
+    <button type="submit" class="btn">Save &raquo;</button>
+</p>
