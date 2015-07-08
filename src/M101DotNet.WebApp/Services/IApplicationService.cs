@@ -22,7 +22,7 @@ namespace WebApp.Services
         Task UpdateRecruiterModelAsync(RecruiterModel model, string id);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId);
-        Task<CandidateUser> UpdateCandidateUserAsync(CandidateUserModel model,string p);}
+        Task<CandidateUser> UpdateCandidateUserAsync(CandidateUserModel model,string p);
         Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(string recruiterId);
         Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string idRecruiter);
     }
