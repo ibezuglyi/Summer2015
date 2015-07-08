@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     $(".delete-skill").click(function () {
-        $(this).parent().remove();
+        $(this).parents(".skill-row").remove();
     })
 });
 
