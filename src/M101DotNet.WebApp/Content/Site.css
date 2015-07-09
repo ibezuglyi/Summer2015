@@ -82,3 +82,14 @@ select{
 .form-part{
     margin-bottom: 10px;
 }
+
+.row-profile{
+    margin-bottom: 10px;
+}
+.profile span {
+    font-weight:bold;
+}
+
+.profile{
+    font-size: 15px;
+}

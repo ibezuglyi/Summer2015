@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MongoDB.Bson;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -31,10 +32,22 @@ namespace WebApp.Controllers
             return RedirectToAction("DeniedPermision", "Home");
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Detail(string candidateId)
+        {
+            if (IsAuthenticated() && !IsCandidate())
+            {
+                var candidateViewModel = await GetCandidateByIdAsync(candidateId);
+                return View(candidateViewModel);
+            }
+            return RedirectToAction("DeniedPermision", "Home");
+        }
+
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUserModel model)
         {
-
+            if (IsAuthenticated() && IsCandidate()) 
+            {
             if (ValidateForm(model))
             {
                 await UpdateCandidate(model);
@@ -43,7 +56,8 @@ namespace WebApp.Controllers
             }
             var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
             return View(viewModel);
-
+            }
+            return RedirectToAction("DeniedPermission", "Home");
         }
 
         private bool ValidateForm(CandidateUserModel model)
@@ -78,6 +92,13 @@ namespace WebApp.Controllers
             var candidateViewModel = await service.GetCandidateViewModelByIdAsync(id.Value);
             return candidateViewModel;
         }
+
+        public async Task<CandidateViewModel> GetCandidateByIdAsync(string candidateId)
+        {
+            var candidateViewModel = await service.GetCandidateViewModelByIdAsync(candidateId);
+            return candidateViewModel;
+        }
+
         public async Task<CandidateViewModel> GetCandidateModelAndBindWithStaticAsync(CandidateUserModel candidateModel)
         {
             var id = GetIdFromRequest();
