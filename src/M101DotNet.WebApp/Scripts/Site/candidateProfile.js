@@ -46,7 +46,7 @@ function addIdAndNameToSkill (blankRow, index) {
     var newSkillNameId = "Skills[" + index + "].Name";
     var newSkillLevelId = "Skills[" + index + "].Level";
     var newSkillNameInput = blankRow.find(".skill-name input[type='text']");
-    var newSkillLevelInput = blankRow.find(".skill-level input[type='text']");
+    var newSkillLevelInput = blankRow.find(".skill-level input[type='range']");
     addIdAndName(newSkillNameInput, newSkillNameId);
     addIdAndName(newSkillLevelInput, newSkillLevelId);
 }
