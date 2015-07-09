@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApp.Entities;
 using WebApp.Models;
+using WebApp.Models.Candidate;
 using WebApp.Models.Offer;
 using WebApp.Services;
 
@@ -25,7 +26,7 @@ namespace WebApp.Controllers
         {
             if (IsAuthenticated() && IsRecruiter())
             {
-                return View(new OfferViewModel());
+                return View(new OfferModel());
             }
             return RedirectToAction("Index", "Home");
         }
@@ -35,31 +36,30 @@ namespace WebApp.Controllers
         {
             if (ValidateForm(model))
             {
-                return View(model);
-            }         
+                var idRecruiter = GetIdRecruiterFromRequest().Value;
+                await service.CreateJobOfferAsync(model, idRecruiter);
+                return RedirectToAction("OffersList", "Offer");
+            }            
             //temporary solution            
-            model.Skills = new List<Skill>()
-                    {
-                        new Skill() {Level = 1, Name = "C#"},
-                        new Skill() {Level = 2, Name = "PHP"},
-                        new Skill() {Level = 3, Name = "Java"}
-                    };
+            //model.Skills = new List<SkillModel>()
+            //        {
+            //            new SkillModel() {Level = 1, Name = "C#"},
+            //            new SkillModel() {Level = 2, Name = "PHP"},
+            //            new SkillModel() {Level = 9, Name = "Java"},
+            //            new SkillModel() {Level = 4, Name = "C++"},
+            //            new SkillModel() {Level = 5, Name = "Java Script"},
+            //            new SkillModel() {Level = 3, Name = "Pyton"}
+            //        };
 
-            var idRecruiter = GetIdRecruiterFromRequest().Value;
-            await service.CreateJobOfferAsync(model, idRecruiter);
-            return RedirectToAction("Index", "Home");
+            return View(model);
         }
 
         public async Task<ActionResult> OffersList()
         {
-            if (IsAuthenticated())
+            if (IsAuthenticated() && IsRecruiter())
             {
-                var role = GetRoleFromRequest();
-                if (role.Value == "Recruiter")
-                {
-                    var offers = await GetRecruiterOffersAsync();
-                    return View(offers);
-                }
+                 var offers = await GetRecruiterOffersAsync();
+                 return View(offers);               
             }
             return RedirectToAction("Index", "Home");
         }
@@ -67,35 +67,60 @@ namespace WebApp.Controllers
         [HttpPost]
         public ActionResult OffersList(JobOffer model)
         {
-
             return View(model);
         }
 
-        private Task<List<JobOffer>> GetRecruiterOffersAsync()
+        private Task<OfferViewModelList> GetRecruiterOffersAsync()
         {            
             var IdRecruiter = GetIdRecruiterFromRequest().Value;
-            var offersRecruiter = service.GetOffersByIdRecruiterAsync(IdRecruiter);
+            var offersRecruiter = service.GetOfferViewModelListAsync(IdRecruiter);
 
             return offersRecruiter;
-        }        
+        }
+
 
         private bool ValidateForm(OfferModel model)
         {
-            bool isError = false;
-            if(model.Salary<=0)
+            if (model.Skills.Count < 1)
             {
-                AddWrongSalaryValueError("salaryError");
-                isError = true;
+                ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
             }
-            if(model.Name == null)
+            if (AreSkillsDuplicate(model))
             {
-                AddEmptyNameError("emptyName");
-                isError = true;
+                ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
             }
-            return isError;
+            return ModelState.IsValid;
         }
 
-        
+        private bool AreSkillsDuplicate(OfferModel model)
+        {
+            var skills = model.Skills;
+            var skillsDistinct = model.Skills.Select(r => r.Name).Distinct();
+            return skills.Count != skillsDistinct.Count();
+        }
+
+        //private bool ValidateForm(OfferModel model)
+        //{
+        //    bool isError = false;
+        //    if(model.Salary<=0)
+        //    {
+        //        AddWrongSalaryValueError("salaryError");
+        //        isError = true;
+        //    }
+        //    if(model.Name == null)
+        //    {
+        //        AddEmptyNameError("emptyName");
+        //        isError = true;
+        //    }
+        //    return isError;
+        //}
+
+        private bool IsRecruiter()
+        {
+            var role = GetRoleFromRequest();
+            return (role.Value == "Recruiter");
+        }
+
         private void AddEmptyNameError(string field)
         {
             ModelState.AddModelError(field, "The Name can't be unfilled");
@@ -122,11 +147,7 @@ namespace WebApp.Controllers
         //I know that methods below are opposite to DRY
         
         
-        public bool IsRecruiter()
-        {
-            var role = GetRoleFromRequest();
-            return (role.Value == "Recruiter") ? true : false;
-        }
+        
 
         private Claim GetRoleFromRequest()
         {

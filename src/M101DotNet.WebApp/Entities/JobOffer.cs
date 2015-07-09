@@ -24,5 +24,13 @@ namespace WebApp.Entities
         {
             Skills = new List<Skill>();
         }
+
+        public JobOffer(string name, int salary, string idRecruitert, List<Skill> skills)
+        {
+            Name = name;
+            Salary = salary;
+            IdRecruiter = idRecruitert;
+            Skills = skills;
+        }
     }
 }

@@ -37,20 +37,15 @@ namespace WebApp.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Index(RecruiterModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                var viewModel = GetRecruiterAsync();
-                return View(viewModel);
-            }            
+        {    
             await UpdateRecruiter(model);
             return RedirectToAction("Index", "Home");
         }
 
-        public bool IsRecruiter()
+        private bool IsRecruiter()
         {
             var role = GetRoleFromRequest();
-            return (role.Value == "Recruiter") ? true : false;
+            return (role.Value == "Recruiter");
         }
 
         public async Task UpdateRecruiter(RecruiterModel model)
@@ -66,6 +61,12 @@ namespace WebApp.Controllers
             return recruiterModel;
         }
 
+        public Task<RecruiterViewModel> GetRecruiterViewModelAsync(RecruiterModel recruiterModel)
+        {
+            var id = GetIdFromRequest();
+            var recruiterViewModel = service.GetRecruiterViewModelByIdAsync(recruiterModel, id.Value);
+            return recruiterViewModel;
+        }
         
 	}
 }

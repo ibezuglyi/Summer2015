@@ -48,14 +48,14 @@ namespace WebApp.Controllers
         {
             if (IsAuthenticated() && IsCandidate()) 
             {
-                if (ValidateForm(model))
-                {
-                    await UpdateCandidate(model);
-                    var updatedViewModel = await GetCandidateAsync();
-                    return View(updatedViewModel);
-                }
-                var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
-                return View(viewModel);
+            if (ValidateForm(model))
+            {
+                await UpdateCandidate(model);
+                var updatedViewModel = await GetCandidateAsync();
+                return View(updatedViewModel);
+            }
+            var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
+            return View(viewModel);
             }
             return RedirectToAction("DeniedPermission", "Home");
         }

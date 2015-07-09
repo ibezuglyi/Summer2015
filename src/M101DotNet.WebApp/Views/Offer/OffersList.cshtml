@@ -1,27 +1,28 @@
-﻿@model List<WebApp.Entities.JobOffer>
+﻿@model WebApp.Models.Offer.OfferViewModelList
 
 @{
     ViewBag.Title = "OffersList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@for (int i = 0; i < Model.Count; i++)
+@for (int i = 0; i < Model.OffersList.Count; i++)
 {
     <div class="offer">
         <div class="row">
             <div class="offer-title">
-                 @Html.Label("Name: " + Model[i].Name, new { @class = "card-panel red lighten-3" })
-                 @Html.Label("Salary: " + Model[i].Salary, new { @class = "card-panel red lighten-4" })
+                 @Html.Label("Name: " + Model.OffersList[i].Offer.Name, new { @class = "card-panel lime lighten-2" })
+                 @Html.Label("Salary: " + Model.OffersList[i].Offer.Salary, new { @class = "card-panel lime lighten-3" })
+                 @Html.ActionLink("Details", "Details", "Offer", null, new { @class = "btn-large waves-effect waves-light" })
                  @Html.ActionLink("Edit", "Edit", "Offer", null, new { @class = "btn-large waves-effect waves-light" })
                  @Html.ActionLink("Remove", "Remove", "Offer", null, new { @class = "btn-large waves-effect waves-light" })
             </div>
         </div>
         <div class="row">
-            @for (int j = 0; j < Model[i].Skills.Count; j++)
+            @for (int j = 0; (j < Model.OffersList[i].Offer.Skills.Count && j < 5); j++)
             {            
-                <div class="card-panel red lighten-5">
-                    @Html.Label("Name: " + Model[i].Skills[j].Name)
-                    @Html.Label("Level: " + Model[i].Skills[j].Level)
+                <div class="card-panel lime lighten-4">
+                    @Html.Label("Name: " + Model.OffersList[i].Offer.Skills[j].Name)
+                    @Html.Label("Level: " + Model.OffersList[i].Offer.Skills[j].Level)
                 </div>            
             }
         </div> 

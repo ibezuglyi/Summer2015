@@ -16,7 +16,7 @@ namespace WebApp.Services
         Task CreateRecruiterUserAsync(RegisterModel model);
         string GenerateHashPassword(string password, User user);
         Task CreateCandidateUserAsync(RegisterModel model);
-        Task CreateJobOfferAsync(OfferModel model, string idRecruiter);
+        Task CreateJobOfferAsync(OfferModel model, string idRecruiter);        
         Task<RecruiterUser> GetRecruiterByIdAsync(string recruiterId);
         Task<CandidateUser> GetCandidateByIdAsync(string candidateId);
         Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId);
@@ -24,8 +24,11 @@ namespace WebApp.Services
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId);
         Task UpdateCandidateUserAsync(CandidateUserModel model, string candidateId);
         Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(string recruiterId);
-        Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string idRecruiter);
-        Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId);
+        Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(RecruiterModel recruiterModel, string recruiterId);
+        Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string idRecruiter);        
         Task<JobOffer> GetJobOfferByIdAsync(string offerId);
+        Task<OfferViewModelList> GetOfferViewModelListAsync(string idRecruiter);
+        
+        Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId);
     }
 }

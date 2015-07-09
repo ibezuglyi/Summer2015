@@ -44,6 +44,10 @@
     }*@
         @Html.Label("Skills:")<br/>
         @Html.Partial("_SkillFormPartial", Model.Candidate.Skills)
+        
+        <div class="row">
+            <button type="submit" class="btn ">Save &raquo;</button>
+        </div>
     }
     @Html.Partial("_BlankSkillRowPartial", Model.Candidate.Skills)
 
