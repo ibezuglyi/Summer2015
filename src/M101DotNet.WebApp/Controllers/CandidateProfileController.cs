@@ -60,10 +60,10 @@ namespace WebApp.Controllers
             return ModelState.IsValid;
         }
 
-        public bool IsCandidate()
+        private bool IsCandidate()
         {
             var role = GetRoleFromRequest();
-            return (role.Value == "Candidate") ? true : false;
+            return (role.Value == "Candidate");
         }
         private void AddWrongNumberOfSkillsError(string field)
         {

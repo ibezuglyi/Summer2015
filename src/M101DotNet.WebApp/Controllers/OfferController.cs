@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApp.Entities;
 using WebApp.Models;
+using WebApp.Models.Candidate;
 using WebApp.Models.Offer;
 using WebApp.Services;
 
@@ -38,11 +39,14 @@ namespace WebApp.Controllers
                 return View(model);
             }         
             //temporary solution            
-            model.Skills = new List<Skill>()
+            model.Skills = new List<SkillModel>()
                     {
-                        new Skill() {Level = 1, Name = "C#"},
-                        new Skill() {Level = 2, Name = "PHP"},
-                        new Skill() {Level = 3, Name = "Java"}
+                        new SkillModel() {Level = 1, Name = "C#"},
+                        new SkillModel() {Level = 2, Name = "PHP"},
+                        new SkillModel() {Level = 9, Name = "Java"},
+                        new SkillModel() {Level = 4, Name = "C++"},
+                        new SkillModel() {Level = 5, Name = "Java Script"},
+                        new SkillModel() {Level = 3, Name = "Pyton"}
                     };
 
             var idRecruiter = GetIdRecruiterFromRequest().Value;
@@ -52,14 +56,10 @@ namespace WebApp.Controllers
 
         public async Task<ActionResult> OffersList()
         {
-            if (IsAuthenticated())
+            if (IsAuthenticated() && IsRecruiter())
             {
-                var role = GetRoleFromRequest();
-                if (role.Value == "Recruiter")
-                {
-                    var offers = await GetRecruiterOffersAsync();
-                    return View(offers);
-                }
+                 var offers = await GetRecruiterOffersAsync();
+                 return View(offers);               
             }
             return RedirectToAction("Index", "Home");
         }
@@ -71,10 +71,10 @@ namespace WebApp.Controllers
             return View(model);
         }
 
-        private Task<List<JobOffer>> GetRecruiterOffersAsync()
+        private Task<OfferViewModelList> GetRecruiterOffersAsync()
         {            
             var IdRecruiter = GetIdRecruiterFromRequest().Value;
-            var offersRecruiter = service.GetOffersByIdRecruiterAsync(IdRecruiter);
+            var offersRecruiter = service.GetOfferViewModelListAsync(IdRecruiter);
 
             return offersRecruiter;
         }        
@@ -95,7 +95,12 @@ namespace WebApp.Controllers
             return isError;
         }
 
-        
+        private bool IsRecruiter()
+        {
+            var role = GetRoleFromRequest();
+            return (role.Value == "Recruiter");
+        }
+
         private void AddEmptyNameError(string field)
         {
             ModelState.AddModelError(field, "The Name can't be unfilled");
@@ -122,11 +127,7 @@ namespace WebApp.Controllers
         //I know that methods below are opposite to DRY
         
         
-        public bool IsRecruiter()
-        {
-            var role = GetRoleFromRequest();
-            return (role.Value == "Recruiter") ? true : false;
-        }
+        
 
         private Claim GetRoleFromRequest()
         {

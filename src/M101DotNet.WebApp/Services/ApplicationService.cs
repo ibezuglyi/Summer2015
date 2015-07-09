@@ -49,7 +49,7 @@ namespace WebApp.Services
 
         public async Task<JobOffer> GetJobOfferByIdAsync(string id)
         {
-            var jobOffer = await dbContext.JobOffers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            var jobOffer = await dbContext.JobOffers.Find(r => r.Id == id).SingleOrDefaultAsync();            
             return jobOffer;
         }
 
@@ -57,6 +57,32 @@ namespace WebApp.Services
         {
             var offerList = await dbContext.JobOffers.Find(r => r.IdRecruiter == id).ToListAsync();
             return offerList;
+        }
+
+        public async Task<OfferViewModelList> GetOfferViewModelListAsync(string id)
+        {
+            var offerList = await GetOffersByIdRecruiterAsync(id);
+            var offersViewModel = MapToOffersViewModel(offerList);
+            var offerViewModelList = MapToOfferViewModelList(offersViewModel);
+            return offerViewModelList;
+        }
+
+        private static List<OfferViewModel> MapToOffersViewModel(List<JobOffer> offers)
+        {
+            var offersViewModel = new List<OfferViewModel>();
+            foreach(var offer in offers)
+            {
+                var offerModel = MapToOfferModel(offer);
+                var offerViewModel = new OfferViewModel(offerModel, offer.Id, offer.IdRecruiter);
+                offersViewModel.Add(offerViewModel);
+            }
+            return offersViewModel;
+        }
+
+        private static OfferViewModelList MapToOfferViewModelList(List<OfferViewModel> offersModelView)
+        {
+            var offerViewModelList = new OfferViewModelList(offersModelView);
+            return offerViewModelList;
         }
 
         public async Task CreateRecruiterUserAsync(RegisterModel model)
@@ -73,15 +99,36 @@ namespace WebApp.Services
 
         public async Task CreateJobOfferAsync(OfferModel model, string id)
         {
-            var offer = new JobOffer
+            var offer = MapToJobOffer(model, id);
+            await dbContext.JobOffers.InsertOneAsync(offer);
+        }
+
+        public static JobOffer MapToJobOffer(OfferModel model, string id)
+        {
+            var skills = MapToSkills(model);
+            var offer = new JobOffer(model.Name, model.Salary, id, skills);
+            return offer;
+        }
+
+        public static List<Skill> MapToSkills(OfferModel model)
+        {
+            List<Skill> skills = new List<Skill>();
+            foreach(var modelSkill in model.Skills)
+            {
+                var skill = MapToSkill(modelSkill);
+                skills.Add(skill);
+            }
+            return skills;
+        }
+
+        public static Skill MapToSkill(SkillModel model)
+        {
+            var skill = new Skill
             {
                 Name = model.Name,
-                Salary = model.Salary,
-                IdRecruiter = id,
-                Skills = model.Skills
+                Level = model.Level,
             };
-
-            await dbContext.JobOffers.InsertOneAsync(offer);
+            return skill;
         }
 
         public async Task UpdateRecruiterModelAsync(RecruiterModel model, string id)
@@ -152,6 +199,13 @@ namespace WebApp.Services
             return candiateViewModel;
         }
 
+        public async Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(RecruiterModel recruiterModel, string recruiterId)
+        {
+            var recruiter = await GetRecruiterByIdAsync(recruiterId);
+            var recruiterViewModel = new RecruiterViewModel(recruiterModel, recruiter.Name, recruiter.Email);
+            return recruiterViewModel;
+        }
+
         public async Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(string recruiterId)
         {
             var recruiter = await GetRecruiterByIdAsync(recruiterId);
@@ -170,9 +224,11 @@ namespace WebApp.Services
 
         private static OfferModel MapToOfferModel(JobOffer offer)
         {
-            var offerModel = new OfferModel(offer.Name, offer.Salary, offer.Skills);
+            var skills = MapToSkillModels(offer);
+            var offerModel = new OfferModel(offer.Name, offer.Salary, skills);
             return offerModel;
         }
+                
 
         private static RecruiterModel MapToRecruiterModel(RecruiterUser recruiter)
         {
@@ -187,6 +243,17 @@ namespace WebApp.Services
             return candidateModel;
         }
 
+        //I don't like it
+        private static List<SkillModel> MapToSkillModels(JobOffer offer)
+        {
+            var skillModels = new List<SkillModel>();
+            foreach (var skill in offer.Skills)
+            {
+                var skillModel = new SkillModel(skill.Name, skill.Level);
+                skillModels.Add(skillModel);
+            }
+            return skillModels;
+        }
         private static List<SkillModel> MapToSkillModels(CandidateUser candidate)
         {
             var skillModels = new List<SkillModel>();
