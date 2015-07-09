@@ -34,45 +34,42 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUserModel model)
         {
-            var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
-            //if (ValidateForm(model))
-            //{
-            //    var updatedModel = await UpdateCandidate(model);
-            //    return View(updatedModel);
-            //}
 
+            if (ValidateForm(model))
+            {
+                await UpdateCandidate(model);
+                var updatedViewModel = await GetCandidateAsync();
+                return View(updatedViewModel);
+            }
+            var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
             return View(viewModel);
 
         }
 
-        private bool ValidateForm(CandidateUser model)
+        private bool ValidateForm(CandidateUserModel model)
         {
             if (model.Skills.Count < 1)
             {
-                AddWrongNumberOfSkillsError("notEnoughSkills");
+                ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
             }
-
-            var isduplicated = model.Skills.Count != model.Skills.Select(r => r.Name.ToLower()).Distinct().Count();
-            if (isduplicated)
+            if (AreSkillsDuplicate(model))
             {
-                AddDuplicateSkillError("duplicateSkills");
+                ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
             }
             return ModelState.IsValid;
         }
 
-        private bool IsCandidate()
+        private bool AreSkillsDuplicate(CandidateUserModel model)
         {
-            var role = GetRoleFromRequest();
-            return (role.Value == "Candidate");
-        }
-        private void AddWrongNumberOfSkillsError(string field)
-        {
-            ModelState.AddModelError(field, "Choose one or more skills");
+            var skills = model.Skills;
+            var skillsDistinct = model.Skills.Select(r => r.Name).Distinct();
+            return skills.Count != skillsDistinct.Count();
         }
 
-        public void AddDuplicateSkillError(string field)
+        public bool IsCandidate()
         {
-            ModelState.AddModelError(field, "You can't have repeated skills");
+            var role = GetRoleFromRequest();
+            return role.Value == "Candidate";
         }
 
         public async Task<CandidateViewModel> GetCandidateAsync()
@@ -88,10 +85,10 @@ namespace WebApp.Controllers
             return candidateViewModel;
         }
 
-        public async Task<CandidateUser> UpdateCandidate(CandidateUserModel model)
+        public async Task UpdateCandidate(CandidateUserModel model)
         {
             var id = GetIdFromRequest();
-            return await service.UpdateCandidateUserAsync(model, id.Value);
+            await service.UpdateCandidateUserAsync(model, id.Value);
         }
     }
 }
