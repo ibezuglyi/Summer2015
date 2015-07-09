@@ -183,6 +183,19 @@ namespace WebApp.Services
             await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
         }
 
+        private static CandidateUser MapToCandidateUser(CandidateUserModel candidateModel)
+        {
+            var skills = MapToSkills(candidateModel);
+            var candidate = new CandidateUser()
+            {
+                ExperienceDescription = candidateModel.ExperienceDescription,
+                ExperienceInYears = candidateModel.ExperienceInYears,
+                Salary = candidateModel.Salary,
+                Skills = skills,
+            };
+            return candidate;
+        }
+
         public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId)
         {
             var candidate = await GetCandidateByIdAsync(candidateId);
