@@ -131,6 +131,7 @@ namespace WebApp.Services
             return skill;
         }
 
+
         public async Task UpdateRecruiterModelAsync(RecruiterModel model, string id)
         {
             var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, id);
@@ -168,6 +169,18 @@ namespace WebApp.Services
             await dbContext.CandidateUsers.InsertOneAsync(user);
         }
 
+        public async Task UpdateJobOfferAsync(OfferModel model, string idOffer)
+        {
+            var offer = MapToJobOffer(model, idOffer);
+            var filter = Builders<JobOffer>.Filter.Eq(r => r.Id, idOffer);
+            var update = Builders<JobOffer>
+                .Update
+                .Set(r => r.Name, offer.Name)
+                .Set(r => r.Salary, offer.Salary)
+                .Set(r => r.Skills, offer.Skills);
+
+            await dbContext.JobOffers.UpdateOneAsync(filter, update);
+        }
 
         public async Task UpdateCandidateUserAsync(CandidateUserModel model, string id)
         {

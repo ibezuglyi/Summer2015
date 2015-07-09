@@ -1,0 +1,29 @@
+﻿@model WebApp.Models.Offer.OfferViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="form-part">
+        @Html.Label("Offer Name:")<br />
+        @Html.TextBox("name", Model.Offer.Name)
+        <span class="red-text text-darken-2">@Html.ValidationMessage("name")</span>
+    </div>
+    <div class="form-part">
+        @Html.Label("Salary:")<br />
+        @Html.TextBox("salary", Model.Offer.Salary)
+        <span class="red-text text-darken-2">@Html.ValidationMessage("salary")</span>
+    </div>
+
+    @Html.Label("Skills:")<br />
+    @Html.Partial("_SkillFormPartial", Model.Offer.Skills)
+
+    <div class="row">
+        <button type="submit" class="btn ">Save &raquo;</button>
+    </div>
+}
+@Html.Partial("_BlankSkillRowPartial", Model.Offer.Skills)
+@Scripts.Render("~/bundles/site")

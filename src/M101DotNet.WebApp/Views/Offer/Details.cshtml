@@ -1,0 +1,23 @@
+﻿@model WebApp.Models.Offer.OfferViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="offer">
+    <div class="row">
+        <div class="offer-title">
+            @Html.Label("" + Model.Offer.Name, new { @class = "card-panel lime lighten-2" })
+            @Html.Label("" + Model.Offer.Salary, new { @class = "card-panel lime lighten-3" }) 
+        </div>
+    </div>
+    <div class="row">
+        @for (int j = 0; j < Model.Offer.Skills.Count ; j++)
+        {
+            <div class="card-panel lime lighten-4">
+                @Html.Label("" + Model.Offer.Skills[j].Name)
+                @Html.Label("" + Model.Offer.Skills[j].Level)
+            </div>
+        }
+    </div>
+</div> 

@@ -22,6 +22,7 @@ namespace WebApp.Controllers
             service = applicationService;
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             if (IsAuthenticated() && IsRecruiter())
@@ -39,21 +40,11 @@ namespace WebApp.Controllers
                 var idRecruiter = GetIdRecruiterFromRequest().Value;
                 await service.CreateJobOfferAsync(model, idRecruiter);
                 return RedirectToAction("OffersList", "Offer");
-            }            
-            //temporary solution            
-            //model.Skills = new List<SkillModel>()
-            //        {
-            //            new SkillModel() {Level = 1, Name = "C#"},
-            //            new SkillModel() {Level = 2, Name = "PHP"},
-            //            new SkillModel() {Level = 9, Name = "Java"},
-            //            new SkillModel() {Level = 4, Name = "C++"},
-            //            new SkillModel() {Level = 5, Name = "Java Script"},
-            //            new SkillModel() {Level = 3, Name = "Pyton"}
-            //        };
-
+            }       
             return View(model);
         }
 
+        [HttpGet]
         public async Task<ActionResult> OffersList()
         {
             if (IsAuthenticated() && IsRecruiter())
@@ -61,13 +52,46 @@ namespace WebApp.Controllers
                  var offers = await GetRecruiterOffersAsync();
                  return View(offers);               
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("DeniedPermision", "Home");
+        }
+                
+        [HttpGet]
+        public async Task<ActionResult> Details(string idOffer)
+        {
+            if (IsAuthenticated() && IsRecruiter())
+            {
+                var offer = await GetOfferAsync(idOffer);
+                return View(offer);
+            }
+            return RedirectToAction("DeniedPermision", "Home");
+        }        
+
+        [HttpGet]
+        public async Task<ActionResult> Edit(string idOffer)
+        {
+            var isRighrRecruiter = await IsRightRecruiter(idOffer);
+            if (IsAuthenticated() && IsRecruiter() && isRighrRecruiter)
+            {
+                var offers = await GetOfferAsync(idOffer);
+                return View(offers);
+            }
+            return RedirectToAction("DeniedPermision", "Home");
         }
 
         [HttpPost]
-        public ActionResult OffersList(JobOffer model)
+        public async Task<ActionResult> Edit(OfferModel model, string idOffer)
         {
+            //Not finished yet
+            if (ValidateForm(model))
+            {
+                await UpdateOffer(model, idOffer);
+            }
             return View(model);
+        }
+
+        public async Task UpdateOffer(OfferModel model, string idOffer)
+        {
+            await service.UpdateJobOfferAsync(model, idOffer);
         }
 
         private Task<OfferViewModelList> GetRecruiterOffersAsync()
@@ -99,21 +123,13 @@ namespace WebApp.Controllers
             return skills.Count != skillsDistinct.Count();
         }
 
-        //private bool ValidateForm(OfferModel model)
-        //{
-        //    bool isError = false;
-        //    if(model.Salary<=0)
-        //    {
-        //        AddWrongSalaryValueError("salaryError");
-        //        isError = true;
-        //    }
-        //    if(model.Name == null)
-        //    {
-        //        AddEmptyNameError("emptyName");
-        //        isError = true;
-        //    }
-        //    return isError;
-        //}
+        //I don't know if that is OK
+        private async Task<bool> IsRightRecruiter(string offerId)
+        {
+            var id = GetIdRecruiterFromRequest().Value;
+            var idRecruiter = await GetIdRecruiterByOfferIdAsync(offerId);
+            return (id == idRecruiter);            
+        }
 
         private bool IsRecruiter()
         {
@@ -130,7 +146,11 @@ namespace WebApp.Controllers
             ModelState.AddModelError(field, "The Salary must have a numeric not negative value");
         }
 
-        
+        public async Task<string> GetIdRecruiterByOfferIdAsync(string offerId)
+        {
+            var offer = await GetOfferAsync(offerId);
+            return offer.IdRecruiter;
+        }
 
         private Claim GetIdRecruiterFromRequest()
         {
