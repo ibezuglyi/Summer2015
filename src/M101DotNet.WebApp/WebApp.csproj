@@ -273,6 +273,7 @@
     <Content Include="Views\Offer\Create.cshtml" />
     <Content Include="Views\Offer\OffersList.cshtml" />
     <Content Include="Views\Home\DeniedPermision.cshtml" />
+    <Content Include="Views\Shared\_BlankSkillRowPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
