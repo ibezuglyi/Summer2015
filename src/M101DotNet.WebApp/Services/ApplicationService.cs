@@ -122,19 +122,18 @@ namespace WebApp.Services
         }
 
 
-        public async Task<CandidateUser> UpdateCandidateUserAsync(CandidateUser model, string id)
+        public async Task UpdateCandidateUserAsync(CandidateUserModel model, string id)
         {
+            CandidateUser candidate = MapToCandidateUser(model);
             var filter = Builders<CandidateUser>.Filter.Eq(r => r.Id, id);
             var update = Builders<CandidateUser>
                 .Update
-                .Set(r => r.ExperienceDescription, model.ExperienceDescription)
-                .Set(r => r.ExperienceInYears, model.ExperienceInYears)
-                .Set(r => r.Salary, model.Salary)
-                .Set(r => r.Skills, model.Skills);
+                .Set(r => r.ExperienceDescription, candidate.ExperienceDescription)
+                .Set(r => r.ExperienceInYears, candidate.ExperienceInYears)
+                .Set(r => r.Salary, candidate.Salary)
+                .Set(r => r.Skills, candidate.Skills);
 
             await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
-            var candidate = await dbContext.CandidateUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
-            return candidate;
         }
 
         public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId)
@@ -187,6 +186,19 @@ namespace WebApp.Services
             return candidateModel;
         }
 
+        private static CandidateUser MapToCandidateUser(CandidateUserModel candidateModel)
+        {
+            var skills = MapToSkills(candidateModel);
+            var candidate = new CandidateUser()
+            {
+                ExperienceDescription = candidateModel.ExperienceDescription,
+                ExperienceInYears = candidateModel.ExperienceInYears,
+                Salary = candidateModel.Salary,
+                Skills = skills,
+            };
+            return candidate;
+        }
+
         private static List<SkillModel> MapToSkillModels(CandidateUser candidate)
         {
             var skillModels = new List<SkillModel>();
@@ -198,9 +210,19 @@ namespace WebApp.Services
             return skillModels;
         }
 
-        public async Task<CandidateUser> UpdateCandidateUserAsync(CandidateUserModel model,string p)
+        private static List<Skill> MapToSkills(CandidateUserModel candidate)
         {
-            throw new NotImplementedException();
+            var skills = new List<Skill>();
+            foreach (var skillModel in candidate.Skills)
+            {
+                var skill = new Skill()
+                {
+                    Name = skillModel.Name,
+                    Level = skillModel.Level,
+                };
+                skills.Add(skill);
+            }
+            return skills;
         }
 
     }

@@ -1,18 +1,26 @@
 ﻿
 $(document).ready(function () {
+    deleteRowOnClick();
+    addRowOnClick();
+});
+
+function deleteRowOnClick() {
     $("#skills").on('click', ".delete-skill", function (event) {
         $(this).closest(".skill-row").remove();
     });
+}
+
+function addRowOnClick() {
     $(".add-skill").click(function (event) {
         addRow("#skills");
     });
-});
+}
 
 var addRow = (function () {
     var index = $(".blank-row .row input[type='hidden']").val();
     return function (parent) {
         var blankRow = $(".blank-row").clone(false);
-        prepareSnippet(blankRow);
+        prepareSnippet(blankRow, index);
         blankRow.appendTo(parent);
         index++;
     };
