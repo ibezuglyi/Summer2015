@@ -169,6 +169,13 @@ namespace WebApp.Services
             await dbContext.CandidateUsers.InsertOneAsync(user);
         }
 
+        public async Task RemoveJobOfferAsync(string idOffer)
+        { 
+              var filter = Builders<JobOffer>.Filter.Eq(r => r.Id, idOffer);
+              await dbContext.JobOffers.DeleteOneAsync(filter);
+        }
+
+
         public async Task UpdateJobOfferAsync(OfferModel model, string idOffer)
         {
             var offer = MapToJobOffer(model, idOffer);
@@ -223,6 +230,7 @@ namespace WebApp.Services
             var candiateViewModel = new CandidateViewModel(candidateModel, candidate.Name, candidate.Email);
             return candiateViewModel;
         }
+        
 
         public async Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(RecruiterModel recruiterModel, string recruiterId)
         {
