@@ -1,11 +1,9 @@
 ﻿@model List<WebApp.Models.Candidate.SkillModel>
+               <div class="red-text text-darken-2">
+                   @Html.ValidationMessage("notEnoughSkills")
+                   @Html.ValidationMessage("duplicateSkills")
+               </div>
     <div id="skills" class="collection">
-        <div class="row red-text text-darken-2">
-            @Html.ValidationMessage("notEnoughSkills")
-            @Html.ValidationMessage("duplicateSkills")
-        </div>
-
-
         @for (int i = 0; i < Model.Count; i++)
         {
             var nameInputName = string.Format("Skills[{0}].Name", i);
@@ -20,6 +18,7 @@
                     <span class="col s3 range-field">
                         <input type="range" min="1" max="10" id="@levelInputName" name="@levelInputName" value="@Model[i].Level" />
                     </span>
+                    <span class="value-field value-field-css teal-text text-darken-2"></span>
                     <button onclick="return false" class="btn-flat delete-skill">Delete</button>
                 </div>
                 <div class="row red-text text-darken-2">
@@ -35,7 +34,7 @@
         }
     </div>
     <div class="row">
-        <button onclick="return false" class="add-skill btn">Add</button>
+        <button onclick="return false" class="right add-skill btn">Add</button>
     </div>
     
 

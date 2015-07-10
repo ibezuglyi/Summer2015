@@ -2,7 +2,27 @@
 $(document).ready(function () {
     deleteRowOnClick();
     addRowOnClick();
+    rangeInputHandling();
 });
+
+function rangeInputHandling() {
+    setRangeInputValue();
+    $("body").on('input', "input[type='range']", function () {
+        $(this).closest(".range-field").siblings(".value-field").html(this.value);
+    });
+}
+
+function addRangeInputValue(parent) {
+    var valueField = $(parent).find(".value-field")
+    var value = valueField.closest('range-field').siblings(".value-field").attr('value');
+    valueField.html(value);
+};
+
+function setRangeInputValue() {
+    $("input[type='range']").each(function (index, input) {
+        $(input).closest(".range-field").siblings(".value-field").html($(input).attr('value'));
+    });
+}
 
 function deleteRowOnClick() {
     $("#skills").on('click', ".delete-skill", function (event) {
@@ -21,6 +41,7 @@ var addRow = (function () {
     return function (parent) {
         var blankRow = $(".blank-row").clone(false);
         prepareSnippet(blankRow, index);
+        addRangeInputValue(blankRow);
         blankRow.appendTo(parent);
         index++;
     };
