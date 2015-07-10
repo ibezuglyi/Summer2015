@@ -1,4 +1,4 @@
-﻿@model WebApp.Models.Offer.OfferViewModel
+﻿@model WebApp.Models.Offer.OfferModel
 
 @{
     ViewBag.Title = "Edit";
@@ -7,23 +7,25 @@
 
 @using (Html.BeginForm())
 {
+    @Html.HiddenFor(r=>r.Id)
+    
     <div class="form-part">
         @Html.Label("Offer Name:")<br />
-        @Html.TextBox("name", Model.Offer.Name)
+        @Html.TextBox("name", Model.Name)
         <span class="red-text text-darken-2">@Html.ValidationMessage("name")</span>
     </div>
     <div class="form-part">
         @Html.Label("Salary:")<br />
-        @Html.TextBox("salary", Model.Offer.Salary)
+        @Html.TextBox("salary", Model.Salary)
         <span class="red-text text-darken-2">@Html.ValidationMessage("salary")</span>
     </div>
 
     @Html.Label("Skills:")<br />
-    @Html.Partial("_SkillFormPartial", Model.Offer.Skills)
+    @Html.Partial("_SkillFormPartial", Model.Skills)
 
     <div class="row">
         <button type="submit" class="btn ">Save &raquo;</button>
     </div>
 }
-@Html.Partial("_BlankSkillRowPartial", Model.Offer.Skills)
+@Html.Partial("_BlankSkillRowPartial", Model.Skills)
 @Scripts.Render("~/bundles/site")

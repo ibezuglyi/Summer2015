@@ -47,7 +47,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> OffersList()
         {
-            if (IsAuthenticated() && IsRecruiter())
+            if (IsRecruiter())
             {
                  var offers = await GetRecruiterOffersAsync();
                  return View(offers);               
@@ -56,35 +56,42 @@ namespace WebApp.Controllers
         }
                 
         [HttpGet]
-        public async Task<ActionResult> Details(string idOffer)
+        public async Task<ActionResult> Details(string id)
         {
-            if (IsAuthenticated() && IsRecruiter())
+            if (IsAuthenticated())
             {
-                var offer = await GetOfferAsync(idOffer);
+                var offer = await GetOfferViewModelAsync(id);
                 return View(offer);
             }
             return RedirectToAction("DeniedPermision", "Home");
         }        
 
         [HttpGet]
-        public async Task<ActionResult> Edit(string idOffer)
-        {
-            var isRighrRecruiter = await IsRightRecruiter(idOffer);
-            if (IsAuthenticated() && IsRecruiter() && isRighrRecruiter)
+        public async Task<ActionResult> Edit(string id)
+        {            
+            if (IsAuthenticated() && IsRecruiter())
             {
-                var offers = await GetOfferAsync(idOffer);
-                return View(offers);
+                var offer = await GetOfferViewModelAsync(id);
+                var isRightRecruiter = IfCurrentUserAnOwnerOfOffer(offer.IdRecruiter);
+                if (isRightRecruiter)
+                {
+                    return View(offer);
+                }
+                else
+                {
+                    return RedirectToAction("DeniedPermision", "Home");
+                }
             }
             return RedirectToAction("DeniedPermision", "Home");
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(OfferModel model, string idOffer)
+        public async Task<ActionResult> Edit(OfferModel model)
         {
             //Not finished yet
             if (ValidateForm(model))
             {
-                await UpdateOffer(model, idOffer);
+                await UpdateOffer(model, model.Id);
             }
             return View(model);
         }
@@ -94,7 +101,7 @@ namespace WebApp.Controllers
             await service.UpdateJobOfferAsync(model, idOffer);
         }
 
-        private Task<OfferViewModelList> GetRecruiterOffersAsync()
+        private Task<OfferListViewModel> GetRecruiterOffersAsync()
         {            
             var IdRecruiter = GetIdRecruiterFromRequest().Value;
             var offersRecruiter = service.GetOfferViewModelListAsync(IdRecruiter);
@@ -123,11 +130,10 @@ namespace WebApp.Controllers
             return skills.Count != skillsDistinct.Count();
         }
 
-        //I don't know if that is OK
-        private async Task<bool> IsRightRecruiter(string offerId)
+       
+        private bool IfCurrentUserAnOwnerOfOffer(string idRecruiter)
         {
             var id = GetIdRecruiterFromRequest().Value;
-            var idRecruiter = await GetIdRecruiterByOfferIdAsync(offerId);
             return (id == idRecruiter);            
         }
 
@@ -148,7 +154,7 @@ namespace WebApp.Controllers
 
         public async Task<string> GetIdRecruiterByOfferIdAsync(string offerId)
         {
-            var offer = await GetOfferAsync(offerId);
+            var offer = await GetOfferViewModelAsync(offerId);
             return offer.IdRecruiter;
         }
 
@@ -158,7 +164,7 @@ namespace WebApp.Controllers
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
         }
 
-        public Task<OfferViewModel> GetOfferAsync(string offerId)
+        public Task<OfferViewModel> GetOfferViewModelAsync(string offerId)
         {
             var offerModel = service.GetOfferViewModelByIdAsync(offerId);
             return offerModel;

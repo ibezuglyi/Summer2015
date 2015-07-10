@@ -1,4 +1,4 @@
-﻿@model WebApp.Models.Offer.OfferViewModelList
+﻿@model WebApp.Models.Offer.OfferListViewModel
 
 @{
     ViewBag.Title = "OffersList";
@@ -12,18 +12,18 @@
             <div class="offer-title">
                  @Html.Label(""+Model.OffersList[i].Offer.Name, new { @class = "card-panel lime lighten-2" })
                  @Html.Label(""+Model.OffersList[i].Offer.Salary, new { @class = "card-panel lime lighten-3" })
-                 @Html.ActionLink("Details", "Details", "Offer", new {id = Model.OffersList[i].Id}, new { @class = "btn-large waves-effect waves-light" })
-                 @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.OffersList[i].Id }, new { @class = "btn-large waves-effect waves-light" })
-                 @Html.ActionLink("Remove", "Remove", "Offer", new { id = Model.OffersList[i].Id }, new { @class = "btn-large waves-effect waves-light" })
+                 @Html.ActionLink("Details", "Details", "Offer", new {id = Model.OffersList[i].Offer.Id}, new { @class = "btn-large waves-effect waves-light" })
+                 @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
+                 @Html.ActionLink("Remove", "Remove", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
           
             </div>
         </div>
         <div class="row">
-            @for (int j = 0; (j < Model.OffersList[i].Offer.Skills.Count && j < 5); j++)
+            @for (int j = 0; j < Model.OffersList[i].TopSkills.Count; j++)
             {            
                 <div class="card-panel lime lighten-4">
-                    @Html.Label("" + Model.OffersList[i].Offer.Skills[j].Name)
-                    @Html.Label("" + Model.OffersList[i].Offer.Skills[j].Level)
+                    @Html.Label("" + Model.OffersList[i].TopSkills[j].Name)
+                    @Html.Label("" + Model.OffersList[i].TopSkills[j].Level)
                 </div>            
             }
         </div> 
