@@ -100,3 +100,12 @@ select{
     font-weight: 500;
     font-size: 22px;
 }
+
+.offer-title span {
+    font-weight:bold;
+}
+
+.offer-buttons
+{
+    float:right;
+}
