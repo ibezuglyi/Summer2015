@@ -5,26 +5,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h4 class="amber card-panel">@ViewBag.Title</h4>
+
 @for (int i = Model.OffersList.Count-1; i >= 0 ; i--)
 {
     <div class="offer">
         <div class="row">
             <div class="offer-title">
-                 @Html.Label(""+Model.OffersList[i].Offer.Name, new { @class = "card-panel lime lighten-2" })
-                 @Html.Label(""+Model.OffersList[i].Offer.Salary+ " $ ", new { @class = "card-panel lime lighten-3" })
-                 @Html.ActionLink("Details", "Details", "Offer", new {id = Model.OffersList[i].Offer.Id}, new { @class = "btn-large waves-effect waves-light" })
-                 @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
-                 @Html.ActionLink("Remove", "Remove", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
-          
+                <div class="card-panel amber lighten-1">
+                    <span>Name:</span>
+                    @Model.OffersList[i].Offer.Name
+                </div>
+                <div class="card-panel amber lighten-2">
+                    <span>Salary:</span>
+                    @Model.OffersList[i].Offer.Salary
+                </div>
+            </div> 
+            <div class="offer-buttons">
+                @Html.ActionLink("Details", "Details", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
+                @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
+                @Html.ActionLink("Remove", "Remove", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
             </div>
         </div>
         <div class="row">
             @for (int j = 0; j < Model.OffersList[i].TopSkills.Count; j++)
             {            
-                <div class="card-panel lime lighten-4">
-                    @Html.Label("" + Model.OffersList[i].TopSkills[j].Name)
-                    @Html.Label("" + Model.OffersList[i].TopSkills[j].Level)
-                </div>            
+                <div class="card-panel amber lighten-4">
+                @Model.OffersList[i].TopSkills[j].Name
+                @Model.OffersList[i].TopSkills[j].Level
+            </div>           
             }
         </div> 
     </div> 
