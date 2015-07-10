@@ -5,16 +5,16 @@ using System.Web;
 
 namespace WebApp.Models.Offer
 {
-    public class OfferViewModelList
+    public class OfferListViewModel
     {
         public List<OfferViewModel> OffersList { get; set; }
 
-        public OfferViewModelList()
+        public OfferListViewModel()
         {
             OffersList = new List<OfferViewModel>();
         }
 
-        public OfferViewModelList(List<OfferViewModel> offersList)
+        public OfferListViewModel(List<OfferViewModel> offersList)
         {
             OffersList = offersList;
         }

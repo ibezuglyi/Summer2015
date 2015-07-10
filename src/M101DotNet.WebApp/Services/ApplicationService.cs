@@ -59,7 +59,7 @@ namespace WebApp.Services
             return offerList;
         }
 
-        public async Task<OfferViewModelList> GetOfferViewModelListAsync(string id)
+        public async Task<OfferListViewModel> GetOfferViewModelListAsync(string id)
         {
             var offerList = await GetOffersByIdRecruiterAsync(id);
             var offersViewModel = MapToOffersViewModel(offerList);
@@ -73,15 +73,15 @@ namespace WebApp.Services
             foreach(var offer in offers)
             {
                 var offerModel = MapToOfferModel(offer);
-                var offerViewModel = new OfferViewModel(offerModel, offer.Id, offer.IdRecruiter);
+                var offerViewModel = new OfferViewModel(offerModel,  offer.IdRecruiter);
                 offersViewModel.Add(offerViewModel);
             }
             return offersViewModel;
         }
 
-        private static OfferViewModelList MapToOfferViewModelList(List<OfferViewModel> offersModelView)
+        private static OfferListViewModel MapToOfferViewModelList(List<OfferViewModel> offersModelView)
         {
-            var offerViewModelList = new OfferViewModelList(offersModelView);
+            var offerViewModelList = new OfferListViewModel(offersModelView);
             return offerViewModelList;
         }
 
@@ -243,14 +243,14 @@ namespace WebApp.Services
         {
             var offer = await GetJobOfferByIdAsync(offerId);
             var offerModel = MapToOfferModel(offer);
-            var offerViewModel = new OfferViewModel(offerModel, offer.Id, offer.IdRecruiter);
+            var offerViewModel = new OfferViewModel(offerModel, offer.IdRecruiter);
             return offerViewModel;
         }
 
         private static OfferModel MapToOfferModel(JobOffer offer)
         {
             var skills = MapToSkillModels(offer);
-            var offerModel = new OfferModel(offer.Name, offer.Salary, skills);
+            var offerModel = new OfferModel(offer.Id, offer.Name, offer.Salary, skills);
             return offerModel;
         }
 

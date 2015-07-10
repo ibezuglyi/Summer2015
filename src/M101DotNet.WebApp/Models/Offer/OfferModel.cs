@@ -10,6 +10,8 @@ namespace WebApp.Models.Offer
 {
     public class OfferModel
     {
+        public string Id { get; set; }
+
         [Required(ErrorMessage = "Field name is required")]
         public string Name { get; set; }
 
@@ -23,8 +25,9 @@ namespace WebApp.Models.Offer
             Skills = new List<SkillModel>();
         }
 
-        public OfferModel(string name, int salary, List<SkillModel> skills)
+        public OfferModel(string offerId, string name, int salary, List<SkillModel> skills)
         {
+            Id = offerId;
             Name = name;
             Salary = salary;
             Skills = skills;

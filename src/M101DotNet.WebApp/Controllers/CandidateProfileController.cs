@@ -33,11 +33,11 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Detail(string candidateId)
+        public async Task<ActionResult> Detail(string id)
         {
             if (IsAuthenticated() && !IsCandidate())
             {
-                var candidateViewModel = await GetCandidateByIdAsync(candidateId);
+                var candidateViewModel = await GetCandidateByIdAsync(id);
                 return View(candidateViewModel);
             }
             return RedirectToAction("DeniedPermision", "Home");
