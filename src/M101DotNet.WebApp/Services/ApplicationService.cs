@@ -23,7 +23,7 @@ namespace WebApp.Services
         {
             dbContext = new JobContext();
         }
-
+        //do usuniecia - po refaktoryzacji serwisów
         public async Task<RecruiterUser> GetRecruterByEmailAsync(string email)
         {
             var user = await dbContext.RecruiterUsers.Find(x => x.Email == email).SingleOrDefaultAsync();
@@ -58,15 +58,17 @@ namespace WebApp.Services
             var offerList = await dbContext.JobOffers.Find(r => r.IdRecruiter == id).ToListAsync();
             return offerList;
         }
+        //----------
 
+        //zostaje tutaj
         public async Task<OfferListViewModel> GetOfferViewModelListAsync(string id)
         {
-            var offerList = await GetOffersByIdRecruiterAsync(id);
-            var offersViewModel = MapToOffersViewModel(offerList);
-            var offerViewModelList = MapToOfferViewModelList(offersViewModel);
+            var offerList = await GetOffersByIdRecruiterAsync(id); //pobieranie z serwisu bazy
+            var offersViewModel = MapToOffersViewModel(offerList); //z serwisu mapowania
+            var offerViewModelList = MapToOfferViewModelList(offersViewModel); // z serwisu mapowania
             return offerViewModelList;
         }
-
+        //przeniesione do serwisu mapujacego
         private static List<OfferViewModel> MapToOffersViewModel(List<JobOffer> offers)
         {
             var offersViewModel = new List<OfferViewModel>();
@@ -84,29 +86,32 @@ namespace WebApp.Services
             var offerViewModelList = new OfferListViewModel(offersModelView);
             return offerViewModelList;
         }
+        //-----
 
+        //zostaje tutaj
         public async Task CreateRecruiterUserAsync(RegisterModel model)
         {
-            var user = new RecruiterUser
+            var user = new RecruiterUser //przerobić na zapytanie do serwisu mapujacego
             {
                 Name = model.Name,
                 Email = model.Email,
             };
 
-            user.Password = GenerateHashPassword(model.Password, user);
-            await dbContext.RecruiterUsers.InsertOneAsync(user);
+            user.Password = GenerateHashPassword(model.Password, user); // z tego serwisu
+            await dbContext.RecruiterUsers.InsertOneAsync(user); //zapytanie do seriwsu bazodanowego
         }
 
         public async Task CreateJobOfferAsync(OfferModel model, string id)
         {
-            var offer = MapToJobOffer(model, id);
-            await dbContext.JobOffers.InsertOneAsync(offer);
+            var offer = MapToJobOffer(model, id); //zapytanie do serwisu mapujacego
+            await dbContext.JobOffers.InsertOneAsync(offer); // zapytanie do serwisu bazodanowego
         }
 
+        //przeniesc do serwisu mapujacego
         public static JobOffer MapToJobOffer(OfferModel model, string id)
         {
             var skills = MapToSkills(model);
-            var offer = new JobOffer(model.Name, model.Salary, id, skills);
+            var offer = new JobOffer(model.Name, model.Salary, id, skills); 
             return offer;
         }
 
@@ -130,8 +135,9 @@ namespace WebApp.Services
             };
             return skill;
         }
+        //----------
 
-
+        //do seriwsu mapujacego
         public async Task UpdateRecruiterModelAsync(RecruiterModel model, string id)
         {
             var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, id);
@@ -143,7 +149,7 @@ namespace WebApp.Services
             await dbContext.RecruiterUsers.UpdateOneAsync(filter, update);
         }
 
-
+        //zostaje w application
         public string GenerateHashPassword(string password, User user)
         {
             SHA1 sha1 = SHA1.Create();
@@ -159,14 +165,14 @@ namespace WebApp.Services
 
         public async Task CreateCandidateUserAsync(RegisterModel model)
         {
-            var user = new CandidateUser
+            var user = new CandidateUser //zapytanie do mapujacego
             {
                 Name = model.Name,
                 Email = model.Email,
             };
 
             user.Password = GenerateHashPassword(model.Password, user);
-            await dbContext.CandidateUsers.InsertOneAsync(user);
+            await dbContext.CandidateUsers.InsertOneAsync(user); //zapytanie do bazodanowego
         }
 
         public async Task RemoveJobOfferAsync(string idOffer)
@@ -178,7 +184,7 @@ namespace WebApp.Services
 
         public async Task UpdateJobOfferAsync(OfferModel model, string idOffer)
         {
-            var offer = MapToJobOffer(model, idOffer);
+            var offer = MapToJobOffer(model, idOffer); //do mapujacego
             var filter = Builders<JobOffer>.Filter.Eq(r => r.Id, idOffer);
             var update = Builders<JobOffer>
                 .Update
@@ -186,12 +192,12 @@ namespace WebApp.Services
                 .Set(r => r.Salary, offer.Salary)
                 .Set(r => r.Skills, offer.Skills);
 
-            await dbContext.JobOffers.UpdateOneAsync(filter, update);
+            await dbContext.JobOffers.UpdateOneAsync(filter, update); //do bazodanowego
         }
 
         public async Task UpdateCandidateUserAsync(CandidateUserModel model, string id)
         {
-            CandidateUser candidate = MapToCandidateUser(model);
+            CandidateUser candidate = MapToCandidateUser(model); //map
             var filter = Builders<CandidateUser>.Filter.Eq(r => r.Id, id);
             var update = Builders<CandidateUser>
                 .Update
@@ -200,9 +206,10 @@ namespace WebApp.Services
                 .Set(r => r.Salary, candidate.Salary)
                 .Set(r => r.Skills, candidate.Skills);
 
-            await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
+            await dbContext.CandidateUsers.UpdateOneAsync(filter, update); //db
         }
 
+        //do mapujacego
         private static CandidateUser MapToCandidateUser(CandidateUserModel candidateModel)
         {
             var skills = MapToSkills(candidateModel);
@@ -215,11 +222,12 @@ namespace WebApp.Services
             };
             return candidate;
         }
+        //----
 
         public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId)
         {
-            var candidate = await GetCandidateByIdAsync(candidateId);
-            var candidateModel = MapToCandidateUserModel(candidate);
+            var candidate = await GetCandidateByIdAsync(candidateId); //db
+            var candidateModel = MapToCandidateUserModel(candidate); //map
             var candiateViewModel = new CandidateViewModel(candidateModel, candidate.Name, candidate.Email);
             return candiateViewModel;
         }
@@ -249,12 +257,12 @@ namespace WebApp.Services
 
         public async Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId)
         {
-            var offer = await GetJobOfferByIdAsync(offerId);
-            var offerModel = MapToOfferModel(offer);
+            var offer = await GetJobOfferByIdAsync(offerId); //db 
+            var offerModel = MapToOfferModel(offer); //map
             var offerViewModel = new OfferViewModel(offerModel, offer.IdRecruiter);
             return offerViewModel;
         }
-
+        //przeniesione do mapping service
         private static OfferModel MapToOfferModel(JobOffer offer)
         {
             var skills = MapToSkillModels(offer);
@@ -312,6 +320,6 @@ namespace WebApp.Services
             }
             return skills;
         }
-
+        //-----
     }
 }
