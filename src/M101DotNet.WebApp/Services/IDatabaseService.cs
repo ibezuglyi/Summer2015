@@ -17,5 +17,11 @@ namespace WebApp.Services
         Task<JobOffer> GetJobOfferByIdAsync(string id);
         Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id);
         Task UpdateRecruiterModelAsync(RecruiterModel model, string id);
+        Task UpdateCandidateAsync(CandidateUser candidate, string candidateId);
+        Task UpdateJobOfferAsync(JobOffer offer, string offerId);
+        Task RemoveJobOfferAsync(string idOffer);
+        Task InsertRecruiterUserAsync(RecruiterUser user);
+        Task InsertCaniddateUserAsync(CandidateUser user);
+        Task InsertJobOfferAsync(JobOffer offer);
     }
 }
