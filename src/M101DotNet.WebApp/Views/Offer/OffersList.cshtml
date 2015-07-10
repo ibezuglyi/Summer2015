@@ -11,7 +11,7 @@
         <div class="row">
             <div class="offer-title">
                  @Html.Label(""+Model.OffersList[i].Offer.Name, new { @class = "card-panel lime lighten-2" })
-                 @Html.Label(""+Model.OffersList[i].Offer.Salary, new { @class = "card-panel lime lighten-3" })
+                 @Html.Label(""+Model.OffersList[i].Offer.Salary+ " $ ", new { @class = "card-panel lime lighten-3" })
                  @Html.ActionLink("Details", "Details", "Offer", new {id = Model.OffersList[i].Offer.Id}, new { @class = "btn-large waves-effect waves-light" })
                  @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
                  @Html.ActionLink("Remove", "Remove", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
