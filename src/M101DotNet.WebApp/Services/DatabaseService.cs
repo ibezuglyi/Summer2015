@@ -57,13 +57,13 @@ namespace WebApp.Services
             return offerList;
         }
 
-        public async Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId)
+        public async Task UpdateRecruiterAsync(RecruiterUser recruiter, string recruiterId)
         {
             var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, recruiterId);
             var update = Builders<RecruiterUser>
                 .Update
-                .Set(r => r.CompanyDescription, model.CompanyDescription)
-                .Set(r => r.CompanyName, model.CompanyName);
+                .Set(r => r.CompanyDescription, recruiter.CompanyDescription)
+                .Set(r => r.CompanyName, recruiter.CompanyName);
 
             await dbContext.RecruiterUsers.UpdateOneAsync(filter, update);
         }
