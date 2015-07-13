@@ -107,14 +107,14 @@ namespace WebApp.Controllers
 
         
 
-        public async Task UpdateOffer(OfferModel model, string idOffer)
+        public async Task UpdateOffer(OfferModel model, string offerId)
         {
-            await service.UpdateJobOfferAsync(model, idOffer);
+            await service.UpdateJobOfferAsync(model, offerId);
         }
 
-        public async Task RemoveOffer(string idOffer)
+        public async Task RemoveOffer(string offerId)
         {
-            await service.RemoveJobOfferAsync(idOffer);
+            await service.RemoveJobOfferAsync(offerId);
         }
 
         private Task<OfferListViewModel> GetRecruiterOfferListViewModelAsync()
@@ -150,8 +150,8 @@ namespace WebApp.Controllers
 
         private async Task<bool> GetOfferAndCheckOwnerAnOffer(string offerId)
         {
-            var idRecruiter = await GetIdRecruiterByOfferIdAsync(offerId);
-            return IfCurrentUserAnOwnerOfOffer(idRecruiter);
+            var recruiterId = await GetIdRecruiterByOfferIdAsync(offerId);
+            return IfCurrentUserAnOwnerOfOffer(recruiterId);
         }
        
         private bool IfCurrentUserAnOwnerOfOffer(string recruiterId)
