@@ -20,11 +20,11 @@
     {
         <div class="offer-buttons">
             @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
-            @Html.ActionLink("Remove", "Remove", "Offer", new { id = Model.Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
+            <a href="#remove-modal" class="btn-large waves-effect waves-light btn modal-trigger">Remove</a>
         </div>
     }
     <div class="skill-list">
-        @foreach(var skill in Model.Offer.Skills)
+        @foreach (var skill in Model.Offer.Skills)
         {
             <div class="inline-field">
                 <div class="card-panel amber lighten-4">
@@ -35,3 +35,5 @@
         }
     </div>
 </div>
+@Html.Partial("_RemoveModalPartial", Model.Offer)
+@Scripts.Render("~/bundles/site")

@@ -24,7 +24,8 @@ namespace WebApp
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/site").Include(
-                        "~/Scripts/Site/candidateProfile.js"));
+                        "~/Scripts/Site/candidateProfile.js",
+                        "~/Scripts/Site/offer.js"));
 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

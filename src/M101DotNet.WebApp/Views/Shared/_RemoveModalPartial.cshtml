@@ -1,0 +1,16 @@
+﻿@model WebApp.Models.Offer.OfferModel
+@{
+    ViewBag.Title = "_RemoveModalPartial";
+}
+
+<div id="remove-modal" class="modal">
+    <div class="modal-content">
+        <h4>Confirm</h4>
+        <p>Are you sure you want to remove this offer?</p>
+    </div>
+    <div class="modal-footer">
+        @Html.ActionLink("Disagree", "Offerslist", "Offer", null, new { @class = "modal-action modal-close waves-effect waves-green btn-flat" })   
+        @Html.ActionLink("Agree", "Remove", "Offer", new { id = Model.Id }, new { @class = "modal-action modal-close waves-effect waves-green btn-flat" })   
+    </div>
+</div>
+
