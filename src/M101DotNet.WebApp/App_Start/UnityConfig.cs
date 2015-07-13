@@ -38,6 +38,8 @@ namespace WebApp.App_Start
             // container.LoadConfiguration();
 
             container.RegisterType<IApplicationService, ApplicationService>();
+            container.RegisterType<IMappingService, MappingService>();
+            container.RegisterType<IDatabaseService, DatabaseService>();
         }
     }
 }

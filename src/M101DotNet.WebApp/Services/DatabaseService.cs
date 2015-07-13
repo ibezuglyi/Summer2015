@@ -13,7 +13,7 @@ using WebApp.Models.Candidate;
 
 namespace WebApp.Services
 {
-    public class DatabaseService
+    public class DatabaseService : IDatabaseService
     {
         private JobContext dbContext;
 

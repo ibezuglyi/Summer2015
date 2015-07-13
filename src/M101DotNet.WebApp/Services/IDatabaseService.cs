@@ -8,7 +8,7 @@ using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
 {
-    interface IDatabaseService
+    public interface IDatabaseService
     {
         Task<RecruiterUser> GetRecruterByEmailAsync(string email);
         Task<CandidateUser> GetCandidateByEmailAsync(string email);
