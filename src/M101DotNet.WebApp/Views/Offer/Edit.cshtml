@@ -1,16 +1,16 @@
 ﻿@model WebApp.Models.Offer.OfferViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit an offer";
 }
 
-
+<h4>@ViewBag.Title</h4>
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(r=>r.Offer.Id)
     
     <div class="form-part">
-        @Html.Label("Offer Name:")<br />
+        @Html.Label("Offer name:")<br />
         @Html.TextBox("name", Model.Offer.Name)
         <span class="red-text text-darken-2">@Html.ValidationMessage("name")</span>
     </div>

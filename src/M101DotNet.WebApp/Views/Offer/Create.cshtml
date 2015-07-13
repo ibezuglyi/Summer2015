@@ -1,7 +1,7 @@
 ﻿@model WebApp.Models.Offer.OfferModel
 
 @{
-    ViewBag.Title = "Create an Offer";
+    ViewBag.Title = "Create an offer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     <div class="form-part">
-        @Html.Label("Offer Name:")<br />
+        @Html.Label("Offer name:")<br />
         @Html.TextBox("name", Model.Name)
         <span class="red-text text-darken-2">@Html.ValidationMessage("name")</span>
 </div>

@@ -3,20 +3,19 @@
     using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         <ul class="right hide-on-med-and-down">
-            <li class="navbar-text"><a>@User.Identity.Name Profile</a></li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
         
         <ul class="right hide-on-med-and-down">
         @if (User.IsInRole("Candidate"))
         {
-            <li>@Html.ActionLink("Profile", "Index", "CandidateProfile")</li>
+            <li>@Html.ActionLink(User.Identity.Name + " profile", "Index", "CandidateProfile")</li>
         }
         else
         {
             <li>@Html.ActionLink("Offers list", "OffersList", "Offer")</li>
-            <li>@Html.ActionLink("Create an Offer", "Create", "Offer")</li>
-            <li>@Html.ActionLink("Edit Profile", "Index", "RecruiterProfile")</li>            
+            <li>@Html.ActionLink("Create an offer", "Create", "Offer")</li>
+            <li>@Html.ActionLink(User.Identity.Name + " profile", "Index", "RecruiterProfile")</li>            
         }
             
         </ul>
