@@ -3,7 +3,7 @@
     using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         <ul class="right hide-on-med-and-down">
-            <li class="navbar-text"><a>Hello @User.Identity.Name</a></li>
+            <li class="navbar-text"><a>@User.Identity.Name Profile</a></li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
         
@@ -16,7 +16,7 @@
         {
             <li>@Html.ActionLink("Offers list", "OffersList", "Offer")</li>
             <li>@Html.ActionLink("Create Offer", "Create", "Offer")</li>
-            <li>@Html.ActionLink("Profile", "Index", "RecruiterProfile")</li>            
+            <li>@Html.ActionLink("Edit Profile", "Index", "RecruiterProfile")</li>            
         }
             
         </ul>
