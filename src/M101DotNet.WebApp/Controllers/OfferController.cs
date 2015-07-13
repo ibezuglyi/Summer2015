@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using WebApp.Models.Offer;
 using WebApp.Services;
@@ -11,16 +9,18 @@ namespace WebApp.Controllers
     public class OfferController : Controller
     {
         private IApplicationService service;
+        private readonly IAuthenticationService _authenticationService;
 
-        public OfferController(IApplicationService applicationService)
+        public OfferController(IApplicationService applicationService, IAuthenticationService authenticationService)
         {
             service = applicationService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            if (IsAuthenticated() && IsRecruiter())
+            if (_authenticationService.IsRecruiter(Request))
             {
                 return View(new OfferModel());
             }
@@ -32,8 +32,8 @@ namespace WebApp.Controllers
         {
             if (ValidateForm(model))
             {
-                var idRecruiter = GetIdRecruiterFromRequest().Value;
-                await service.CreateJobOfferAsync(model, idRecruiter);
+                var recruiterId = _authenticationService.GetRecruiterIdFromRequest(Request);
+                await service.CreateJobOfferAsync(model, recruiterId);
                 return RedirectToAction("OffersList", "Offer");
             }       
             return View(model);
@@ -42,7 +42,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> OffersList()
         {
-            if (IsRecruiter())
+            if (_authenticationService.IsRecruiter(Request))
             {
                  var offers = await GetRecruiterOfferListViewModelAsync();
                  return View(offers);               
@@ -54,7 +54,7 @@ namespace WebApp.Controllers
         public async Task<ActionResult> Remove(string id)
         {
             var ifRecruiterHaveRightsToRemove = await GetOfferAndCheckOwnerAnOffer(id);
-            if (IsAuthenticated() && ifRecruiterHaveRightsToRemove)
+            if (_authenticationService.IsAuthenticated(Request) && ifRecruiterHaveRightsToRemove)
             {
                 await RemoveOffer(id);
                 return RedirectToAction("OffersList", "Offer");
@@ -65,7 +65,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {
-            if (IsAuthenticated())
+            if (_authenticationService.IsAuthenticated(Request))
             {
                 var offer = await GetOfferViewModelAsync(id);
                 return View(offer);
@@ -75,8 +75,8 @@ namespace WebApp.Controllers
 
         [HttpGet]
         public async Task<ActionResult> Edit(string id)
-        {            
-            if (IsAuthenticated() && IsRecruiter())
+        {
+            if (_authenticationService.IsRecruiter(Request))
             {
                 var ifRecruiterHaveRightsToEdit = await GetOfferAndCheckOwnerAnOffer(id);
 
@@ -118,10 +118,9 @@ namespace WebApp.Controllers
         }
 
         private Task<OfferListViewModel> GetRecruiterOfferListViewModelAsync()
-        {            
-            var recruiterId = GetIdRecruiterFromRequest().Value;
+        {
+            var recruiterId = _authenticationService.GetRecruiterIdFromRequest(Request);
             var offersRecruiter = service.GetOfferViewModelListAsync(recruiterId);
-
             return offersRecruiter;
         }
 
@@ -155,17 +154,13 @@ namespace WebApp.Controllers
             return IfCurrentUserAnOwnerOfOffer(idRecruiter);
         }
        
-        private bool IfCurrentUserAnOwnerOfOffer(string idRecruiter)
+        private bool IfCurrentUserAnOwnerOfOffer(string recruiterId)
         {
-            var id = GetIdRecruiterFromRequest().Value;
-            return (id == idRecruiter);            
+            var id = _authenticationService.GetRecruiterIdFromRequest(Request);
+            return id == recruiterId;            
         }
 
-        private bool IsRecruiter()
-        {
-            var role = GetRoleFromRequest();
-            return (role.Value == "Recruiter");
-        }
+        
 
         private void AddEmptyNameError(string field)
         {
@@ -182,11 +177,7 @@ namespace WebApp.Controllers
             return offer.IdRecruiter;
         }
 
-        private Claim GetIdRecruiterFromRequest()
-        {
-            var authManager = GetAuthManager();
-            return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
-        }
+        
 
         public Task<OfferViewModel> GetOfferViewModelAsync(string offerId)
         {
@@ -196,32 +187,10 @@ namespace WebApp.Controllers
 
         public OfferViewModel GetOfferViewModel(OfferModel offerModel)
         {
-            var idRecruiter = GetIdRecruiterFromRequest();
-            var offerViewModel = new OfferViewModel(offerModel, idRecruiter.Value);
+            var recruiterId = _authenticationService.GetRecruiterIdFromRequest(Request);
+            var offerViewModel = new OfferViewModel(offerModel, recruiterId);
             return offerViewModel;
         }
 
-        //I know that methods below are opposite to DRY
-        
-        
-        
-
-        private Claim GetRoleFromRequest()
-        {
-            var authManager = GetAuthManager();
-            return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Role);
-        }
-
-        private bool IsAuthenticated()
-        {
-            var authManager = GetAuthManager();
-            return authManager.User.Identity.IsAuthenticated;
-        }
-
-        private Microsoft.Owin.Security.IAuthenticationManager GetAuthManager()
-        {
-            var context = Request.GetOwinContext();
-            return context.Authentication;
-        }
 	}
 }

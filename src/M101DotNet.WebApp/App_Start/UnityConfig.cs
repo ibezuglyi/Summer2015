@@ -38,6 +38,7 @@ namespace WebApp.App_Start
             // container.LoadConfiguration();
 
             container.RegisterType<IApplicationService, ApplicationService>();
+            container.RegisterType<IAuthenticationService, AuthenticationService>();
         }
     }
 }
