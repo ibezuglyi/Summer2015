@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Account;
@@ -50,5 +51,6 @@ namespace WebApp.Services
         void SignIn(ClaimsIdentity identity, HttpRequestBase request);
         ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user);
         ClaimsIdentity CreateCandidateIdentity(CandidateUser user);
+        
     }
 }

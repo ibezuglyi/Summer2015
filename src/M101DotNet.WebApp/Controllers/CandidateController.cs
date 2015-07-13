@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApp.Models.Account;
 using WebApp.Services;
+using System.Web.Script.Serialization;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -103,6 +106,18 @@ namespace WebApp.Controllers
         public void AddDuplicatedEmailError()
         {
             ModelState.AddModelError("Email", "User with this email already exists.");
+        }
+
+        [HttpGet]
+        public JsonResult GetHints(string query)
+        {
+            List<string> hints = new List<string>();
+            hints.Add("C#");
+            hints.Add("Html");
+
+            var response = new SkillHintsModel(query, hints);
+
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
     }
