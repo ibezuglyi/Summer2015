@@ -3,35 +3,37 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<div class="offer">
-    <div class="row">
+<div class="grey lighten-3 card-panel">
         <div class="offer-title">
-            <div class="card-panel amber lighten-1">
-                <span>Name:</span>
-                @Model.Offer.Name
-            </div>            
-            <div class="card-panel amber lighten-2">
-                <span>Salary:</span>
-                @Model.Offer.Salary
-            </div>             
-        </div>           
-            @if (User.IsInRole("Recruiter"))
-            {
+            <div class="inline-field">
+                <div class="card-panel orange lighten-3">
+                    <span>Name:</span>
+                    @Model.Offer.Name
+                </div>
+            </div>
+            <div class="inline-field">
+                <div class="card-panel orange lighten-3">
+                    <span>Salary:</span>
+                    @Model.Offer.Salary
+                </div>
+            </div>
+        </div>
+        @if (User.IsInRole("Recruiter"))
+        {
             <div class="offer-buttons">
                 @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
                 @Html.ActionLink("Remove", "Remove", "Offer", new { id = Model.Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
             </div>
-            }
-        
-    </div>
-    <div class="row">
-        @for (int j = 0; j < Model.Offer.Skills.Count ; j++)
-        {
-            <div class="card-panel amber lighten-4">
-                @Model.Offer.Skills[j].Name
-                @Model.Offer.Skills[j].Level
-            </div>
         }
-    </div>
-</div> 
+
+
+        <div class="skill-list">
+            @for (int j = 0; j < Model.Offer.Skills.Count; j++)
+            {
+                <div class="card-panel amber lighten-4">
+                    @Model.Offer.Skills[j].Name
+                    @Model.Offer.Skills[j].Level
+                </div>
+            }
+        </div>
+</div>
