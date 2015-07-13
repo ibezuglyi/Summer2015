@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Owin.Security;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
@@ -11,23 +10,23 @@ namespace WebApp.Controllers
     {
         public Claim GetIdFromRequest()
         {
-            var authManager = getAuthManager();
+            var authManager = GetAuthManager();
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Sid);
         }
 
         public Claim GetRoleFromRequest()
         {
-            var authManager = getAuthManager();
+            var authManager = GetAuthManager();
             return authManager.User.Claims.Single(r => r.Type == ClaimTypes.Role);
         }
 
         public bool IsAuthenticated()
         {
-            var authManager = getAuthManager();
+            var authManager = GetAuthManager();
             return authManager.User.Identity.IsAuthenticated;
         }
       
-        public Microsoft.Owin.Security.IAuthenticationManager getAuthManager()
+        public IAuthenticationManager GetAuthManager()
         {
             var context = Request.GetOwinContext();
             return context.Authentication;

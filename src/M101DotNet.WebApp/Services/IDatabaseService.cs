@@ -8,7 +8,7 @@ using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
 {
-    interface IDatabaseService
+    public interface IDatabaseService
     {
         Task<RecruiterUser> GetRecruterByEmailAsync(string email);
         Task<CandidateUser> GetCandidateByEmailAsync(string email);
@@ -17,5 +17,11 @@ namespace WebApp.Services
         Task<JobOffer> GetJobOfferByIdAsync(string id);
         Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id);
         Task UpdateRecruiterModelAsync(RecruiterModel model, string id);
+        Task UpdateCandidateAsync(CandidateUser candidate, string candidateId);
+        Task UpdateJobOfferAsync(JobOffer offer, string offerId);
+        Task RemoveJobOfferAsync(string idOffer);
+        Task InsertRecruiterUserAsync(RecruiterUser user);
+        Task InsertCaniddateUserAsync(CandidateUser user);
+        Task InsertJobOfferAsync(JobOffer offer);
     }
 }

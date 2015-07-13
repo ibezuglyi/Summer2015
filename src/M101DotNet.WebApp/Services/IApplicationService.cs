@@ -28,10 +28,8 @@ namespace WebApp.Services
         Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string idRecruiter);        
         Task<JobOffer> GetJobOfferByIdAsync(string offerId);
         Task<OfferListViewModel> GetOfferViewModelListAsync(string idRecruiter);        
-        Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId);        
-
+        Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId); 
         Task UpdateJobOfferAsync(OfferModel model, string idOffer);
-
         Task RemoveJobOfferAsync(string idOffer);
     }
 }

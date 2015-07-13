@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using WebApp.Controllers;
 using WebApp.Services;
 
 namespace WebApp.App_Start
@@ -37,6 +38,8 @@ namespace WebApp.App_Start
             // container.LoadConfiguration();
 
             container.RegisterType<IApplicationService, ApplicationService>();
+            container.RegisterType<IMappingService, MappingService>();
+            container.RegisterType<IDatabaseService, DatabaseService>();
         }
     }
 }

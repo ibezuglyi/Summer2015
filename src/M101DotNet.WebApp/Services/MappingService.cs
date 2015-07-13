@@ -9,9 +9,9 @@ using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
 {
-    public class MappingService
+    public class MappingService : IMappingService
     {
-        private static List<OfferViewModel> MapToOffersViewModel(List<JobOffer> offers)
+        public List<OfferViewModel> MapToOffersViewModel(List<JobOffer> offers)
         {
             var offersViewModel = new List<OfferViewModel>();
             foreach (var offer in offers)
@@ -23,20 +23,20 @@ namespace WebApp.Services
             return offersViewModel;
         }
 
-        private static OfferListViewModel MapToOfferViewModelList(List<OfferViewModel> offersModelView)
+        public OfferListViewModel MapToOfferViewModelList(List<OfferViewModel> offersModelView)
         {
             var offerViewModelList = new OfferListViewModel(offersModelView);
             return offerViewModelList;
         }
 
-        public static JobOffer MapToJobOffer(OfferModel model, string id)
+        public  JobOffer MapToJobOffer(OfferModel model, string id)
         {
             var skills = MapSkillModelsToSkills(model.Skills);
             var offer = new JobOffer(model.Name, model.Salary, id, skills);
             return offer;
         }
 
-        public static Skill MapToSkill(SkillModel model)
+        public Skill MapToSkill(SkillModel model)
         {
             var skill = new Skill
             {
@@ -46,7 +46,7 @@ namespace WebApp.Services
             return skill;
         }
 
-        private static CandidateUser MapToCandidateUser(CandidateUserModel candidateModel)
+        public CandidateUser MapToCandidateUser(CandidateUserModel candidateModel)
         {
             var skills = MapSkillModelsToSkills(candidateModel.Skills);
             var candidate = new CandidateUser()
@@ -59,27 +59,48 @@ namespace WebApp.Services
             return candidate;
         }
 
-         private static OfferModel MapToOfferModel(JobOffer offer)
+         public OfferModel MapToOfferModel(JobOffer offer)
         {
             var skills = MapSkillsToSkillModels(offer.Skills);
             var offerModel = new OfferModel(offer.Id, offer.Name, offer.Salary, skills);
             return offerModel;
         }
 
-        private static RecruiterModel MapToRecruiterModel(RecruiterUser recruiter)
+        public RecruiterModel MapToRecruiterModel(RecruiterUser recruiter)
         {
             var recruiterModel = new RecruiterModel(recruiter.CompanyName, recruiter.CompanyDescription);
             return recruiterModel;
         }
 
-        private static CandidateUserModel MapToCandidateUserModel(CandidateUser candidate)
+        public RecruiterUser MapToRecruiterUser(string name, string email)
+        {
+            var user = new RecruiterUser 
+            {
+                Name = name,
+                Email = email,
+            };
+            return user;
+        }
+
+        public  CandidateUser MapToCandidateUser(string name, string email)
+        {
+            var user = new CandidateUser
+            {
+                Name = name,
+                Email = email,
+            };
+            return user;
+        }
+
+        public  CandidateUserModel MapToCandidateUserModel(CandidateUser candidate)
         {
             var skillModels = MapSkillsToSkillModels(candidate.Skills);
             var candidateModel = new CandidateUserModel(candidate.Salary, candidate.ExperienceDescription, candidate.ExperienceInYears, skillModels);
             return candidateModel;
         }
 
-        private static List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels)
+
+        public List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels)
         {
             var skills = new List<Skill>();
             foreach(var skillModel in skillModels)
@@ -94,7 +115,7 @@ namespace WebApp.Services
             return skills;
         }
 
-        private static List<SkillModel> MapSkillsToSkillModels(List<Skill> skills)
+        public List<SkillModel> MapSkillsToSkillModels(List<Skill> skills)
         {
             var skillModels = new List<SkillModel>();
             foreach (var skill in skills)
@@ -103,6 +124,21 @@ namespace WebApp.Services
                 skillModels.Add(skillModel);
             }
             return skillModels;
+        }
+
+        public CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail)
+        {
+            return new CandidateViewModel(candidateModel, candidateName, candidateEmail);
+        }
+
+        public RecruiterViewModel MapToRecruiterViewModel(RecruiterModel recruiterModel, string recruiterName, string recruiterEmail)
+        {
+            return new RecruiterViewModel(recruiterModel, recruiterName, recruiterEmail);
+        }
+
+        public OfferViewModel MapToOfferViewModel(OfferModel offerModel, string IdRecruiter)
+        {
+            return new OfferViewModel(offerModel, IdRecruiter);
         }
     }
 }

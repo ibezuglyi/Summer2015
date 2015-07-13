@@ -1,15 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using MongoDB.Driver;
 using WebApp.Entities;
-using WebApp.Models;
 using WebApp.Models.Account;
-using System.Security.Cryptography;
-using System.Text;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
