@@ -13,7 +13,7 @@
                 <div class="row">
                     <input type="hidden" name="Skills.Index" value="@i" />
                     <span class="col s3">
-                        <input id="@nameInputName" name="@nameInputName" value="@Model[i].Name" type="text" />
+                        <input class="autocomplete" id="@nameInputName" name="@nameInputName" value="@Model[i].Name" type="text" />
                     </span>
                     <span class="col s3 range-field">
                         <input type="range" min="1" max="10" id="@levelInputName" name="@levelInputName" value="@Model[i].Level" />
