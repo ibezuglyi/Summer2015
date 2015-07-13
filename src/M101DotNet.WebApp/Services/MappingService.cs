@@ -99,6 +99,7 @@ namespace WebApp.Services
             return candidateModel;
         }
 
+
         private  List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels)
         {
             var skills = new List<Skill>();
@@ -123,6 +124,21 @@ namespace WebApp.Services
                 skillModels.Add(skillModel);
             }
             return skillModels;
+        }
+
+        public CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail)
+        {
+            return new CandidateViewModel(candidateModel, candidateName, candidateEmail);
+        }
+
+        public RecruiterViewModel MapToRecruiterViewModel(RecruiterModel recruiterModel, string recruiterName, string recruiterEmail)
+        {
+            return new RecruiterViewModel(recruiterModel, recruiterName, recruiterEmail);
+        }
+
+        public OfferViewModel MapToOfferViewModel(OfferModel offerModel, string IdRecruiter)
+        {
+            return new OfferViewModel(offerModel, IdRecruiter);
         }
     }
 }

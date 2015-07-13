@@ -57,9 +57,9 @@ namespace WebApp.Services
             return offerList;
         }
 
-        public async Task UpdateRecruiterModelAsync(RecruiterModel model, string id)
+        public async Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId)
         {
-            var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, id);
+            var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, recruiterId);
             var update = Builders<RecruiterUser>
                 .Update
                 .Set(r => r.CompanyDescription, model.CompanyDescription)
