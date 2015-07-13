@@ -56,21 +56,24 @@ namespace WebApp.Controllers
 
         private bool ValidateForm(CandidateUserModel model)
         {
-            if (model.Skills.Count < 1)
+            if (ModelState.IsValid) 
             {
-                ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
-            }
-            if (AreSkillsDuplicate(model))
-            {
-                ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
+                if (model.Skills.Count < 1)
+                {
+                    ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
+                }
+                if (AreSkillsDuplicated(model))
+                {
+                    ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
+                }
             }
             return ModelState.IsValid;
         }
 
-        private bool AreSkillsDuplicate(CandidateUserModel model)
+        private bool AreSkillsDuplicated(CandidateUserModel model)
         {
             var skills = model.Skills;
-            var skillsDistinct = model.Skills.Select(r => r.Name).Distinct();
+            var skillsDistinct = model.Skills.Select(r => r.Name.ToLower()).Distinct();
             return skills.Count != skillsDistinct.Count();
         }
 

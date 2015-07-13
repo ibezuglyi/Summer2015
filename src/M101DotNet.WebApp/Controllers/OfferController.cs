@@ -44,12 +44,24 @@ namespace WebApp.Controllers
         {
             if (IsRecruiter())
             {
-                 var offers = await GetRecruiterOffersAsync();
+                 var offers = await GetRecruiterOfferListViewModelAsync();
                  return View(offers);               
             }
             return RedirectToAction("DeniedPermision", "Home");
         }
-                
+
+        [HttpGet]
+        public async Task<ActionResult> Remove(string id)
+        {
+            var ifRecruiterHaveRightsToRemove = await GetOfferAndCheckOwnerAnOffer(id);
+            if (IsAuthenticated() && ifRecruiterHaveRightsToRemove)
+            {
+                await RemoveOffer(id);
+                return RedirectToAction("OffersList", "Offer");
+            }
+            return RedirectToAction("DeniedPermision", "Home");
+        }        
+
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {
@@ -66,10 +78,11 @@ namespace WebApp.Controllers
         {            
             if (IsAuthenticated() && IsRecruiter())
             {
-                var offer = await GetOfferViewModelAsync(id);
-                var isRightRecruiter = IfCurrentUserAnOwnerOfOffer(offer.IdRecruiter);
-                if (isRightRecruiter)
+                var ifRecruiterHaveRightsToEdit = await GetOfferAndCheckOwnerAnOffer(id);
+
+                if (ifRecruiterHaveRightsToEdit)
                 {
+                    var offer = await GetOfferViewModelAsync(id);    
                     return View(offer);
                 }
                 else
@@ -83,20 +96,28 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(OfferModel model)
         {
-            //Not finished yet
             if (ValidateForm(model))
             {
                 await UpdateOffer(model, model.Id);
+                return RedirectToAction("OffersList", "Offer");
             }
-            return View(model);
+            var offer = GetOfferViewModel(model);
+            return View(offer);
         }
+
+        
 
         public async Task UpdateOffer(OfferModel model, string idOffer)
         {
             await service.UpdateJobOfferAsync(model, idOffer);
         }
 
-        private Task<OfferListViewModel> GetRecruiterOffersAsync()
+        public async Task RemoveOffer(string idOffer)
+        {
+            await service.RemoveJobOfferAsync(idOffer);
+        }
+
+        private Task<OfferListViewModel> GetRecruiterOfferListViewModelAsync()
         {            
             var recruiterId = GetIdRecruiterFromRequest().Value;
             var offersRecruiter = service.GetOfferViewModelListAsync(recruiterId);
@@ -107,24 +128,32 @@ namespace WebApp.Controllers
 
         private bool ValidateForm(OfferModel model)
         {
-            if (model.Skills.Count < 1)
+            if(ModelState.IsValid)
             {
-                ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
-            }
-            if (AreSkillsDuplicate(model))
-            {
-                ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
-            }
+                if (model.Skills.Count < 1)
+                {
+                    ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
+                }
+                if (AreSkillsDuplicate(model))
+                {
+                    ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
+                }
+            }            
             return ModelState.IsValid;
         }
 
         private bool AreSkillsDuplicate(OfferModel model)
         {
             var skills = model.Skills;
-            var skillsDistinct = model.Skills.Select(r => r.Name).Distinct();
+            var skillsDistinct = model.Skills.Select(r => r.Name.ToLower()).Distinct();
             return skills.Count != skillsDistinct.Count();
         }
 
+        private async Task<bool> GetOfferAndCheckOwnerAnOffer(string offerId)
+        {
+            var idRecruiter = await GetIdRecruiterByOfferIdAsync(offerId);
+            return IfCurrentUserAnOwnerOfOffer(idRecruiter);
+        }
        
         private bool IfCurrentUserAnOwnerOfOffer(string idRecruiter)
         {
@@ -163,6 +192,13 @@ namespace WebApp.Controllers
         {
             var offerModel = service.GetOfferViewModelByIdAsync(offerId);
             return offerModel;
+        }
+
+        public OfferViewModel GetOfferViewModel(OfferModel offerModel)
+        {
+            var idRecruiter = GetIdRecruiterFromRequest();
+            var offerViewModel = new OfferViewModel(offerModel, idRecruiter.Value);
+            return offerViewModel;
         }
 
         //I know that methods below are opposite to DRY

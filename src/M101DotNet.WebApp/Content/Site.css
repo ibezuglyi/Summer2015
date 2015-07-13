@@ -75,10 +75,6 @@ select{
     top:25px;
 }
 
-.add-skill{
-    float:right;
-}
-
 .form-part{
     margin-bottom: 10px;
 }
@@ -92,4 +88,24 @@ select{
 
 .profile{
     font-size: 15px;
+}
+
+.range-field .thumb{
+    display: none;
+}
+.value-field-css{
+    position:relative;
+    top:30px;
+    left: 10px;
+    font-weight: 500;
+    font-size: 22px;
+}
+
+.offer-title span {
+    font-weight:bold;
+}
+
+.offer-buttons
+{
+    float:right;
 }

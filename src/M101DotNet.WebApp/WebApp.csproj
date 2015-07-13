@@ -190,7 +190,11 @@
     <Compile Include="Models\Recruiter\RecruiterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApplicationService.cs" />
+    <Compile Include="Services\DatabaseService.cs" />
     <Compile Include="Services\IApplicationService.cs" />
+    <Compile Include="Services\IDatabaseService.cs" />
+    <Compile Include="Services\IMappingService.cs" />
+    <Compile Include="Services\MappingService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -269,6 +273,7 @@
     <Content Include="Views\Candidate\Register.cshtml" />
     <Content Include="Views\RecruiterProfile\Index.cshtml" />
     <Content Include="Views\CandidateProfile\Index.cshtml" />
+    <Content Include="Views\CandidateProfile\Detail.cshtml" />
     <Content Include="Views\Shared\_SkillFormPartial.cshtml" />
     <Content Include="Views\Offer\Create.cshtml" />
     <Content Include="Views\Offer\OffersList.cshtml" />
