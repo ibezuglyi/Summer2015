@@ -59,6 +59,17 @@ namespace WebApp.Services
             return candidate;
         }
 
+        public RecruiterUser MapToRecruiterUser(RecruiterModel recruiterModel)
+        {
+            var recruiter = new RecruiterUser()
+            {
+                CompanyDescription = recruiterModel.CompanyDescription,
+                CompanyName = recruiterModel.CompanyName,
+                
+            };
+            return recruiter;
+        }
+
          public OfferModel MapToOfferModel(JobOffer offer)
         {
             var skills = MapSkillsToSkillModels(offer.Skills);

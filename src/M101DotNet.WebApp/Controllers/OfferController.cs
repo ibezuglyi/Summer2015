@@ -119,8 +119,8 @@ namespace WebApp.Controllers
 
         private async Task<bool> GetOfferAndCheckOwnerAnOffer(string offerId)
         {
-            var idRecruiter = await GetIdRecruiterByOfferIdAsync(offerId);
-            return service.IfCurrentUserAnOwnerOfOffer(idRecruiter, Request);
+            var recruiterId = await GetIdRecruiterByOfferIdAsync(offerId);
+            return service.IfCurrentUserAnOwnerOfOffer(recruiterId, Request);
         }
 
         public async Task<string> GetIdRecruiterByOfferIdAsync(string offerId)

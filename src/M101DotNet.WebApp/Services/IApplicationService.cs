@@ -26,8 +26,7 @@ namespace WebApp.Services
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId);
         Task UpdateCandidateUserAsync(CandidateUserModel model, string candidateId);
         Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(string recruiterId);
-        Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(RecruiterModel recruiterModel, string recruiterId);
-        Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string idRecruiter);        
+        Task<RecruiterViewModel> GetRecruiterViewModelByIdAsync(RecruiterModel recruiterModel, string recruiterId);      
         Task<JobOffer> GetJobOfferByIdAsync(string offerId);
         Task<OfferListViewModel> GetOfferViewModelListAsync(string idRecruiter);        
         Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId); 
