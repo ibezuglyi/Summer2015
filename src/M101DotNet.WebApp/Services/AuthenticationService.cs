@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
+using WebApp.Entities;
+using WebApp.Models.Candidate;
+using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
 {
@@ -31,7 +34,13 @@ namespace WebApp.Services
             return role == "Recruiter";
         }
 
-        public string GetRecruiterIdFromRequest(HttpRequestBase request)
+        public bool IsCandidate(HttpRequestBase request)
+        {
+            var role = GetRoleFromRequest(request);
+            return role == "Candidate";
+        }
+
+        public string GetUserIdFromRequest(HttpRequestBase request)
         {
             var authManager = GetAuthManager(request);
             var claim = authManager.User.Claims.SingleOrDefault(r => r.Type == ClaimTypes.Sid);
@@ -46,5 +55,24 @@ namespace WebApp.Services
             }
             return string.Empty;
         }
+
+        public bool IfCurrentUserAnOwnerOfOffer(string recruiterIdFromOffer, HttpRequestBase request)
+        {
+            var id = GetUserIdFromRequest(request);
+            return id == recruiterIdFromOffer;
+        }
+
+        public void SignIn(ClaimsIdentity identity, HttpRequestBase request)
+        {
+            var authManager = GetAuthManager(request);
+            authManager.SignIn(identity);
+        }
+
+        public void SignOut(HttpRequestBase request)
+        {
+            var authManager = GetAuthManager(request);
+            authManager.SignOut("ApplicationCookie");
+        }
+
     }
 }

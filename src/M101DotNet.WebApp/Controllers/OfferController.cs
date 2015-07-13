@@ -9,18 +9,16 @@ namespace WebApp.Controllers
     public class OfferController : Controller
     {
         private IApplicationService service;
-        private readonly IAuthenticationService _authenticationService;
 
-        public OfferController(IApplicationService applicationService, IAuthenticationService authenticationService)
+        public OfferController(IApplicationService applicationService)
         {
             service = applicationService;
-            _authenticationService = authenticationService;
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            if (_authenticationService.IsRecruiter(Request))
+            if (service.IsRecruiter(Request))
             {
                 return View(new OfferModel());
             }
@@ -32,8 +30,7 @@ namespace WebApp.Controllers
         {
             if (ValidateForm(model))
             {
-                var recruiterId = _authenticationService.GetRecruiterIdFromRequest(Request);
-                await service.CreateJobOfferAsync(model, recruiterId);
+                await service.CreateJobOfferForRecruiter(model, Request);
                 return RedirectToAction("OffersList", "Offer");
             }       
             return View(model);
@@ -42,9 +39,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> OffersList()
         {
-            if (_authenticationService.IsRecruiter(Request))
+            if (service.IsRecruiter(Request))
             {
-                 var offers = await GetRecruiterOfferListViewModelAsync();
+                 var offers = await service.GetRecruiterOfferListViewModelAsync(Request);
                  return View(offers);               
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -54,9 +51,9 @@ namespace WebApp.Controllers
         public async Task<ActionResult> Remove(string id)
         {
             var ifRecruiterHaveRightsToRemove = await GetOfferAndCheckOwnerAnOffer(id);
-            if (_authenticationService.IsAuthenticated(Request) && ifRecruiterHaveRightsToRemove)
+            if (service.IsAuthenticated(Request) && ifRecruiterHaveRightsToRemove)
             {
-                await RemoveOffer(id);
+                await service.RemoveJobOfferAsync(id);
                 return RedirectToAction("OffersList", "Offer");
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -65,9 +62,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {
-            if (_authenticationService.IsAuthenticated(Request))
+            if (service.IsAuthenticated(Request))
             {
-                var offer = await GetOfferViewModelAsync(id);
+                var offer = await service.GetOfferViewModelByIdAsync(id);
                 return View(offer);
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -76,13 +73,12 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Edit(string id)
         {
-            if (_authenticationService.IsRecruiter(Request))
+            if (service.IsRecruiter(Request))
             {
                 var ifRecruiterHaveRightsToEdit = await GetOfferAndCheckOwnerAnOffer(id);
-
                 if (ifRecruiterHaveRightsToEdit)
                 {
-                    var offer = await GetOfferViewModelAsync(id);    
+                    var offer = await service.GetOfferViewModelByIdAsync(id);    
                     return View(offer);
                 }
                 else
@@ -98,32 +94,12 @@ namespace WebApp.Controllers
         {
             if (ValidateForm(model))
             {
-                await UpdateOffer(model, model.Id);
+                await service.UpdateJobOfferAsync(model, model.Id);
                 return RedirectToAction("OffersList", "Offer");
             }
-            var offer = GetOfferViewModel(model);
-            return View(offer);
-        }
-
-        
-
-        public async Task UpdateOffer(OfferModel model, string idOffer)
-        {
-            await service.UpdateJobOfferAsync(model, idOffer);
-        }
-
-        public async Task RemoveOffer(string idOffer)
-        {
-            await service.RemoveJobOfferAsync(idOffer);
-        }
-
-        private Task<OfferListViewModel> GetRecruiterOfferListViewModelAsync()
-        {
-            var recruiterId = _authenticationService.GetRecruiterIdFromRequest(Request);
-            var offersRecruiter = service.GetOfferViewModelListAsync(recruiterId);
-            return offersRecruiter;
-        }
-
+            var offerViewModel = service.GetOfferViewModelAsync(model, Request);
+            return View(offerViewModel);
+        } 
 
         private bool ValidateForm(OfferModel model)
         {
@@ -133,7 +109,7 @@ namespace WebApp.Controllers
                 {
                     ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
                 }
-                if (AreSkillsDuplicate(model))
+                if (service.AreSkillsDuplicated(model.Skills))
                 {
                     ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
                 }
@@ -141,55 +117,16 @@ namespace WebApp.Controllers
             return ModelState.IsValid;
         }
 
-        private bool AreSkillsDuplicate(OfferModel model)
-        {
-            var skills = model.Skills;
-            var skillsDistinct = model.Skills.Select(r => r.Name.ToLower()).Distinct();
-            return skills.Count != skillsDistinct.Count();
-        }
-
         private async Task<bool> GetOfferAndCheckOwnerAnOffer(string offerId)
         {
             var idRecruiter = await GetIdRecruiterByOfferIdAsync(offerId);
-            return IfCurrentUserAnOwnerOfOffer(idRecruiter);
-        }
-       
-        private bool IfCurrentUserAnOwnerOfOffer(string recruiterId)
-        {
-            var id = _authenticationService.GetRecruiterIdFromRequest(Request);
-            return id == recruiterId;            
-        }
-
-        
-
-        private void AddEmptyNameError(string field)
-        {
-            ModelState.AddModelError(field, "The Name can't be unfilled");
-        }
-        private void AddWrongSalaryValueError(string field)
-        {
-            ModelState.AddModelError(field, "The Salary must have a numeric not negative value");
+            return service.IfCurrentUserAnOwnerOfOffer(idRecruiter, Request);
         }
 
         public async Task<string> GetIdRecruiterByOfferIdAsync(string offerId)
         {
-            var offer = await GetOfferViewModelAsync(offerId);
-            return offer.IdRecruiter;
-        }
-
-        
-
-        public Task<OfferViewModel> GetOfferViewModelAsync(string offerId)
-        {
-            var offerModel = service.GetOfferViewModelByIdAsync(offerId);
-            return offerModel;
-        }
-
-        public OfferViewModel GetOfferViewModel(OfferModel offerModel)
-        {
-            var recruiterId = _authenticationService.GetRecruiterIdFromRequest(Request);
-            var offerViewModel = new OfferViewModel(offerModel, recruiterId);
-            return offerViewModel;
+            var offerViewModel = await service.GetOfferViewModelByIdAsync(offerId);
+            return offerViewModel.IdRecruiter;
         }
 
 	}

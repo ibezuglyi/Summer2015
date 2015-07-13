@@ -6,7 +6,7 @@ using WebApp.Services;
 namespace WebApp.Controllers
 {
     [AllowAnonymous]
-    public class CandidateController : UserController
+    public class CandidateController : Controller
     {
         
         private IApplicationService service;
@@ -14,6 +14,17 @@ namespace WebApp.Controllers
         public CandidateController(IApplicationService applicationService)
         {
             service = applicationService;
+        }
+
+        [HttpGet]
+        public ActionResult Login(string returnUrl)
+        {
+            var model = new LoginModel
+            {
+                ReturnUrl = returnUrl
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -33,14 +44,20 @@ namespace WebApp.Controllers
             var hashPassword = service.GenerateHashPassword(model.Password, user);
             if (hashPassword == user.Password)
             {
-                var identity = CreateIdentity(user, "Candidate");
-                SignIn(identity);
+                var identity = service.CreateCandidateIdentity(user);
+                service.SignIn(identity, Request);
 
                 return Redirect(GetRedirectUrl(model.ReturnUrl));
             }
 
             AddWrongEmailPasswordError();
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View(new RegisterModel());
         }
 
         [HttpPost]
@@ -59,6 +76,33 @@ namespace WebApp.Controllers
             }
             await service.CreateCandidateUserAsync(model);
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            service.SignOut(Request);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public string GetRedirectUrl(string returnUrl)
+        {
+            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+            {
+                return Url.Action("index", "home");
+            }
+
+            return returnUrl;
+        }
+
+        public void AddWrongEmailPasswordError()
+        {
+            ModelState.AddModelError("Email", "Wrong email address or password.");
+        }
+
+        public void AddDuplicatedEmailError()
+        {
+            ModelState.AddModelError("Email", "User with this email already exists.");
         }
 
     }

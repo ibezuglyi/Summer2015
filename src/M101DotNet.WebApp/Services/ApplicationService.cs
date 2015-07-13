@@ -12,6 +12,9 @@ using WebApp.Models.Account;
 using WebApp.Models.Candidate;
 using WebApp.Models.Recruiter;
 using WebApp.Models.Offer;
+using System.Web.Mvc;
+using System.Security.Claims;
+
 
 namespace WebApp.Services
 {
@@ -19,11 +22,13 @@ namespace WebApp.Services
     {
         IMappingService mapService;
         IDatabaseService dbService;
+        IAuthenticationService authService;
 
-        public ApplicationService(IMappingService MapService, IDatabaseService DbService)
+        public ApplicationService(IMappingService MapService, IDatabaseService DbService, IAuthenticationService AuthService)
         {
             mapService = MapService;
             dbService = DbService;
+            authService = AuthService;
         }
 
         public async Task<RecruiterUser> GetRecruterByEmailAsync(string email)
@@ -163,6 +168,126 @@ namespace WebApp.Services
             var offerModel = mapService.MapToOfferModel(offer);
             var offerViewModel = mapService.MapToOfferViewModel(offerModel, offer.IdRecruiter);
             return offerViewModel;
+        }
+
+        public bool IsRecruiter(HttpRequestBase request)
+        {
+            return authService.IsRecruiter(request);
+        }
+
+        public bool IsCandidate(HttpRequestBase request)
+        {
+            return authService.IsCandidate(request);
+        }
+
+        public async Task<CandidateViewModel> GetCandidateViewModelAsync(HttpRequestBase request)
+        {
+            var id = authService.GetUserIdFromRequest(request);
+            var candidateViewModel = await GetCandidateViewModelByIdAsync(id);
+            return candidateViewModel;
+        }
+
+        public async Task<CandidateViewModel> GetCandidateModelAndBindWithStaticAsync(CandidateUserModel candidateModel, HttpRequestBase request)
+        {
+            var id = authService.GetUserIdFromRequest(request);
+            var candidateViewModel = await GetCandidateViewModelByIdAsync(candidateModel, id);
+            return candidateViewModel;
+        }
+
+        public async Task UpdateCandidate(CandidateUserModel model, HttpRequestBase request)
+        {
+            var id = authService.GetUserIdFromRequest(request);
+            await UpdateCandidateUserAsync(model, id);
+        }
+
+        public Task<RecruiterViewModel> GetRecruiterViewModelAsync(HttpRequestBase request)
+        {
+            var id = authService.GetUserIdFromRequest(request);
+            var recruiterModel = GetRecruiterViewModelByIdAsync(id);
+            return recruiterModel;
+        }
+
+        public Task<RecruiterViewModel> GetRecruiterViewModelAsync(RecruiterModel recruiterModel, HttpRequestBase request)
+        {
+            var id = authService.GetUserIdFromRequest(request);
+            var recruiterViewModel = GetRecruiterViewModelByIdAsync(recruiterModel, id);
+            return recruiterViewModel;
+        }
+
+        public async Task UpdateRecruiter(RecruiterModel model, HttpRequestBase request)
+        {
+            var id = authService.GetUserIdFromRequest(request);
+            await UpdateRecruiterModelAsync(model, id);
+        }
+
+        public bool IsAuthenticated(HttpRequestBase request)
+        {
+            return authService.IsAuthenticated(request);
+        }
+
+        public Task<OfferListViewModel> GetRecruiterOfferListViewModelAsync(HttpRequestBase request)
+        {
+            var recruiterId = authService.GetUserIdFromRequest(request);
+            var offersRecruiter = GetOfferViewModelListAsync(recruiterId);
+            return offersRecruiter;
+        }
+
+        public async Task CreateJobOfferForRecruiter(OfferModel model, HttpRequestBase request)
+        {
+            var recruiterId = authService.GetUserIdFromRequest(request);
+            await CreateJobOfferAsync(model, recruiterId);
+        }
+
+        public bool IfCurrentUserAnOwnerOfOffer(string recruiterIdFromOffer, HttpRequestBase request)
+        {
+            return authService.IfCurrentUserAnOwnerOfOffer(recruiterIdFromOffer, request);
+        }
+
+
+        public  OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, HttpRequestBase request)
+        {
+            var recruiterId = authService.GetUserIdFromRequest(request);
+            var offerViewModel = mapService.MapToOfferViewModel(offerModel, recruiterId);
+            return offerViewModel;
+        }
+
+
+        public bool AreSkillsDuplicated(List<SkillModel> skills)
+        {
+            var skillsDistinct = skills.Select(r => r.Name.ToLower()).Distinct();
+            return skills.Count != skillsDistinct.Count();
+        }
+
+        public void SignOut(HttpRequestBase request)
+        {
+            authService.SignOut(request);
+        }
+
+        public void SignIn(ClaimsIdentity identity, HttpRequestBase request)
+        {
+            authService.SignIn(identity, request);
+        }
+
+        public ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user)
+        {
+            var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Sid, user.Id),
+                    new Claim(ClaimTypes.Role, "Recruiter"),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }, "ApplicationCookie");
+            return identity;
+        }
+
+        public ClaimsIdentity CreateCandidateIdentity(CandidateUser user)
+        {
+            var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Sid, user.Id),
+                    new Claim(ClaimTypes.Role, "Candidate"),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }, "ApplicationCookie");
+            return identity;
         }
     }
 }

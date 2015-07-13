@@ -13,7 +13,7 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
-    public class RecruiterProfileController : UserProfileController
+    public class RecruiterProfileController : Controller
     {
         private IApplicationService service;
 
@@ -21,52 +21,23 @@ namespace WebApp.Controllers
         {
             service = applicationService;
         }
+
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (IsAuthenticated() && IsRecruiter())
+            if (service.IsRecruiter(Request))
             {
-                var recruiterViewModel = await GetRecruiterAsync();
+                var recruiterViewModel = await service.GetRecruiterViewModelAsync(Request);
                 return View(recruiterViewModel);                
             }
-            else
-            {
-                return RedirectToAction("DeniedPermision", "Home");
-            }            
+            return RedirectToAction("DeniedPermision", "Home");          
         }
 
         [HttpPost]
         public async Task<ActionResult> Index(RecruiterModel model)
         {    
-            await UpdateRecruiter(model);
+            await service.UpdateRecruiter(model, Request);
             return RedirectToAction("Index", "Home");
         }
-
-        private bool IsRecruiter()
-        {
-            var role = GetRoleFromRequest();
-            return (role.Value == "Recruiter");
-        }
-
-        public async Task UpdateRecruiter(RecruiterModel model)
-        {
-            var id = GetIdFromRequest();
-            await service.UpdateRecruiterModelAsync(model, id.Value);
-        }
-
-        public Task<RecruiterViewModel> GetRecruiterAsync()
-        {
-            var id = GetIdFromRequest();
-            var recruiterModel = service.GetRecruiterViewModelByIdAsync(id.Value);
-            return recruiterModel;
-        }
-
-        public Task<RecruiterViewModel> GetRecruiterViewModelAsync(RecruiterModel recruiterModel)
-        {
-            var id = GetIdFromRequest();
-            var recruiterViewModel = service.GetRecruiterViewModelByIdAsync(recruiterModel, id.Value);
-            return recruiterViewModel;
-        }
-        
 	}
 }

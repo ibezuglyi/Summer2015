@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApp.Models.Candidate;
@@ -6,7 +7,7 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
-    public class CandidateProfileController : UserProfileController
+    public class CandidateProfileController : Controller
     {
         private IApplicationService service;
 
@@ -18,9 +19,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (IsAuthenticated() && IsCandidate())
+            if (service.IsCandidate(Request))
             {
-                var candidateViewModel = await GetCandidateAsync();
+                var candidateViewModel = await service.GetCandidateViewModelAsync(Request);
                 return View(candidateViewModel);
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -29,9 +30,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Detail(string id)
         {
-            if (IsAuthenticated() && !IsCandidate())
+            if (service.IsRecruiter(Request))
             {
-                var candidateViewModel = await GetCandidateByIdAsync(id);
+                var candidateViewModel = await service.GetCandidateViewModelByIdAsync(id);
                 return View(candidateViewModel);
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -40,15 +41,15 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUserModel model)
         {
-            if (IsAuthenticated() && IsCandidate())
+            if (service.IsCandidate(Request))
             {
                 if (ValidateForm(model))
                 {
-                    await UpdateCandidate(model);
-                    var updatedViewModel = await GetCandidateAsync();
+                    await service.UpdateCandidate(model, Request);
+                    var updatedViewModel = await service.GetCandidateViewModelAsync(Request);
                     return View(updatedViewModel);
                 }
-                var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
+                var viewModel = await service.GetCandidateModelAndBindWithStaticAsync(model, Request);
                 return View(viewModel);
             }
             return RedirectToAction("DeniedPermission", "Home");
@@ -58,55 +59,21 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid) 
             {
-                if (model.Skills.Count < 1)
-                {
-                    ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
-                }
-                if (AreSkillsDuplicated(model))
-                {
-                    ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
-                }
+                ValidateSkills(model.Skills);
             }
             return ModelState.IsValid;
         }
 
-        private bool AreSkillsDuplicated(CandidateUserModel model)
+        public void ValidateSkills(List<SkillModel> skills)
         {
-            var skills = model.Skills;
-            var skillsDistinct = model.Skills.Select(r => r.Name.ToLower()).Distinct();
-            return skills.Count != skillsDistinct.Count();
-        }
-
-        public bool IsCandidate()
-        {
-            var role = GetRoleFromRequest();
-            return role.Value == "Candidate";
-        }
-
-        public async Task<CandidateViewModel> GetCandidateAsync()
-        {
-            var id = GetIdFromRequest();
-            var candidateViewModel = await service.GetCandidateViewModelByIdAsync(id.Value);
-            return candidateViewModel;
-        }
-
-        public async Task<CandidateViewModel> GetCandidateByIdAsync(string candidateId)
-        {
-            var candidateViewModel = await service.GetCandidateViewModelByIdAsync(candidateId);
-            return candidateViewModel;
-        }
-
-        public async Task<CandidateViewModel> GetCandidateModelAndBindWithStaticAsync(CandidateUserModel candidateModel)
-        {
-            var id = GetIdFromRequest();
-            var candidateViewModel = await service.GetCandidateViewModelByIdAsync(candidateModel, id.Value);
-            return candidateViewModel;
-        }
-
-        public async Task UpdateCandidate(CandidateUserModel model)
-        {
-            var id = GetIdFromRequest();
-            await service.UpdateCandidateUserAsync(model, id.Value);
+            if (skills.Count < 1)
+            {
+                ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
+            }
+            if (service.AreSkillsDuplicated(skills))
+            {
+                ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
+            }
         }
     }
 }

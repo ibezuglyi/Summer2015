@@ -169,9 +169,7 @@
     <Compile Include="Controllers\RecruiterController.cs" />
     <Compile Include="Controllers\RecruiterProfileController.cs" />
     <Compile Include="Models\Candidate\SkillModel.cs" />
-    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
