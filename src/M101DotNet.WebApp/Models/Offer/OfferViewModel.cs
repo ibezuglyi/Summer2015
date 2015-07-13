@@ -26,14 +26,9 @@ namespace WebApp.Models.Offer
         }
 
         private List<SkillModel> CalculateTopSkills(List<SkillModel> skills)
-        {
-            var topSkills = new List<SkillModel>();
-            skills.Sort();
-            for(int i = 0 ; i < TopSkillNumber && i <skills.Count ; i++)
-            {
-                var skill = new SkillModel(skills[i].Name, skills[i].Level);
-                topSkills.Add(skill);
-            }
+        {            
+            var sorterdSkills = skills.OrderByDescending(r => r.Level).ToList();
+            var topSkills = sorterdSkills.Take(TopSkillNumber).ToList();
             return topSkills;
         }
     }

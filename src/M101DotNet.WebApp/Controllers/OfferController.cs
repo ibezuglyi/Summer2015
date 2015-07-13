@@ -99,7 +99,7 @@ namespace WebApp.Controllers
             }
             var offerViewModel = service.GetOfferViewModelAsync(model, Request);
             return View(offerViewModel);
-        } 
+        }
 
         private bool ValidateForm(OfferModel model)
         {

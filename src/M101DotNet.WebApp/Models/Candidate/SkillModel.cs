@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace WebApp.Models.Candidate
 {
-    public class SkillModel :IComparable
+    public class SkillModel
     {
         public SkillModel(string name, int level)
         {
@@ -17,14 +17,6 @@ namespace WebApp.Models.Candidate
 
         [Required(ErrorMessage = "Field level is required")]
         [Range(1, 10, ErrorMessage = "Can only be between 1 .. 10")]
-        public int Level { get; set; }
-
-        int IComparable.CompareTo(object o)
-        {
-            SkillModel skill = (SkillModel)o;
-            if (this.Level < skill.Level) return 1;
-            else if (this.Level > skill.Level) return -1;
-            else return 0;
-        }
+        public int Level { get; set; }        
     }
 }

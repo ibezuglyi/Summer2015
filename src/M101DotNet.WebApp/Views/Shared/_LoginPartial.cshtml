@@ -4,21 +4,21 @@
     {
         using (Html.BeginForm("Logout", "Candidate", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
         {
-            <ul class="right hide-on-med-and-down">
+        <ul class="right hide-on-med-and-down">
                 <li class="navbar-text"><a>Hello @User.Identity.Name</a></li>
                 <li>@Html.ActionLink("Profile", "Index", "CandidateProfile")</li>
-                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-            </ul>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
         }
-    }
-    else
+        }
+        else
         {
         using (Html.BeginForm("Logout", "Recruiter", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
         {
             <ul class="right hide-on-med-and-down">
                 <li class="navbar-text"><a>Hello @User.Identity.Name</a></li>
                 <li>@Html.ActionLink("Profile", "Index", "RecruiterProfile")</li>  
-                <li>@Html.ActionLink("Offers list", "OffersList", "Offer")</li>
+            <li>@Html.ActionLink("Offers list", "OffersList", "Offer")</li>
                 <li>@Html.ActionLink("Create Offer", "Create", "Offer")</li>
                 <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
             </ul>

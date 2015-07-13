@@ -13,11 +13,11 @@
 @using (Html.BeginForm())
 {
     <div class="form-part">
-        @Html.Label("Company Name:")<br />
+        @Html.Label("Company name:")<br />
         @Html.TextBox("companyName", Model.Recruiter.CompanyName)
     </div>
     <div class="form-part">
-        @Html.Label("Company Description:")<br />
+        @Html.Label("Company description:")<br />
         @Html.TextArea("companyDescription", Model.Recruiter.CompanyDescription, new { @class = "materialize-textarea" })
     </div>
     <p>
