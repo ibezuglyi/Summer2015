@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using WebApp.Entities;
-using WebApp.Models;
-using WebApp.Models.Candidate;
 using WebApp.Models.Offer;
 using WebApp.Services;
 
@@ -103,8 +98,8 @@ namespace WebApp.Controllers
 
         private Task<OfferListViewModel> GetRecruiterOffersAsync()
         {            
-            var IdRecruiter = GetIdRecruiterFromRequest().Value;
-            var offersRecruiter = service.GetOfferViewModelListAsync(IdRecruiter);
+            var recruiterId = GetIdRecruiterFromRequest().Value;
+            var offersRecruiter = service.GetOfferViewModelListAsync(recruiterId);
 
             return offersRecruiter;
         }

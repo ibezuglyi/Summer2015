@@ -1,12 +1,6 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
-using MongoDB.Driver;
-using WebApp.Models;
 using WebApp.Models.Account;
-using System.Security.Cryptography;
-using System.Text;
 using WebApp.Services;
 
 namespace WebApp.Controllers
@@ -14,6 +8,7 @@ namespace WebApp.Controllers
     [AllowAnonymous]
     public class CandidateController : UserController
     {
+        
         private IApplicationService service;
 
         public CandidateController(IApplicationService applicationService)

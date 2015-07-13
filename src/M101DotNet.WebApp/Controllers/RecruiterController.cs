@@ -1,11 +1,5 @@
-﻿using System.Runtime.Remoting.Messaging;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Services.Description;
-using MongoDB.Driver;
-using WebApp.Models;
 using WebApp.Models.Account;
 using WebApp.Services;
 
@@ -15,7 +9,7 @@ namespace WebApp.Controllers
     public class RecruiterController : UserController
     {
         private IApplicationService service;
-      
+
         public RecruiterController(IApplicationService applicationService)
         {
             service = applicationService;
@@ -42,7 +36,7 @@ namespace WebApp.Controllers
 
                 return Redirect(GetRedirectUrl(model.ReturnUrl));
             }
-            
+
             AddWrongEmailPasswordError();
             return View(model);
         }

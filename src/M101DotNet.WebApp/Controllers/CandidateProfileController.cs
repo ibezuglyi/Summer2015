@@ -1,12 +1,6 @@
-﻿using MongoDB.Bson;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using WebApp.Entities;
-using WebApp.Models;
 using WebApp.Models.Candidate;
 using WebApp.Services;
 
@@ -26,8 +20,8 @@ namespace WebApp.Controllers
         {
             if (IsAuthenticated() && IsCandidate())
             {
-                 var candidateViewModel = await GetCandidateAsync();
-                 return View(candidateViewModel);
+                var candidateViewModel = await GetCandidateAsync();
+                return View(candidateViewModel);
             }
             return RedirectToAction("DeniedPermision", "Home");
         }
@@ -46,16 +40,16 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUserModel model)
         {
-            if (IsAuthenticated() && IsCandidate()) 
+            if (IsAuthenticated() && IsCandidate())
             {
-            if (ValidateForm(model))
-            {
-                await UpdateCandidate(model);
-                var updatedViewModel = await GetCandidateAsync();
-                return View(updatedViewModel);
-            }
-            var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
-            return View(viewModel);
+                if (ValidateForm(model))
+                {
+                    await UpdateCandidate(model);
+                    var updatedViewModel = await GetCandidateAsync();
+                    return View(updatedViewModel);
+                }
+                var viewModel = await GetCandidateModelAndBindWithStaticAsync(model);
+                return View(viewModel);
             }
             return RedirectToAction("DeniedPermission", "Home");
         }
