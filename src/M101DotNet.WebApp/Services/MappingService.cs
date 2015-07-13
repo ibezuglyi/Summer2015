@@ -9,7 +9,7 @@ using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
 {
-    public class MappingService
+    public class MappingService : IMappingService
     {
         public List<OfferViewModel> MapToOffersViewModel(List<JobOffer> offers)
         {
@@ -100,7 +100,7 @@ namespace WebApp.Services
         }
 
 
-        private  List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels)
+        public List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels)
         {
             var skills = new List<Skill>();
             foreach(var skillModel in skillModels)
@@ -115,7 +115,7 @@ namespace WebApp.Services
             return skills;
         }
 
-        private List<SkillModel> MapSkillsToSkillModels(List<Skill> skills)
+        public List<SkillModel> MapSkillsToSkillModels(List<Skill> skills)
         {
             var skillModels = new List<SkillModel>();
             foreach (var skill in skills)

@@ -17,13 +17,13 @@ namespace WebApp.Services
 {
     public class ApplicationService : IApplicationService
     {
-        MappingService mapService;
-        DatabaseService dbService;
+        IMappingService mapService;
+        IDatabaseService dbService;
 
-        public ApplicationService()
+        public ApplicationService(IMappingService MapService, IDatabaseService DbService)
         {
-            mapService = new MappingService();
-            dbService = new DatabaseService();
+            mapService = MapService;
+            dbService = DbService;
         }
 
         public async Task<RecruiterUser> GetRecruterByEmailAsync(string email)

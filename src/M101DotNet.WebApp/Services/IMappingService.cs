@@ -10,7 +10,7 @@ using WebApp.Models.Recruiter;
 
 namespace WebApp.Services
 {
-    interface IMappingService
+    public interface IMappingService
     {
         List<OfferViewModel> MapToOffersViewModel(List<JobOffer> offers);
         OfferListViewModel MapToOfferViewModelList(List<OfferViewModel> offersModelView);

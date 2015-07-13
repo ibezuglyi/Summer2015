@@ -39,6 +39,8 @@ namespace WebApp.App_Start
 
             container.RegisterType<IApplicationService, ApplicationService>();
             container.RegisterType<IAuthenticationService, AuthenticationService>();
+            container.RegisterType<IMappingService, MappingService>();
+            container.RegisterType<IDatabaseService, DatabaseService>();
         }
     }
 }

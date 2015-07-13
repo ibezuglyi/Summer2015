@@ -56,9 +56,6 @@ select{
     float: right;
 }
 
-.offer-title{
-    float: left;
-}
 
 .hidden{
     display: none;
@@ -108,4 +105,22 @@ select{
 .offer-buttons
 {
     float:right;
+    display:inline-block;
+    margin-top:15px;
+}
+
+.offer-title
+{
+    display:inline;
+    float:left;
+    font-size: 16px;
+}
+.inline-field
+{
+    display: inline-block;
+}
+
+.skill-list
+{
+    clear:both;
 }
