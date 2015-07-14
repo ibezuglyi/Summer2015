@@ -22,11 +22,7 @@ namespace WebApp.Services
         Task CreateJobOfferAsync(OfferModel model, string idRecruiter);        
         Task<RecruiterUser> GetRecruiterByIdAsync(string recruiterId);
         Task<CandidateUser> GetCandidateByIdAsync(string candidateId);
-        Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId);
-
-        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(HttpRequestBase request);
-        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(string candidateId);
-
+        Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId);   
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId);
         Task UpdateCandidateUserAsync(CandidateUserModel model, string candidateId);
@@ -58,5 +54,11 @@ namespace WebApp.Services
         Task<List<string>> GetSortedSkillsMatchingQuery(string query);
 
         SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints);
+
+        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(HttpRequestBase request);
+        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(string candidateId);
+        bool IsMinSalaryOverMaxSalary(int? minSalary, int? maxSalary);
+        Task<OfferSearchViewModel> GetOfferSearchViewModelAsync(OfferSearchModel offerSearchModel);
+        OfferSearchViewModel GetOfferSearchViewModelWithoutOffersAsync(OfferSearchModel offerSearchModel);
     }
 }

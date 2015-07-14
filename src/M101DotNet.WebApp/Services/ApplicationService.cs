@@ -140,7 +140,7 @@ namespace WebApp.Services
             return candidateViewModel;
         }
 
-        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(string candidateId)
+        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(string candidateId)
         {
             var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
             var offerSearchModel = _mappingService.MapToOfferSearchModel(candidate);
@@ -205,10 +205,24 @@ namespace WebApp.Services
             return _authService.IsCandidate(request);
         }
 
-        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(HttpRequestBase request)
+        public async Task<OfferSearchViewModel> GetOfferSearchViewModelAsync(OfferSearchModel offerSearchModel)
+        {
+            var offerList = await GetOfferViewModelListAsync(offerSearchModel);
+            var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+            return offerSearchViewModel;
+        }
+
+        public OfferSearchViewModel GetOfferSearchViewModelWithoutOffersAsync(OfferSearchModel offerSearchModel)
+        {
+            var offerList = new OfferListViewModel();
+            var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+            return offerSearchViewModel;
+        }
+
+        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(HttpRequestBase request)
         {
             var id = _authService.GetUserIdFromRequest(request);
-            var offerSearchViewModel = await GetDefaultOfferSearchViewModel(id);
+            var offerSearchViewModel = await GetDefaultOfferSearchViewModelAsync(id);
             return offerSearchViewModel;
         }
 
@@ -289,6 +303,16 @@ namespace WebApp.Services
             var skillsDistinct = skills.Select(r => r.Name.ToLower()).Distinct();
             return skills.Count != skillsDistinct.Count();
         }
+
+        public bool IsMinSalaryOverMaxSalary(int? minSalary, int? maxSalary)
+        {
+            if(minSalary.HasValue && maxSalary.HasValue && minSalary.Value>maxSalary.Value)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public void SignOut(HttpRequestBase request)
         {
