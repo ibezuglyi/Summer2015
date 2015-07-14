@@ -140,6 +140,30 @@ namespace WebApp.Services
             return candidateViewModel;
         }
 
+        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(string candidateId)
+        {
+            var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
+            var offerSearchModel = _mappingService.MapToOfferSearchModel(candidate);
+            var offerList = await GetOfferViewModelListAsync(offerSearchModel);
+            var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+            return offerSearchViewModel;
+        }
+
+        public async Task<OfferListViewModel> GetOfferViewModelListAsync(OfferSearchModel offerSearchModel)
+        {            
+            var offerList = await GetOffersByOfferSearchModelAsync(offerSearchModel);
+            var offersViewModel = _mappingService.MapToOffersViewModel(offerList);
+            var offerViewModelList = _mappingService.MapToOfferViewModelList(offersViewModel);
+            return offerViewModelList;
+        }
+
+        private async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(OfferSearchModel offerSearch)
+        {
+            var skills = _mappingService.MapSkillModelsToSkills(offerSearch.Skills);
+            var offerList = await _dbService.GetOffersByOfferSearchModelAsync(skills, offerSearch.MinSalary, offerSearch.MaxSalary, offerSearch.Name);
+            return offerList;
+        }
+
         public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId)
         {
             var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
@@ -179,6 +203,13 @@ namespace WebApp.Services
         public bool IsCandidate(HttpRequestBase request)
         {
             return _authService.IsCandidate(request);
+        }
+
+        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(HttpRequestBase request)
+        {
+            var id = _authService.GetUserIdFromRequest(request);
+            var offerSearchViewModel = await GetDefaultOfferSearchViewModel(id);
+            return offerSearchViewModel;
         }
 
         public async Task<CandidateViewModel> GetCandidateViewModelAsync(HttpRequestBase request)

@@ -1,0 +1,27 @@
+﻿@model WebApp.Models.Offer.OfferSearchViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-part">
+        @Html.Label("Salary:") <br />
+        @Html.TextBox("minSalary", Model.MinSalary)
+    
+        @Html.Label("  -  ")
+        @Html.TextBox("maxSalary", Model.MaxSalary)
+    </div>
+    <div class="form-part">
+        @Html.Label("Name:") <br />
+        @Html.TextBox("name", Model.Name)
+    </div>
+          
+
+    <div class="row">
+        <button type="submit" class="btn ">Save &raquo;</button>
+    </div>
+}

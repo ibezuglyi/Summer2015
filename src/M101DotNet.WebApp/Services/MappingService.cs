@@ -110,6 +110,12 @@ namespace WebApp.Services
             return candidateModel;
         }
 
+        public OfferSearchModel MapToOfferSearchModel(CandidateUser candidate)
+        {
+            var skillModels = MapSkillsToSkillModels(candidate.Skills);
+            var offerSearchModel = new OfferSearchModel(skillModels, candidate.Salary, candidate.Salary, candidate.Name);
+            return offerSearchModel;
+        }
 
         public List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels)
         {
@@ -135,6 +141,11 @@ namespace WebApp.Services
                 skillModels.Add(skillModel);
             }
             return skillModels;
+        }
+
+        public OfferSearchViewModel MapToOfferSearchViewModel(OfferSearchModel offerSearchModel, OfferListViewModel offerListViewModel)
+        {
+            return new OfferSearchViewModel(offerSearchModel, offerListViewModel);
         }
 
         public CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail)
