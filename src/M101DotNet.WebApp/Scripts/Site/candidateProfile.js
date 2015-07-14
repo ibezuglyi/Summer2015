@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 function addAutocomplete(element) {
     $(element).autocomplete({
-        serviceUrl: 'SkillSuggestion/GetHints',
+        serviceUrl: '/SkillSuggestion/GetHints',
         onSelect: function (suggestion) {
             $(this).attr('val', suggestion);
         }
