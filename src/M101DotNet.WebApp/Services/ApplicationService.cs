@@ -322,6 +322,11 @@ namespace WebApp.Services
             return identity;
         }
 
+        public async Task<List<string>> GetSkillsMatchingQuery(string query)
+        {
+            var list = await _dbService.GetSkillsMatchingQuery(query);
+            return list;
+        }
 
     }
 }
