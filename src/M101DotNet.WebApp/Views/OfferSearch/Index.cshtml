@@ -10,14 +10,14 @@
 {
     <div class="form-part">
         @Html.Label("Salary:") <br />
-        @Html.TextBox("minSalary", Model.MinSalary)
+        @Html.TextBox("minSalary", Model.SearchParams.MinSalary)
     
         @Html.Label("  -  ")
-        @Html.TextBox("maxSalary", Model.MaxSalary)
+        @Html.TextBox("maxSalary", Model.SearchParams.MaxSalary)
     </div>
     <div class="form-part">
         @Html.Label("Name:") <br />
-        @Html.TextBox("name", Model.Name)
+        @Html.TextBox("name", Model.SearchParams.Name)
     </div>
           
 

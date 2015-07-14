@@ -17,7 +17,7 @@ namespace WebApp.Services
         Task<CandidateUser> GetCandidateByIdAsync(string id);
         Task<JobOffer> GetJobOfferByIdAsync(string id);
         Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id);
-        Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int min, int max, string name);
+        Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name);
         Task UpdateRecruiterAsync(RecruiterUser recruiter, string recruiterId);
         Task UpdateCandidateAsync(CandidateUser candidate, string candidateId);
         Task UpdateJobOfferAsync(JobOffer offer, string offerId);
@@ -27,5 +27,6 @@ namespace WebApp.Services
         Task InsertJobOfferAsync(JobOffer offer);
 
         Task<List<string>> GetSkillsMatchingQuery(string query);
+        
     }
 }

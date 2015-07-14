@@ -163,6 +163,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CandidateProfileController.cs" />
+    <Compile Include="Controllers\OfferSearchController.cs" />
     <Compile Include="Controllers\SkillSuggestionController.cs" />
     <Compile Include="Models\Candidate\CandidateViewModel.cs" />
     <Compile Include="Models\Candidate\CandidateUserModel.cs" />
