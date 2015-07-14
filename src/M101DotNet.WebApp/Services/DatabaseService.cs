@@ -58,6 +58,24 @@ namespace WebApp.Services
             return offerList;
         }
 
+        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? min, int? max, string name)
+        {
+            //magic
+
+            var offerList = await dbContext.JobOffers.Find(r => 1 == 1).ToListAsync();
+            return offerList;
+        }
+
+        private static FilterDefinition<JobOffer> GetMinSalaryFilter(int? min)
+        {
+            FilterDefinition<JobOffer> filterDefinition = null;
+            if (min.HasValue)
+            {
+                filterDefinition = Builders<JobOffer>.Filter.Gt(r => r.Salary, min.Value);
+            }
+            return filterDefinition;
+        }
+
         public async Task UpdateRecruiterAsync(RecruiterUser recruiter, string recruiterId)
         {
             var filter = Builders<RecruiterUser>.Filter.Eq(r => r.Id, recruiterId);
@@ -112,13 +130,13 @@ namespace WebApp.Services
                 .Set(r => r.Salary, candidate.Salary)
                 .Set(r => r.Skills, candidate.Skills);
 
-            await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
+            await dbContext.CandidateUsers.UpdateOneAsync(filter, update); 
         }
-
+        
         public async Task<List<string>> GetSkillsMatchingQuery(string query)
         {
-            var queryExpression = string.Format("^{0}", query);
-            var filter = Builders<CandidateUser>.Filter.Regex(new StringFieldDefinition<CandidateUser>("Skills.Name"), new BsonRegularExpression(queryExpression));
+            var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.Name, new BsonRegularExpression(query));
+            var filter = Builders<CandidateUser>.Filter.ElemMatch(user => user.Skills, skillFilterDefinition);
 
             var skills = await dbContext.CandidateUsers
                 .Find(filter)

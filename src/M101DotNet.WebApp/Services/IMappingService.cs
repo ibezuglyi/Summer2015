@@ -21,6 +21,7 @@ namespace WebApp.Services
         CandidateUser MapToCandidateUser(CandidateUserModel candidateModel);
         RecruiterUser MapToRecruiterUser(RecruiterModel recruiterModel);
         CandidateUserModel MapToCandidateUserModel(CandidateUser candidate);
+        OfferSearchModel MapToOfferSearchModel(CandidateUser candidate);
         RecruiterUser MapToRecruiterUser(string name, string email);
         CandidateUser MapToCandidateUser(string name, string email);
         RecruiterModel MapToRecruiterModel(RecruiterUser recruiter);

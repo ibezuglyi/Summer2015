@@ -1,14 +1,15 @@
 ﻿@if (Request.IsAuthenticated)
 {
-    if (User.IsInRole("Candidate"))
-    {
-        using (Html.BeginForm("Logout", "Candidate", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        if (User.IsInRole("Candidate"))
         {
-        <ul class="right hide-on-med-and-down">
+            using (Html.BeginForm("Logout", "Candidate", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+            <ul class="right hide-on-med-and-down">
+                <li>@Html.ActionLink("Search offer", "Index", "OfferSearch")</li>
                 <li>@Html.ActionLink(User.Identity.Name + " profile", "Index", "CandidateProfile")</li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-        </ul>
-        }
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            </ul>
+            }
         }
         else
         {
@@ -16,7 +17,7 @@
         {
             <ul class="right hide-on-med-and-down">
                 <li>@Html.ActionLink(User.Identity.Name + " profile", "Index", "RecruiterProfile")</li>  
-            <li>@Html.ActionLink("Offers list", "OffersList", "Offer")</li>
+                <li>@Html.ActionLink("Offers list", "OffersList", "Offer")</li>
                 <li>@Html.ActionLink("Create an offer", "Create", "Offer")</li>
                 <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
             </ul>

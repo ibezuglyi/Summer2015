@@ -163,6 +163,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CandidateProfileController.cs" />
+    <Compile Include="Controllers\OfferSearchController.cs" />
     <Compile Include="Controllers\SkillSuggestionController.cs" />
     <Compile Include="Models\Candidate\CandidateViewModel.cs" />
     <Compile Include="Models\Candidate\CandidateUserModel.cs" />
@@ -184,6 +185,8 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Models\Offer\OfferListViewModel.cs" />
     <Compile Include="Models\Offer\OfferModel.cs" />
+    <Compile Include="Models\Offer\OfferSearchModel.cs" />
+    <Compile Include="Models\Offer\OfferSearchViewModel.cs" />
     <Compile Include="Models\Offer\OfferViewModel.cs" />
     <Compile Include="Models\Recruiter\RecruiterModel.cs" />
     <Compile Include="Models\Recruiter\RecruiterViewModel.cs" />
@@ -286,6 +289,7 @@
     <Content Include="Views\Offer\Details.cshtml" />
     <Content Include="Views\Offer\Edit.cshtml" />
     <Content Include="Views\Shared\_RemoveModalPartial.cshtml" />
+    <Content Include="Views\OfferSearch\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
