@@ -108,17 +108,5 @@ namespace WebApp.Controllers
             ModelState.AddModelError("Email", "User with this email already exists.");
         }
 
-        [HttpGet]
-        public JsonResult GetHints(string query)
-        {
-            List<string> hints = new List<string>();
-            hints.Add("C#");
-            hints.Add("Html");
-
-            var response = new SkillHintsModel(query, hints);
-
-            return Json(response, JsonRequestBehavior.AllowGet);
-        }
-
     }
 }

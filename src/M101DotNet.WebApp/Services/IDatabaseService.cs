@@ -23,5 +23,7 @@ namespace WebApp.Services
         Task InsertRecruiterUserAsync(RecruiterUser user);
         Task InsertCaniddateUserAsync(CandidateUser user);
         Task InsertJobOfferAsync(JobOffer offer);
+
+        Task<List<string>> GetSkillsMatchingQuery(string query);
     }
 }

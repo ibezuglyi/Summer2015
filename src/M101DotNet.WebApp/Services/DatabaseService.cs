@@ -10,6 +10,7 @@ using MongoDB.Driver;
 using WebApp.Models.Offer;
 using WebApp.Models.Recruiter;
 using WebApp.Models.Candidate;
+using MongoDB.Bson;
 
 namespace WebApp.Services
 {
@@ -111,8 +112,40 @@ namespace WebApp.Services
                 .Set(r => r.Salary, candidate.Salary)
                 .Set(r => r.Skills, candidate.Skills);
 
-            await dbContext.CandidateUsers.UpdateOneAsync(filter, update); 
+            await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
         }
-        
+
+        public async Task<List<string>> GetSkillsMatchingQuery(string query)
+        {
+
+            var queryExpression = string.Format("{0}", query);
+
+            var filter = Builders<CandidateUser>.Filter.Regex(r => r.Skills, new BsonRegularExpression(queryExpression));
+
+            var projection = Builders<CandidateUser>.Projection.Include(r => r.Skills);
+
+            var skills = await dbContext.CandidateUsers.FindAsync<CandidateUser>(filter, new FindOptions<CandidateUser, CandidateUser>()
+            {
+                Projection = projection
+            });
+
+            var allSkills = new List<Skill>();
+            await skills.ForEachAsync<CandidateUser>(new Action<CandidateUser>(c =>  allSkills.AddRange(c.Skills) ));
+
+            return null;
+        }
+
+
+
+
+    }
+
+    public class SkillsContainer
+    {
+        public SkillsContainer(List<Skill> skills)
+        {
+            this.Skills = skills;
+        }
+        public List<Skill> Skills { get; set; }
     }
 }

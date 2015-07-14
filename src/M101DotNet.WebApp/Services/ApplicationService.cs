@@ -291,6 +291,12 @@ namespace WebApp.Services
             return identity;
         }
 
+        public List<string> GetSkillsMatchingQuery(string query)
+        {
+            var a = _dbService.GetSkillsMatchingQuery(query);
+
+            return null;
+        }
 
     }
 }
