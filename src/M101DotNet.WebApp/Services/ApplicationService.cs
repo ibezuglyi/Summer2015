@@ -291,11 +291,20 @@ namespace WebApp.Services
             return identity;
         }
 
-        public async Task<List<string>> GetSkillsMatchingQuery(string query)
+        public async Task<List<string>> GetSortedSkillsMatchingQuery(string query)
         {
             var list = await _dbService.GetSkillsMatchingQuery(query);
-            return list;
+            var sortedList = list
+                .GroupBy<string, string>(r => r)
+                .OrderByDescending(group => group.Count())
+                .Select(r => r.Key)
+                .ToList();
+            return sortedList;
         }
 
+        public SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints)
+        {
+            return _mappingService.MapToSkillSugestionModel(query, hints);
+        }
     }
 }

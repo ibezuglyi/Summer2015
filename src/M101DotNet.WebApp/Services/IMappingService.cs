@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApp.Entities;
+using WebApp.Models;
 using WebApp.Models.Candidate;
 using WebApp.Models.Offer;
 using WebApp.Models.Recruiter;
@@ -28,5 +29,7 @@ namespace WebApp.Services
         CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail);
         RecruiterViewModel MapToRecruiterViewModel(RecruiterModel recruiterModel, string recruiterName, string recruiterEmail);
         OfferViewModel MapToOfferViewModel(OfferModel offerModel, string IdRecruiter);
+
+        SkillSuggestionModel MapToSkillSugestionModel(string query, List<string> hints);
     }
 }

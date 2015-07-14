@@ -26,10 +26,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> GetHints(string query)
         {
-            List<string> hints = await Service.GetSkillsMatchingQuery(query);
-
-            var response = new SkillSuggestionModel(query, hints);
-
+            List<string> hints = await Service.GetSortedSkillsMatchingQuery(query);
+            var response = Service.MapToSkillSuggestionModel(query, hints);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 	}

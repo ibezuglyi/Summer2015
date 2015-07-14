@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebApp.Entities;
+using WebApp.Models;
 using WebApp.Models.Candidate;
 using WebApp.Models.Offer;
 using WebApp.Models.Recruiter;
@@ -81,6 +82,12 @@ namespace WebApp.Services
         {
             var recruiterModel = new RecruiterModel(recruiter.CompanyName, recruiter.CompanyDescription);
             return recruiterModel;
+        }
+
+        public SkillSuggestionModel MapToSkillSugestionModel(string query, List<string> hints)
+        {
+            var skillSuggestionModel = new SkillSuggestionModel(query, hints);
+            return skillSuggestionModel;
         }
 
         public RecruiterUser MapToRecruiterUser(string name, string email)

@@ -10,3 +10,4 @@
 /// <reference path="materialize.js" />
 /// <reference path="site/candidateprofile.js" />
 /// <reference path="site/offer.js" />
+/// <reference path="jquery.autocomplete.js" />

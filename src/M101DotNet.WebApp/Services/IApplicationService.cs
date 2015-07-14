@@ -51,7 +51,8 @@ namespace WebApp.Services
         void SignIn(ClaimsIdentity identity, HttpRequestBase request);
         ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user);
         ClaimsIdentity CreateCandidateIdentity(CandidateUser user);
+        Task<List<string>> GetSortedSkillsMatchingQuery(string query);
 
-        Task<List<string>> GetSkillsMatchingQuery(string query);
+        SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints);
     }
 }

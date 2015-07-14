@@ -122,7 +122,7 @@ namespace WebApp.Services
 
             var skills = await dbContext.CandidateUsers
                 .Find(filter)
-                .Project(r => r.Skills.Where(s => s.Name.Contains(query)))
+                .Project(r => r.Skills.Where(s => s.Name.StartsWith(query)))
                 .ToListAsync();
 
             var allSkills = skills.SelectMany(r => r).Select(r => r.Name).ToList();

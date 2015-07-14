@@ -3,7 +3,17 @@ $(document).ready(function () {
     deleteRowOnClick();
     addRowOnClick();
     rangeInputHandling();
+    addAutocomplete('.autocomplete');
 });
+
+function addAutocomplete(element) {
+    $(element).autocomplete({
+        serviceUrl: 'SkillSuggestion/GetHints',
+        onSelect: function (suggestion) {
+            $(this).attr('val', suggestion);
+        }
+    });
+}
 
 function rangeInputHandling() {
     setRangeInputValue();
@@ -55,7 +65,14 @@ function prepareSnippet (blankRow, index) {
     addIndexToSkill(blankRow, index);
     addIdAndNameToSkill(blankRow, index);
     blankRow.removeClass("blank-row hidden");
+    console.log(blankRow);
+    addAutocompleteToInputField(blankRow);
     return blankRow;
+}
+
+function addAutocompleteToInputField(parent) {
+    var autocompletedInputField = parent.find(".autocomplete")
+    addAutocomplete(autocompletedInputField);
 }
 
 function addIndexToSkill (blankRow, index){
