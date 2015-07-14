@@ -117,8 +117,8 @@ namespace WebApp.Services
 
         public async Task<List<string>> GetSkillsMatchingQuery(string query)
         {
-            var queryExpression = string.Format("^{0}", query);
-            var filter = Builders<CandidateUser>.Filter.Regex(new StringFieldDefinition<CandidateUser>("Skills.Name"), new BsonRegularExpression(queryExpression));
+            var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.Name, new BsonRegularExpression(query));
+            var filter = Builders<CandidateUser>.Filter.ElemMatch(user => user.Skills, skillFilterDefinition);
 
             var skills = await dbContext.CandidateUsers
                 .Find(filter)
