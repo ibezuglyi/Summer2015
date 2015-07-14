@@ -15,19 +15,22 @@ namespace WebApp.Controllers
 {
     public class RecruiterProfileController : Controller
     {
-        private IApplicationService service;
+        private IApplicationService _applicationService;
+        private IAuthenticationService _authenticationService;
 
-        public RecruiterProfileController(IApplicationService applicationService)
+        public RecruiterProfileController(IApplicationService applicationService, IAuthenticationService authenticationService)
         {
-            service = applicationService;
+            _applicationService = applicationService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (service.IsRecruiter(Request))
+            if (_authenticationService.IsRecruiter(Request))
             {
-                var recruiterViewModel = await service.GetRecruiterViewModelAsync(Request);
+                var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
+                var recruiterViewModel = await _applicationService.GetRecruiterViewModelByIdAsync(currentUserId);
                 return View(recruiterViewModel);                
             }
             return RedirectToAction("DeniedPermision", "Home");          
@@ -35,8 +38,9 @@ namespace WebApp.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Index(RecruiterModel model)
-        {    
-            await service.UpdateRecruiter(model, Request);
+        {
+            var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
+            await _applicationService.UpdateRecruiterModelAsync(model, currentUserId);
             return RedirectToAction("Index", "Home");
         }
 	}

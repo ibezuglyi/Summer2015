@@ -56,11 +56,6 @@ namespace WebApp.Services
             return string.Empty;
         }
 
-        public bool IfCurrentUserAnOwnerOfOffer(string recruiterIdFromOffer, HttpRequestBase request)
-        {
-            var id = GetUserIdFromRequest(request);
-            return id == recruiterIdFromOffer;
-        }
 
         public void SignIn(ClaimsIdentity identity, HttpRequestBase request)
         {
@@ -72,6 +67,28 @@ namespace WebApp.Services
         {
             var authManager = GetAuthManager(request);
             authManager.SignOut("ApplicationCookie");
+        }
+
+        public ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user)
+        {
+            var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Sid, user.Id),
+                    new Claim(ClaimTypes.Role, "Recruiter"),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }, "ApplicationCookie");
+            return identity;
+        }
+
+        public ClaimsIdentity CreateCandidateIdentity(CandidateUser user)
+        {
+            var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Sid, user.Id),
+                    new Claim(ClaimTypes.Role, "Candidate"),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }, "ApplicationCookie");
+            return identity;
         }
 
     }

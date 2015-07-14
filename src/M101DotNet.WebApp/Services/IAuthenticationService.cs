@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Web;
+using WebApp.Entities;
 
 namespace WebApp.Services
 {
@@ -12,6 +13,7 @@ namespace WebApp.Services
         bool IsCandidate(HttpRequestBase request);
         void SignIn(ClaimsIdentity identity, HttpRequestBase request);
         void SignOut( HttpRequestBase request);
-        bool IfCurrentUserAnOwnerOfOffer(string recruiterIdFromOffer, HttpRequestBase request);
+        ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user);
+        ClaimsIdentity CreateCandidateIdentity(CandidateUser user);
     }
 }

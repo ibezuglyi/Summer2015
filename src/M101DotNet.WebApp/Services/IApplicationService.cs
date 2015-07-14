@@ -23,10 +23,7 @@ namespace WebApp.Services
         Task<RecruiterUser> GetRecruiterByIdAsync(string recruiterId);
         Task<CandidateUser> GetCandidateByIdAsync(string candidateId);
         Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId);
-
-        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(HttpRequestBase request);
         Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(string candidateId);
-
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId);
         Task UpdateCandidateUserAsync(CandidateUserModel model, string candidateId);
@@ -37,26 +34,11 @@ namespace WebApp.Services
         Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId); 
         Task UpdateJobOfferAsync(OfferModel model, string idOffer);
         Task RemoveJobOfferAsync(string idOffer);
-        bool IsRecruiter(HttpRequestBase request);
-        bool IsCandidate(HttpRequestBase request);
-        Task<CandidateViewModel> GetCandidateViewModelAsync(HttpRequestBase request);
-        Task<CandidateViewModel> GetCandidateModelAndBindWithStaticAsync(CandidateUserModel candidateModel, HttpRequestBase request);
-        Task UpdateCandidate(CandidateUserModel model, HttpRequestBase request);
-        Task<RecruiterViewModel> GetRecruiterViewModelAsync(HttpRequestBase request);
-        Task<RecruiterViewModel> GetRecruiterViewModelAsync(RecruiterModel recruiterModel, HttpRequestBase request);
-        Task UpdateRecruiter(RecruiterModel model, HttpRequestBase request);
-        bool IsAuthenticated(HttpRequestBase request);
-        Task<OfferListViewModel> GetRecruiterOfferListViewModelAsync(HttpRequestBase request);
-        Task CreateJobOfferForRecruiter(OfferModel model, HttpRequestBase request);
-        bool IfCurrentUserAnOwnerOfOffer(string recruiterIdFromOffer, HttpRequestBase request);
-        OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, HttpRequestBase request);
+        OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, string recruiterId);
         bool AreSkillsDuplicated(List<SkillModel> skills);
-        void SignOut(HttpRequestBase request);
-        void SignIn(ClaimsIdentity identity, HttpRequestBase request);
-        ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user);
-        ClaimsIdentity CreateCandidateIdentity(CandidateUser user);
         Task<List<string>> GetSortedSkillsMatchingQuery(string query);
-
         SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints);
+        Task<string> GetIdRecruiterByOfferIdAsync(string offerId);
+        Task<RecruiterModel> GetRecruiterModelByEmailAsync(string email);
     }
 }

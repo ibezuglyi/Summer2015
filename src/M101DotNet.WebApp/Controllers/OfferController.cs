@@ -8,17 +8,19 @@ namespace WebApp.Controllers
 {
     public class OfferController : Controller
     {
-        private IApplicationService service;
+        private IApplicationService _applicationService;
+        private IAuthenticationService _authenticationService;
 
-        public OfferController(IApplicationService applicationService)
+        public OfferController(IApplicationService applicationService, IAuthenticationService authenticationService)
         {
-            service = applicationService;
+            _applicationService = applicationService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            if (service.IsRecruiter(Request))
+            if (_authenticationService.IsRecruiter(Request))
             {
                 return View(new OfferModel());
             }
@@ -30,7 +32,8 @@ namespace WebApp.Controllers
         {
             if (ValidateForm(model))
             {
-                await service.CreateJobOfferForRecruiter(model, Request);
+                var userCreatingOfferId = _authenticationService.GetUserIdFromRequest(Request);
+                await _applicationService.CreateJobOfferAsync(model, userCreatingOfferId);
                 return RedirectToAction("OffersList", "Offer");
             }       
             return View(model);
@@ -39,10 +42,11 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> OffersList()
         {
-            if (service.IsRecruiter(Request))
+            if (_authenticationService.IsRecruiter(Request))
             {
-                 var offers = await service.GetRecruiterOfferListViewModelAsync(Request);
-                 return View(offers);               
+                var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
+                var offers = await _applicationService.GetOfferViewModelListAsync(currentUserId);
+                return View(offers);               
             }
             return RedirectToAction("DeniedPermision", "Home");
         }
@@ -50,10 +54,10 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Remove(string id)
         {
-            var ifRecruiterHaveRightsToRemove = await GetOfferAndCheckOwnerAnOffer(id);
-            if (service.IsAuthenticated(Request) && ifRecruiterHaveRightsToRemove)
+            var ifRecruiterHaveRightsToRemove = await IsCurrentUserOwnerOfOffer(id);
+            if (_authenticationService.IsAuthenticated(Request) && ifRecruiterHaveRightsToRemove)
             {
-                await service.RemoveJobOfferAsync(id);
+                await _applicationService.RemoveJobOfferAsync(id);
                 return RedirectToAction("OffersList", "Offer");
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -62,9 +66,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {
-            if (service.IsAuthenticated(Request))
+            if (_authenticationService.IsAuthenticated(Request))
             {
-                var offer = await service.GetOfferViewModelByIdAsync(id);
+                var offer = await _applicationService.GetOfferViewModelByIdAsync(id);
                 return View(offer);
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -73,12 +77,12 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Edit(string id)
         {
-            if (service.IsRecruiter(Request))
+            if (_authenticationService.IsRecruiter(Request))
             {
-                var ifRecruiterHaveRightsToEdit = await GetOfferAndCheckOwnerAnOffer(id);
+                var ifRecruiterHaveRightsToEdit = await IsCurrentUserOwnerOfOffer(id);
                 if (ifRecruiterHaveRightsToEdit)
                 {
-                    var offer = await service.GetOfferViewModelByIdAsync(id);    
+                    var offer = await _applicationService.GetOfferViewModelByIdAsync(id);    
                     return View(offer);
                 }
                 else
@@ -92,12 +96,13 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(OfferModel model)
         {
+            var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
             if (ValidateForm(model))
             {
-                await service.UpdateJobOfferAsync(model, model.Id);
+                await _applicationService.UpdateJobOfferAsync(model, model.Id);
                 return RedirectToAction("OffersList", "Offer");
             }
-            var offerViewModel = service.GetOfferViewModelAsync(model, Request);
+            var offerViewModel = _applicationService.GetOfferViewModelAsync(model, currentUserId);
             return View(offerViewModel);
         }
 
@@ -109,7 +114,7 @@ namespace WebApp.Controllers
                 {
                     ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
                 }
-                if (service.AreSkillsDuplicated(model.Skills))
+                if (_applicationService.AreSkillsDuplicated(model.Skills))
                 {
                     ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
                 }
@@ -117,16 +122,16 @@ namespace WebApp.Controllers
             return ModelState.IsValid;
         }
 
-        private async Task<bool> GetOfferAndCheckOwnerAnOffer(string offerId)
+        private async Task<bool> IsCurrentUserOwnerOfOffer(string offerId)
         {
-            var recruiterId = await GetIdRecruiterByOfferIdAsync(offerId);
-            return service.IfCurrentUserAnOwnerOfOffer(recruiterId, Request);
+            var recruiterId = await _applicationService.GetIdRecruiterByOfferIdAsync(offerId);
+            return IfCurrentUserAnOwnerOfOffer(recruiterId);
         }
 
-        public async Task<string> GetIdRecruiterByOfferIdAsync(string offerId)
+        public bool IfCurrentUserAnOwnerOfOffer(string recruiterIdFromOffer)
         {
-            var offerViewModel = await service.GetOfferViewModelByIdAsync(offerId);
-            return offerViewModel.IdRecruiter;
+            var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
+            return currentUserId == recruiterIdFromOffer;
         }
 
 	}

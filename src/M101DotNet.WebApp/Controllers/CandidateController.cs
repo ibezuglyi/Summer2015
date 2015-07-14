@@ -12,11 +12,13 @@ namespace WebApp.Controllers
     public class CandidateController : Controller
     {
         
-        private IApplicationService service;
+        private IApplicationService _applicationService;
+        private IAuthenticationService _authenticationService;
 
-        public CandidateController(IApplicationService applicationService)
+        public CandidateController(IApplicationService applicationService, IAuthenticationService authenticationService)
         {
-            service = applicationService;
+            _applicationService = applicationService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
@@ -37,18 +39,18 @@ namespace WebApp.Controllers
             {
                 return View(model);
             }
-            var user = await service.GetCandidateByEmailAsync(model.Email);
+            var user = await _applicationService.GetCandidateByEmailAsync(model.Email);
             if (user == null)
             {
                 AddWrongEmailPasswordError();
                 return View(model);
             }
 
-            var hashPassword = service.GenerateHashPassword(model.Password, user);
+            var hashPassword = _applicationService.GenerateHashPassword(model.Password, user);
             if (hashPassword == user.Password)
             {
-                var identity = service.CreateCandidateIdentity(user);
-                service.SignIn(identity, Request);
+                var identity = _authenticationService.CreateCandidateIdentity(user);
+                _authenticationService.SignIn(identity, Request);
 
                 return Redirect(GetRedirectUrl(model.ReturnUrl));
             }
@@ -71,20 +73,20 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            var user = await service.GetCandidateByEmailAsync(model.Email);
+            var user = await _applicationService.GetCandidateByEmailAsync(model.Email);
             if (user != null)
             {
                 ModelState.AddModelError("Email", "User with this email already exists.");
                 return View(model);
             }
-            await service.CreateCandidateUserAsync(model);
+            await _applicationService.CreateCandidateUserAsync(model);
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         public ActionResult Logout()
         {
-            service.SignOut(Request);
+            _authenticationService.SignOut(Request);
             return RedirectToAction("Index", "Home");
         }
 

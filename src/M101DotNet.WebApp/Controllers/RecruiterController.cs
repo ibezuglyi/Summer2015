@@ -8,11 +8,13 @@ namespace WebApp.Controllers
     [AllowAnonymous]
     public class RecruiterController : Controller
     {
-        private IApplicationService service;
+        private IApplicationService _applicationService;
+        private IAuthenticationService _authenticationService;
 
-        public RecruiterController(IApplicationService applicationService)
+        public RecruiterController(IApplicationService applicationService, IAuthenticationService authenticationService)
         {
-            service = applicationService;
+            _applicationService = applicationService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
@@ -33,18 +35,18 @@ namespace WebApp.Controllers
             {
                 return View(model);
             }
-            var user = await service.GetRecruterByEmailAsync(model.Email);
+            var user = await _applicationService.GetRecruterByEmailAsync(model.Email);
             if (user == null)
             {
                 AddWrongEmailPasswordError();
                 return View(model);
             }
 
-            var hashPassword = service.GenerateHashPassword(model.Password, user);
+            var hashPassword = _applicationService.GenerateHashPassword(model.Password, user);
             if (hashPassword == user.Password)
             {
-                var identity = service.CreateRecruiterIdentity(user);
-                service.SignIn(identity, Request);
+                var identity = _authenticationService.CreateRecruiterIdentity(user);
+                _authenticationService.SignIn(identity, Request);
 
                 return Redirect(GetRedirectUrl(model.ReturnUrl));
             }
@@ -67,20 +69,20 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
-            var user = await service.GetRecruterByEmailAsync(model.Email);
+            var user = await _applicationService.GetRecruterByEmailAsync(model.Email);
             if (user != null)
             {
                 AddDuplicatedEmailError();
                 return View(model);
             }
-            await service.CreateRecruiterUserAsync(model);
+            await _applicationService.CreateRecruiterUserAsync(model);
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         public ActionResult Logout()
         {
-            service.SignOut(Request);
+            _authenticationService.SignOut(Request);
             return RedirectToAction("Index", "Home");
         }
 

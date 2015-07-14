@@ -9,19 +9,22 @@ namespace WebApp.Controllers
 {
     public class CandidateProfileController : Controller
     {
-        private IApplicationService service;
+        private IApplicationService _applicationService;
+        private IAuthenticationService _authenticationService;
 
-        public CandidateProfileController(IApplicationService applicationService)
+        public CandidateProfileController(IApplicationService applicationService, IAuthenticationService autheenticationService)
         {
-            service = applicationService;
+            _applicationService = applicationService;
+            _authenticationService = autheenticationService;
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (service.IsCandidate(Request))
+            if (_authenticationService.IsCandidate(Request))
             {
-                var candidateViewModel = await service.GetCandidateViewModelAsync(Request);
+                var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
+                var candidateViewModel = await _applicationService.GetCandidateViewModelByIdAsync(currentUserId);
                 return View(candidateViewModel);
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -30,9 +33,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Detail(string id)
         {
-            if (service.IsRecruiter(Request))
+            if (_authenticationService.IsRecruiter(Request))
             {
-                var candidateViewModel = await service.GetCandidateViewModelByIdAsync(id);
+                var candidateViewModel = await _applicationService.GetCandidateViewModelByIdAsync(id);
                 return View(candidateViewModel);
             }
             return RedirectToAction("DeniedPermision", "Home");
@@ -41,15 +44,16 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(CandidateUserModel model)
         {
-            if (service.IsCandidate(Request))
+            if (_authenticationService.IsCandidate(Request))
             {
+                var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
                 if (ValidateForm(model))
                 {
-                    await service.UpdateCandidate(model, Request);
-                    var updatedViewModel = await service.GetCandidateViewModelAsync(Request);
+                    await _applicationService.UpdateCandidateUserAsync(model, currentUserId);
+                    var updatedViewModel = await _applicationService.GetCandidateViewModelByIdAsync(currentUserId);
                     return View(updatedViewModel);
                 }
-                var viewModel = await service.GetCandidateModelAndBindWithStaticAsync(model, Request);
+                var viewModel = await _applicationService.GetCandidateViewModelByIdAsync(model, currentUserId);
                 return View(viewModel);
             }
             return RedirectToAction("DeniedPermission", "Home");
@@ -70,7 +74,7 @@ namespace WebApp.Controllers
             {
                 ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
             }
-            if (service.AreSkillsDuplicated(skills))
+            if (_applicationService.AreSkillsDuplicated(skills))
             {
                 ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
             }

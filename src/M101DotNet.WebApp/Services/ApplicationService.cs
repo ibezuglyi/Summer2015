@@ -75,6 +75,13 @@ namespace WebApp.Services
             return offerViewModelList;
         }
 
+        public async Task<RecruiterModel> GetRecruiterModelByEmailAsync(string email)
+        {
+            var recruiterUser = await GetRecruterByEmailAsync(email);
+            var recruiterModel = _mappingService.MapToRecruiterModel(recruiterUser);
+            return recruiterModel;
+        }
+
         public async Task CreateRecruiterUserAsync(RegisterModel model)
         {
             var user = _mappingService.MapToRecruiterUser(model.Name, model.Email);
@@ -195,131 +202,16 @@ namespace WebApp.Services
             return offerViewModel;
         }
 
-        public bool IsRecruiter(HttpRequestBase request)
+        public  OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, string recruiterId)
         {
-            return _authService.IsRecruiter(request);
-        }
-
-        public bool IsCandidate(HttpRequestBase request)
-        {
-            return _authService.IsCandidate(request);
-        }
-
-        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(HttpRequestBase request)
-        {
-            var id = _authService.GetUserIdFromRequest(request);
-            var offerSearchViewModel = await GetDefaultOfferSearchViewModel(id);
-            return offerSearchViewModel;
-        }
-
-        public async Task<CandidateViewModel> GetCandidateViewModelAsync(HttpRequestBase request)
-        {
-            var id = _authService.GetUserIdFromRequest(request);
-            var candidateViewModel = await GetCandidateViewModelByIdAsync(id);
-            return candidateViewModel;
-        }
-
-        public async Task<CandidateViewModel> GetCandidateModelAndBindWithStaticAsync(CandidateUserModel candidateModel, HttpRequestBase request)
-        {
-            var id = _authService.GetUserIdFromRequest(request);
-            var candidateViewModel = await GetCandidateViewModelByIdAsync(candidateModel, id);
-            return candidateViewModel;
-        }
-
-        public async Task UpdateCandidate(CandidateUserModel model, HttpRequestBase request)
-        {
-            var id = _authService.GetUserIdFromRequest(request);
-            await UpdateCandidateUserAsync(model, id);
-        }
-
-        public Task<RecruiterViewModel> GetRecruiterViewModelAsync(HttpRequestBase request)
-        {
-            var id = _authService.GetUserIdFromRequest(request);
-            var recruiterModel = GetRecruiterViewModelByIdAsync(id);
-            return recruiterModel;
-        }
-
-        public Task<RecruiterViewModel> GetRecruiterViewModelAsync(RecruiterModel recruiterModel, HttpRequestBase request)
-        {
-            var id = _authService.GetUserIdFromRequest(request);
-            var recruiterViewModel = GetRecruiterViewModelByIdAsync(recruiterModel, id);
-            return recruiterViewModel;
-        }
-
-        public async Task UpdateRecruiter(RecruiterModel model, HttpRequestBase request)
-        {
-            var id = _authService.GetUserIdFromRequest(request);
-            await UpdateRecruiterModelAsync(model, id);
-        }
-
-        public bool IsAuthenticated(HttpRequestBase request)
-        {
-            return _authService.IsAuthenticated(request);
-        }
-
-        public Task<OfferListViewModel> GetRecruiterOfferListViewModelAsync(HttpRequestBase request)
-        {
-            var recruiterId = _authService.GetUserIdFromRequest(request);
-            var offersRecruiter = GetOfferViewModelListAsync(recruiterId);
-            return offersRecruiter;
-        }
-
-        public async Task CreateJobOfferForRecruiter(OfferModel model, HttpRequestBase request)
-        {
-            var recruiterId = _authService.GetUserIdFromRequest(request);
-            await CreateJobOfferAsync(model, recruiterId);
-        }
-
-        public bool IfCurrentUserAnOwnerOfOffer(string recruiterIdFromOffer, HttpRequestBase request)
-        {
-            return _authService.IfCurrentUserAnOwnerOfOffer(recruiterIdFromOffer, request);
-        }
-
-
-        public  OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, HttpRequestBase request)
-        {
-            var recruiterId = _authService.GetUserIdFromRequest(request);
             var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, recruiterId);
             return offerViewModel;
         }
-
 
         public bool AreSkillsDuplicated(List<SkillModel> skills)
         {
             var skillsDistinct = skills.Select(r => r.Name.ToLower()).Distinct();
             return skills.Count != skillsDistinct.Count();
-        }
-
-        public void SignOut(HttpRequestBase request)
-        {
-            _authService.SignOut(request);
-        }
-
-        public void SignIn(ClaimsIdentity identity, HttpRequestBase request)
-        {
-            _authService.SignIn(identity, request);
-        }
-
-        public ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user)
-        {
-            var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Sid, user.Id),
-                    new Claim(ClaimTypes.Role, "Recruiter"),
-                    new Claim(ClaimTypes.Email, user.Email)
-                }, "ApplicationCookie");
-            return identity;
-        }
-
-        public ClaimsIdentity CreateCandidateIdentity(CandidateUser user)
-        {
-            var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Sid, user.Id),
-                    new Claim(ClaimTypes.Role, "Candidate"),
-                    new Claim(ClaimTypes.Email, user.Email)
-                }, "ApplicationCookie");
-            return identity;
         }
 
         public async Task<List<string>> GetSortedSkillsMatchingQuery(string query)
@@ -336,6 +228,12 @@ namespace WebApp.Services
         public SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints)
         {
             return _mappingService.MapToSkillSugestionModel(query, hints);
+        }
+
+        public async Task<string> GetIdRecruiterByOfferIdAsync(string offerId)
+        {
+            var offerViewModel = await GetOfferViewModelByIdAsync(offerId);
+            return offerViewModel.IdRecruiter;
         }
     }
 }

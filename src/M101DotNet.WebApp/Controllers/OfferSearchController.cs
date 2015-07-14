@@ -11,17 +11,20 @@ namespace WebApp.Controllers
 {
     public class OfferSearchController : Controller
     {
-        private IApplicationService service;
+        private IApplicationService _applicationService;
+        private IAuthenticationService _authenticationService;
 
-        public OfferSearchController(IApplicationService applicationService)
+        public OfferSearchController(IApplicationService applicationService, IAuthenticationService authenticationService)
         {
-            service = applicationService;
+            _applicationService = applicationService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var offerSearchViewModel = await service.GetDefaultOfferSearchViewModel(Request);
+            var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
+            var offerSearchViewModel = await _applicationService.GetDefaultOfferSearchViewModel(currentUserId);
             return View(offerSearchViewModel);
         }
 
