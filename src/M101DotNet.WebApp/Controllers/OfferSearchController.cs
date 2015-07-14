@@ -27,11 +27,40 @@ namespace WebApp.Controllers
             var offerSearchViewModel = await _applicationService.GetDefaultOfferSearchViewModel(currentUserId);
             return View(offerSearchViewModel);
         }
+            return View(new OfferSearchViewModel());
+        }
 
         [HttpPost]
-        public ActionResult Index(OfferSearchController model)
+        public async Task<ActionResult> Index(OfferSearchModel model)
         {
-            return View();
+            if (ValidateForm(model))
+            {
+                var newOfferSearchViewModel = await service.GetOfferSearchViewModelAsync(model);
+                return View(newOfferSearchViewModel);
+            }
+            var offerSearchViewModelWithoutOffers = service.GetOfferSearchViewModelWithoutOffersAsync(model);
+            return View(offerSearchViewModelWithoutOffers);
+        }
+
+
+        private bool ValidateForm(OfferSearchModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Skills.Count < 1)
+                {
+                    ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
+                }
+                if (service.AreSkillsDuplicated(model.Skills))
+                {
+                    ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
+                }
+                if (service.IsMinSalaryOverMaxSalary(model.MinSalary, model.MaxSalary))
+        {
+                     ModelState.AddModelError("minOvermax", "MaxSalary must be grater or equal MinSalary");
+                }
+            }
+            return ModelState.IsValid;
         }
 	}
 }

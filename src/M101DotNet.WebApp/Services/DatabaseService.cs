@@ -58,22 +58,51 @@ namespace WebApp.Services
             return offerList;
         }
 
-        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? min, int? max, string name)
+        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name)
         {
-            //magic
+            var filter = GetCompleteFilter(skills, minSalary, maxSalary, name);
+            var offers = await dbContext.JobOffers.Find(filter).ToListAsync();
+            return offers;
+        }
 
-            var offerList = await dbContext.JobOffers.Find(r => 1 == 1).ToListAsync();
-            return offerList;
+        private static FilterDefinition<JobOffer> GetCompleteFilter(List<Skill> skills, int? minSalary, int? maxSalary, string name)
+        {
+            var filterDefinitions = new List<FilterDefinition<JobOffer>>();
+            if (minSalary.HasValue)            
+            {
+                var minFilter = GetMinSalaryFilter(minSalary);
+                filterDefinitions.Add(minFilter);
+            }
+            if (maxSalary.HasValue)
+            {
+                var maxFilter = GetMaxSalaryFilter(maxSalary);
+                filterDefinitions.Add(maxFilter);
+            }
+            if (name!=null)
+            {
+                var nameFilter = GetNameFilter(name);
+                filterDefinitions.Add(nameFilter);
+            }
+            var filter = Builders<JobOffer>.Filter.And(filterDefinitions);
+            return filter;
+        }
+
+        private static FilterDefinition<JobOffer> GetNameFilter(string name)
+        {
+            var nameFilter = Builders<JobOffer>.Filter.Where(r => r.Name == name);
+            return nameFilter;
+        }
+
+        private static FilterDefinition<JobOffer> GetMaxSalaryFilter(int? max)
+        {
+            var maxFilter = Builders<JobOffer>.Filter.Where(r => r.Salary <= max.Value);
+            return maxFilter;
         }
 
         private static FilterDefinition<JobOffer> GetMinSalaryFilter(int? min)
         {
-            FilterDefinition<JobOffer> filterDefinition = null;
-            if (min.HasValue)
-            {
-                filterDefinition = Builders<JobOffer>.Filter.Gt(r => r.Salary, min.Value);
-            }
-            return filterDefinition;
+            var minFilter = Builders<JobOffer>.Filter.Where(r => r.Salary >= min.Value);
+            return minFilter;
         }
 
         public async Task UpdateRecruiterAsync(RecruiterUser recruiter, string recruiterId)

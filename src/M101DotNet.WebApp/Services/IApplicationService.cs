@@ -38,6 +38,12 @@ namespace WebApp.Services
         bool AreSkillsDuplicated(List<SkillModel> skills);
         Task<List<string>> GetSortedSkillsMatchingQuery(string query);
         SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints);
+
+        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(HttpRequestBase request);
+        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(string candidateId);
+        bool IsMinSalaryOverMaxSalary(int? minSalary, int? maxSalary);
+        Task<OfferSearchViewModel> GetOfferSearchViewModelAsync(OfferSearchModel offerSearchModel);
+        OfferSearchViewModel GetOfferSearchViewModelWithoutOffersAsync(OfferSearchModel offerSearchModel);
         Task<string> GetIdRecruiterByOfferIdAsync(string offerId);
         Task<RecruiterModel> GetRecruiterModelByEmailAsync(string email);
     }

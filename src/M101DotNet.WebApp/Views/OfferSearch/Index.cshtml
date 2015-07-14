@@ -3,25 +3,65 @@
 @{
     ViewBag.Title = "Index";
 }
+<div class="grey lighten-3 card-panel">
+    @using (Html.BeginForm())
+    {
 
-<h2>Index</h2>
+        <div class="form-part">
+            @Html.Label("Min salary:")
+            @Html.TextBox("minSalary", Model.SearchParams.MinSalary)
+            <span class="red-text text-darken-2">@Html.ValidationMessage("minSalary")</span>  
+        </div>        
+        <div class="form-part"> 
+            @Html.Label("Max salary:")
+            @Html.TextBox("maxSalary", Model.SearchParams.MaxSalary)
+            <span class="red-text text-darken-2">@Html.ValidationMessage("maxSalary")</span> 
+        </div>
+        <span class="red-text text-darken-2">@Html.ValidationMessage("minOvermax")</span>
+        <div class="form-part">
+            @Html.Label("Name:") <br />
+            @Html.TextBox("name", Model.SearchParams.Name)
+        </div>
 
-@using (Html.BeginForm())
+        @Html.Label("Skills:")<br />
+        @Html.Partial("_SkillFormPartial", Model.SearchParams.Skills)
+
+        <div class="row">
+            <button type="submit" class="btn ">Save &raquo;</button>
+        </div>
+    }
+    @Html.Partial("_BlankSkillRowPartial", Model.SearchParams.Skills)
+</div>
+@for (int i = Model.Offers.OffersList.Count-1; i >= 0 ; i--)
 {
-    <div class="form-part">
-        @Html.Label("Salary:") <br />
-        @Html.TextBox("minSalary", Model.SearchParams.MinSalary)
-    
-        @Html.Label("  -  ")
-        @Html.TextBox("maxSalary", Model.SearchParams.MaxSalary)
-    </div>
-    <div class="form-part">
-        @Html.Label("Name:") <br />
-        @Html.TextBox("name", Model.SearchParams.Name)
-    </div>
-          
-
-    <div class="row">
-        <button type="submit" class="btn ">Save &raquo;</button>
-    </div>
+    <div class="grey lighten-3 card-panel">
+                <div class="offer-title">
+                    <div class="inline-field">
+                        <div class="card-panel orange lighten-3">
+                            <span>@Model.Offers.OffersList[i].Offer.Name</span>
+                        </div>
+                    </div>
+                    <div class="inline-field">
+                        <div class="card-panel orange lighten-3">
+                            <span>@Model.Offers.OffersList[i].Offer.Salary</span> PLN                            
+                        </div>
+                    </div>
+                </div> 
+                <div class="offer-buttons">
+                    @Html.ActionLink("Details", "Details", "Offer", new { id = Model.Offers.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })               
+                </div>               
+                <div class="skill-list">                    
+                        @foreach (var topSkill in Model.Offers.OffersList[i].TopSkills)
+                        {
+                            <div class="inline-field">
+                                <div class="card-panel amber lighten-4">
+                                    @topSkill.Name
+                                    @topSkill.Level
+                                </div>
+                            </div>
+                        }
+                </div>
+        </div>    
 }
+    @Scripts.Render("~/bundles/site")
+    @Scripts.Render("~/bundles/jquery-autocomplete")

@@ -147,7 +147,7 @@ namespace WebApp.Services
             return candidateViewModel;
         }
 
-        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(string candidateId)
+        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(string candidateId)
         {
             var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
             var offerSearchModel = _mappingService.MapToOfferSearchModel(candidate);
@@ -202,7 +202,78 @@ namespace WebApp.Services
             return offerViewModel;
         }
 
-        public  OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, string recruiterId)
+        public bool IsRecruiter(HttpRequestBase request)
+        {
+            return _authService.IsRecruiter(request);
+        }
+
+        public bool IsCandidate(HttpRequestBase request)
+        {
+            return _authService.IsCandidate(request);
+        }
+
+        public async Task<OfferSearchViewModel> GetOfferSearchViewModelAsync(OfferSearchModel offerSearchModel)
+        {
+            var offerList = await GetOfferViewModelListAsync(offerSearchModel);
+            var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+            return offerSearchViewModel;
+        }
+
+        public OfferSearchViewModel GetOfferSearchViewModelWithoutOffersAsync(OfferSearchModel offerSearchModel)
+        {
+            var offerList = new OfferListViewModel();
+            var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+            return offerSearchViewModel;
+        }
+
+        public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(HttpRequestBase request)
+        {
+            var id = _authService.GetUserIdFromRequest(request);
+            var offerSearchViewModel = await GetDefaultOfferSearchViewModelAsync(id);
+            return offerSearchViewModel;
+        }
+
+        public async Task<CandidateViewModel> GetCandidateViewModelAsync(HttpRequestBase request)
+        {
+            var id = _authService.GetUserIdFromRequest(request);
+            var candidateViewModel = await GetCandidateViewModelByIdAsync(id);
+            return candidateViewModel;
+        }
+
+        public async Task<CandidateViewModel> GetCandidateModelAndBindWithStaticAsync(CandidateUserModel candidateModel, HttpRequestBase request)
+        {
+            var id = _authService.GetUserIdFromRequest(request);
+            var candidateViewModel = await GetCandidateViewModelByIdAsync(candidateModel, id);
+            return candidateViewModel;
+        }
+
+        public async Task UpdateCandidate(CandidateUserModel model, HttpRequestBase request)
+        {
+            var id = _authService.GetUserIdFromRequest(request);
+            await UpdateCandidateUserAsync(model, id);
+        }
+
+        public Task<RecruiterViewModel> GetRecruiterViewModelAsync(HttpRequestBase request)
+        {
+            var id = _authService.GetUserIdFromRequest(request);
+            var recruiterModel = GetRecruiterViewModelByIdAsync(id);
+            return recruiterModel;
+        }
+
+        public Task<RecruiterViewModel> GetRecruiterViewModelAsync(RecruiterModel recruiterModel, HttpRequestBase request)
+        {
+            var id = _authService.GetUserIdFromRequest(request);
+            var recruiterViewModel = GetRecruiterViewModelByIdAsync(recruiterModel, id);
+            return recruiterViewModel;
+        }
+
+        public async Task UpdateRecruiter(RecruiterModel model, HttpRequestBase request)
+        {
+            var id = _authService.GetUserIdFromRequest(request);
+            await UpdateRecruiterModelAsync(model, id);
+        }
+
+        public bool IsAuthenticated(HttpRequestBase request)
         {
             var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, recruiterId);
             return offerViewModel;
@@ -212,6 +283,48 @@ namespace WebApp.Services
         {
             var skillsDistinct = skills.Select(r => r.Name.ToLower()).Distinct();
             return skills.Count != skillsDistinct.Count();
+        }
+
+        public bool IsMinSalaryOverMaxSalary(int? minSalary, int? maxSalary)
+        {
+            if(minSalary.HasValue && maxSalary.HasValue && minSalary.Value>maxSalary.Value)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        public void SignOut(HttpRequestBase request)
+        {
+            _authService.SignOut(request);
+        }
+
+        public void SignIn(ClaimsIdentity identity, HttpRequestBase request)
+        {
+            _authService.SignIn(identity, request);
+        }
+
+        public ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user)
+        {
+            var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Sid, user.Id),
+                    new Claim(ClaimTypes.Role, "Recruiter"),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }, "ApplicationCookie");
+            return identity;
+        }
+
+        public ClaimsIdentity CreateCandidateIdentity(CandidateUser user)
+        {
+            var identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Sid, user.Id),
+                    new Claim(ClaimTypes.Role, "Candidate"),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }, "ApplicationCookie");
+            return identity;
         }
 
         public async Task<List<string>> GetSortedSkillsMatchingQuery(string query)
