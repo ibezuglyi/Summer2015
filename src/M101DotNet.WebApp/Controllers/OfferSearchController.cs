@@ -24,9 +24,7 @@ namespace WebApp.Controllers
         public async Task<ActionResult> Index()
         {
             var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
-            var offerSearchViewModel = await _applicationService.GetDefaultOfferSearchViewModel(currentUserId);
-            return View(offerSearchViewModel);
-        }
+            var offerSearchViewModel = await _applicationService.GetDefaultOfferSearchViewModelAsync(currentUserId);
             return View(new OfferSearchViewModel());
         }
 
@@ -35,10 +33,10 @@ namespace WebApp.Controllers
         {
             if (ValidateForm(model))
             {
-                var newOfferSearchViewModel = await service.GetOfferSearchViewModelAsync(model);
+                var newOfferSearchViewModel = await _applicationService.GetOfferSearchViewModelAsync(model);
                 return View(newOfferSearchViewModel);
             }
-            var offerSearchViewModelWithoutOffers = service.GetOfferSearchViewModelWithoutOffersAsync(model);
+            var offerSearchViewModelWithoutOffers = _applicationService.GetOfferSearchViewModelWithoutOffersAsync(model);
             return View(offerSearchViewModelWithoutOffers);
         }
 
@@ -51,12 +49,12 @@ namespace WebApp.Controllers
                 {
                     ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
                 }
-                if (service.AreSkillsDuplicated(model.Skills))
+                if (_applicationService.AreSkillsDuplicated(model.Skills))
                 {
                     ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
                 }
-                if (service.IsMinSalaryOverMaxSalary(model.MinSalary, model.MaxSalary))
-        {
+                if (_applicationService.IsMinSalaryOverMaxSalary(model.MinSalary, model.MaxSalary))
+                {
                      ModelState.AddModelError("minOvermax", "MaxSalary must be grater or equal MinSalary");
                 }
             }

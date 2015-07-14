@@ -23,7 +23,6 @@ namespace WebApp.Services
         Task<RecruiterUser> GetRecruiterByIdAsync(string recruiterId);
         Task<CandidateUser> GetCandidateByIdAsync(string candidateId);
         Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId);
-        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModel(string candidateId);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId);
         Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId);
         Task UpdateCandidateUserAsync(CandidateUserModel model, string candidateId);
@@ -38,8 +37,6 @@ namespace WebApp.Services
         bool AreSkillsDuplicated(List<SkillModel> skills);
         Task<List<string>> GetSortedSkillsMatchingQuery(string query);
         SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints);
-
-        Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(HttpRequestBase request);
         Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(string candidateId);
         bool IsMinSalaryOverMaxSalary(int? minSalary, int? maxSalary);
         Task<OfferSearchViewModel> GetOfferSearchViewModelAsync(OfferSearchModel offerSearchModel);
