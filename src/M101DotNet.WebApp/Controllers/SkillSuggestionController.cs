@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApp.Models;
@@ -23,9 +24,9 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetHints(string query)
+        public async Task<ActionResult> GetHints(string query)
         {
-            List<string> hints = Service.GetSkillsMatchingQuery(query);
+            List<string> hints = await Service.GetSkillsMatchingQuery(query);
 
             var response = new SkillSuggestionModel(query, hints);
 

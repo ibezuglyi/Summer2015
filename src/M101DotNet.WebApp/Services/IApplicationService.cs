@@ -52,7 +52,6 @@ namespace WebApp.Services
         ClaimsIdentity CreateRecruiterIdentity(RecruiterUser user);
         ClaimsIdentity CreateCandidateIdentity(CandidateUser user);
 
-
-        List<string> GetSkillsMatchingQuery(string query);
+        Task<List<string>> GetSkillsMatchingQuery(string query);
     }
 }

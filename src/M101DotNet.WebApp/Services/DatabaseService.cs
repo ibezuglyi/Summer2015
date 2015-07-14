@@ -117,22 +117,18 @@ namespace WebApp.Services
 
         public async Task<List<string>> GetSkillsMatchingQuery(string query)
         {
+            var queryExpression = string.Format("^{0}", query);
+            var filter = Builders<CandidateUser>.Filter
+                .Regex(new StringFieldDefinition<CandidateUser>("Skills.Name"), new BsonRegularExpression(queryExpression));
 
-            var queryExpression = string.Format("{0}", query);
-
-            var filter = Builders<CandidateUser>.Filter.Regex(r => r.Skills, new BsonRegularExpression(queryExpression));
-
-            var projection = Builders<CandidateUser>.Projection.Include(r => r.Skills);
-
-            var skills = await dbContext.CandidateUsers.FindAsync<CandidateUser>(filter, new FindOptions<CandidateUser, CandidateUser>()
-            {
-                Projection = projection
-            });
-
-            var allSkills = new List<Skill>();
-            await skills.ForEachAsync<CandidateUser>(new Action<CandidateUser>(c =>  allSkills.AddRange(c.Skills) ));
-
-            return null;
+            var skills = await dbContext.CandidateUsers
+                .Find(filter)
+                .Project(u => new SkillsContainer(u.Skills.Where(r=>r.Name.StartsWith(query)).ToList()))
+                
+                .ToListAsync();
+            
+            var allSkills = skills.SelectMany(r => r.Skills).Select(r=>r.Name).ToList();
+            return allSkills;
         }
 
 

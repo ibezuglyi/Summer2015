@@ -291,11 +291,10 @@ namespace WebApp.Services
             return identity;
         }
 
-        public List<string> GetSkillsMatchingQuery(string query)
+        public async Task<List<string>> GetSkillsMatchingQuery(string query)
         {
-            var a = _dbService.GetSkillsMatchingQuery(query);
-
-            return null;
+            var list = await _dbService.GetSkillsMatchingQuery(query);
+            return list;
         }
 
     }
