@@ -153,6 +153,7 @@ namespace WebApp.Services
             return offerSearchViewModel;
         }
 
+        
         public async Task<OfferListViewModel> GetOfferViewModelListAsync(OfferSearchModel offerSearchModel)
         {            
             var offerList = await GetOffersByOfferSearchModelAsync(offerSearchModel);
