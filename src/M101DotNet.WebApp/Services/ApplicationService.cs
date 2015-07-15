@@ -87,6 +87,14 @@ namespace WebApp.Services
             var offer = _mappingService.MapToJobOffer(model, offerId);
             await _dbService.InsertJobOfferAsync(offer);
         }
+        private static string GetSkillCode(List<Skill> skills)
+        {
+            var format = "{0}{1}";
+            var orderedSkills = skills.OrderBy(r => r.NameToLower).ToList();
+            var builder = new StringBuilder();
+            orderedSkills.ForEach(s => builder.AppendFormat(format, s.NameToLower, s.Level));
+            return builder.ToString();
+        }
 
         public async Task UpdateRecruiterModelAsync(RecruiterModel model, string recruiterId)
         {
@@ -123,12 +131,50 @@ namespace WebApp.Services
         {
             var offer = _mappingService.MapToJobOffer(model, idOffer);
             await _dbService.UpdateJobOfferAsync(offer, idOffer);
+            var offerSkillCode = GetSkillCode(offer.Skills);
+            var candidates = await _dbService.GetAllCandidatesListAsync();
+            var ssrList = new List<ScoredSkillRelation>();
+            foreach (var candidate in candidates)
+            {
+                var candidateScore = MeasureScoreBetweenCandidateAndOffer(offer.Skills, candidate.Skills);
+                var candidateCode = GetSkillCode(candidate.Skills);
+                var ssr = new ScoredSkillRelation()
+                {
+                    ReferenceId = idOffer,
+                    ReferenceSkillCode = offerSkillCode,
+                    SkillCode = candidateCode,
+                    Score = candidateScore,
+                    Type = "Offer"
+                };
+                ssrList.Add(ssr);
+             }
+            await _dbService.InsertScoredSkillRelationsAsync(ssrList);
+
+
         }
 
         public async Task UpdateCandidateUserAsync(CandidateUserModel model, string candidateId)
         {
             CandidateUser candidate = _mappingService.MapToCandidateUser(model);
             await _dbService.UpdateCandidateAsync(candidate, candidateId);
+            var candidateSkillCode = GetSkillCode(candidate.Skills);
+            var offers = await _dbService.GetOffersByOfferSearchModelAsync(candidate.Skills, null, null, null);
+            var ssrList = new List<ScoredSkillRelation>();
+            foreach (var offer in offers)
+            {
+                var score = MeasureScoreBetweenCandidateAndOffer(candidate.Skills, offer.Skills);
+                var offerSkillCode = GetSkillCode(offer.Skills);
+                var ssr = new ScoredSkillRelation()
+                {
+                    ReferenceId = candidateId,
+                    ReferenceSkillCode = candidateSkillCode,
+                    SkillCode = offerSkillCode,
+                    Score = score,
+                    Type = "Candidate"
+                };
+                ssrList.Add(ssr);
+            }
+            await _dbService.InsertScoredSkillRelationsAsync(ssrList);
         }
 
         public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(string candidateId)
@@ -156,7 +202,7 @@ namespace WebApp.Services
             var offerSearchViewModel = _mappingService.MapToOfferSearchViewModel(offerSearchModel, offerList);
             return offerSearchViewModel;
         }
-        
+
         //public async Task<OfferListViewModel> GetOfferViewModelListAsync(OfferSearchModel offerSearchModel)
         //{            
         //    var offerList = await GetOffersByOfferSearchModelAsync(offerSearchModel);
@@ -172,12 +218,14 @@ namespace WebApp.Services
             var scoredOfferViewModelList = _mappingService.MapToScoredOfferListViewModel(scoredOffersViewModel);
             return scoredOfferViewModelList;
         }
-                
+
 
         private async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(OfferSearchModel offerSearch)
         {
             var skills = _mappingService.MapSkillModelsToSkills(offerSearch.Skills);
-            var offerList = await _dbService.GetOffersByOfferSearchModelAsync(skills, offerSearch.MinSalary, offerSearch.MaxSalary, offerSearch.Name);
+            //var offerList = await _dbService.GetOffersByOfferSearchModelAsync(skills, offerSearch.MinSalary, offerSearch.MaxSalary, offerSearch.Name);
+            var skillcode = GetSkillCode(skills);
+            var offerList = await _dbService.SearchForOffers(skillcode);
             return offerList;
         }
 
@@ -248,7 +296,7 @@ namespace WebApp.Services
 
         public bool IsMinSalaryOverMaxSalary(int? minSalary, int? maxSalary)
         {
-            if(minSalary.HasValue && maxSalary.HasValue && minSalary.Value>maxSalary.Value)
+            if (minSalary.HasValue && maxSalary.HasValue && minSalary.Value > maxSalary.Value)
             {
                 return true;
             }
@@ -277,7 +325,7 @@ namespace WebApp.Services
             return offerViewModel.IdRecruiter;
         }
 
-        public  OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, string recruiterId)
+        public OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, string recruiterId)
         {
             var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, recruiterId);
             return offerViewModel;
@@ -292,7 +340,7 @@ namespace WebApp.Services
                 {
                     if (referenceSkill.Name == skill.Name)
                     {
-                        pointsSum += 1 - (referenceSkill.Level - skill.Level)/10.0;
+                        pointsSum += 1 - (referenceSkill.Level - skill.Level) / 10.0;
                     }
                 }
             }
@@ -314,7 +362,7 @@ namespace WebApp.Services
             var candidate = _mappingService.MapToCandidateUser(candidateModel);
             var scoredOfferViewModelList = CalculateScoresForOffers(candidate, offerList);
             var sortedScoredOfferViewModelList = scoredOfferViewModelList.OrderByDescending(r => r.Offer.Score).ToList();
-            var sortedScoredOfferListViewModel =_mappingService.MapToScoredOfferListViewModel(sortedScoredOfferViewModelList);
+            var sortedScoredOfferListViewModel = _mappingService.MapToScoredOfferListViewModel(sortedScoredOfferViewModelList);
             return sortedScoredOfferListViewModel;
         }
 

@@ -166,6 +166,7 @@
     <Compile Include="Controllers\CandidateProfileController.cs" />
     <Compile Include="Controllers\OfferSearchController.cs" />
     <Compile Include="Controllers\SkillSuggestionController.cs" />
+    <Compile Include="Entities\ScoredSkillRelation.cs" />
     <Compile Include="Models\Candidate\CandidateViewModel.cs" />
     <Compile Include="Models\Candidate\CandidateUserModel.cs" />
     <Compile Include="Controllers\OfferController.cs" />

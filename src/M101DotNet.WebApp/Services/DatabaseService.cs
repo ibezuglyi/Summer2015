@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Text;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,10 @@ namespace WebApp.Services
 
         public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name)
         {
-            var filter = GetCompleteFilter(skills, minSalary, maxSalary, name);
+        
+
+
+            var filter = GetFilterBySalaryAndDescription(skills, minSalary, maxSalary, name);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetSkillsIntersectionProjectionBson(skillsName, skills.Count);
@@ -104,7 +108,7 @@ namespace WebApp.Services
             return matchBson;
         }
 
-        private static FilterDefinition<JobOffer> GetCompleteFilter(List<Skill> skills, int? minSalary, int? maxSalary, string name)
+        private static FilterDefinition<JobOffer> GetFilterBySalaryAndDescription(List<Skill> skills, int? minSalary, int? maxSalary, string name)
         {
             var filterDefinitions = new List<FilterDefinition<JobOffer>>();
             if (minSalary.HasValue)
@@ -122,19 +126,8 @@ namespace WebApp.Services
                 var nameFilter = GetNameFilter(name);
                 filterDefinitions.Add(nameFilter);
             }
-            //var skillFilter = GetSkillsFilter(skills);
-            //filterDefinitions.Add(skillFilter);
             var filter = Builders<JobOffer>.Filter.And(filterDefinitions);
             return filter;
-        }
-
-        private static FilterDefinition<JobOffer> GetSkillsFilter(List<Skill> skills)
-        {
-            var skillNames = skills.Select(r => r.Name).ToList();
-
-            var skillDefinition = Builders<JobOffer>.Filter.ToBsonDocument();
-            //skillDefinition.Add("Skills.Name", new BsonDocument("$all", new BsonArray(values)));
-            return skillDefinition;
         }
 
         private static FilterDefinition<JobOffer> GetNameFilter(string name)
@@ -181,6 +174,8 @@ namespace WebApp.Services
         {
             await dbContext.JobOffers.InsertOneAsync(offer);
         }
+
+
 
         public async Task InsertCaniddateUserAsync(CandidateUser user)
         {
@@ -232,6 +227,31 @@ namespace WebApp.Services
         {
             FilterDefinition<JobOffer> filter = "{}";
             var offers = await dbContext.JobOffers.Find(filter).ToListAsync();
+            return offers;
+        }
+
+        public async Task InsertScoredSkillRelationsAsync(List<ScoredSkillRelation> scoredSkillRelations)
+        {
+            await dbContext.ScoredSkillRelations.InsertManyAsync(scoredSkillRelations);
+        }
+
+        public async Task<List<CandidateUser>> GetAllCandidatesListAsync()
+        {
+            FilterDefinition<CandidateUser> filter = "{}";
+            var candidates = await dbContext.CandidateUsers.Find(filter).ToListAsync();
+            return candidates;
+        }
+
+        public async Task<List<JobOffer>> SearchForOffers(string skillcode)
+        {
+            var offerFilter = Builders<ScoredSkillRelation>.Filter.Eq(r => r.Type, "Offer");
+            var skillcodeFilter = Builders<ScoredSkillRelation>.Filter.Eq(r => r.ReferenceSkillCode, skillcode);
+
+            var filter = Builders<ScoredSkillRelation>.Filter.And(offerFilter, skillcodeFilter);
+            var relationList = await dbContext.ScoredSkillRelations.Find(filter).ToListAsync();
+
+            var offerFilter1 = Builders<JobOffer>.Filter.In(r => r.Id, relationList.Select(r => r.ReferenceId));
+            var offers = await dbContext.JobOffers.Find(offerFilter1).ToListAsync();
             return offers;
         }
     }

@@ -23,5 +23,8 @@ namespace WebApp.Services
 
         Task<List<string>> GetSkillsMatchingQuery(string query);
         Task<List<JobOffer>> GetAllOffersListAsync();
+        Task InsertScoredSkillRelationsAsync(List<ScoredSkillRelation> scoredSkillRelations);
+        Task<List<CandidateUser>>  GetAllCandidatesListAsync();
+        Task<List<JobOffer>> SearchForOffers(string skillcode);
     }
 }

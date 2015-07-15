@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MongoDB.Driver;
 using System.Configuration;
-using MongoDB.Driver;
 using WebApp.Entities;
 
 namespace WebApp.Models
@@ -13,6 +11,7 @@ namespace WebApp.Models
         public const string RECRUITER_USERS_COLLECTION_NAME = "recruiters";
         public const string CANDIDATE_USERS_COLLECTION_NAME = "candidates";
         public const string OFFERS_COLLECTION_NAME = "offers";
+        public const string ScoredSkillRelationCollectionName = "ScoredSkillRelation";
 
         private static readonly IMongoClient _client;
         private static readonly IMongoDatabase _database;
@@ -46,6 +45,11 @@ namespace WebApp.Models
                 return _database.GetCollection<JobOffer>(OFFERS_COLLECTION_NAME);
                 
             }
+        }
+
+        public IMongoCollection<ScoredSkillRelation> ScoredSkillRelations
+        {
+            get { return _database.GetCollection<ScoredSkillRelation>("ScoredSkillRelationCollectionName"); }
         }
     }
 }
