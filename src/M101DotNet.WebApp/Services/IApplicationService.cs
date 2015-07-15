@@ -40,7 +40,7 @@ namespace WebApp.Services
         Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(string candidateId);
         bool IsMinSalaryOverMaxSalary(int? minSalary, int? maxSalary);
         Task<OfferSearchViewModel> GetOfferSearchViewModelAsync(OfferSearchModel offerSearchModel);
-        OfferSearchViewModel GetOfferSearchViewModelWithoutOffersAsync(OfferSearchModel offerSearchModel);
+        OfferSearchViewModel GetOfferSearchViewModelWithoutOffers(OfferSearchModel offerSearchModel);
         Task<string> GetIdRecruiterByOfferIdAsync(string offerId);
         Task<RecruiterModel> GetRecruiterModelByEmailAsync(string email);
         Task<CandidateUserModel> GetCandidateUserModelByIdAsync(string candidateId);

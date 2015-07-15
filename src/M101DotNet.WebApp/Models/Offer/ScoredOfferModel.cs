@@ -27,7 +27,7 @@ namespace WebApp.Models.Offer
             Skills = new List<SkillModel>();
         }
 
-        public ScoredOfferModel(string offerId, string name, int salary, int score, List<SkillModel> skills)
+        public ScoredOfferModel(string offerId, string name, int salary, double score, List<SkillModel> skills)
         {
             Id = offerId;
             Name = name;

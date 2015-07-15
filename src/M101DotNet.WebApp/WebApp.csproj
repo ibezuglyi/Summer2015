@@ -296,6 +296,7 @@
     <Content Include="Views\OfferSearch\Index.cshtml" />
     <Content Include="Views\Shared\_OfferTitlePartial.cshtml" />
     <Content Include="Views\Shared\_SkillsListPartial.cshtml" />
+    <Content Include="Views\Shared\_ScoredOfferTitlepartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

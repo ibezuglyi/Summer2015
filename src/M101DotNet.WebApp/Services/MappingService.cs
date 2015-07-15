@@ -24,11 +24,25 @@ namespace WebApp.Services
             return offersViewModel;
         }
 
+        public List<ScoredOfferViewModel> MapToScoredOffersViewModel(List<JobOffer> offers)
+        {
+            var scoredOffersViewModel = new List<ScoredOfferViewModel>();
+            foreach (var offer in offers)
+            {
+                //Uwaga ściema! Nizej zamiast 1 powinno byc podane z zewnatrz score
+                var scoredOfferModel = MapToScoredOfferModel(offer, 1);
+                var scoredOfferViewModel = MapToScoredOfferViewModel(scoredOfferModel);
+                scoredOffersViewModel.Add(scoredOfferViewModel);
+            }
+            return scoredOffersViewModel;
+        }
+
         public OfferListViewModel MapToOfferViewModelList(List<OfferViewModel> offersModelView)
         {
             var offerViewModelList = new OfferListViewModel(offersModelView);
             return offerViewModelList;
         }
+
 
         public ScoredOfferListViewModel MapToScoredOfferListViewModel(List<ScoredOfferViewModel> scoredOffersViewModel)
         {
@@ -159,9 +173,14 @@ namespace WebApp.Services
             return skillModels;
         }
 
-        public OfferSearchViewModel MapToOfferSearchViewModel(OfferSearchModel offerSearchModel, OfferListViewModel offerListViewModel)
+        //public OfferSearchViewModel MapToOfferSearchViewModel(OfferSearchModel offerSearchModel, OfferListViewModel offerListViewModel)
+        //{
+        //    return new OfferSearchViewModel(offerSearchModel, offerListViewModel);
+        //}
+
+        public OfferSearchViewModel MapToOfferSearchViewModel(OfferSearchModel offerSearchModel, ScoredOfferListViewModel scoredOfferListViewModel)
         {
-            return new OfferSearchViewModel(offerSearchModel, offerListViewModel);
+            return new OfferSearchViewModel(offerSearchModel, scoredOfferListViewModel);
         }
                
 
@@ -183,6 +202,13 @@ namespace WebApp.Services
         public ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel)
         {
             return new ScoredOfferViewModel(offerModel);
+        }
+
+        public ScoredOfferModel MapToScoredOfferModel(JobOffer offer, double score)
+        {
+            var skills = MapSkillsToSkillModels(offer.Skills);
+            var scoredOfferModel = new ScoredOfferModel(offer.Id, offer.Name, offer.Salary, score, skills);
+            return scoredOfferModel;
         }
     }
 }
