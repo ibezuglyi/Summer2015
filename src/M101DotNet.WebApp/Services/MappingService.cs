@@ -121,7 +121,7 @@ namespace WebApp.Services
         public OfferSearchModel MapToOfferSearchModel(CandidateUser candidate)
         {
             var skillModels = MapSkillsToSkillModels(candidate.Skills);
-            var offerSearchModel = new OfferSearchModel(skillModels, candidate.Salary, candidate.Salary, null);
+            var offerSearchModel = new OfferSearchModel(skillModels, candidate.Salary, null, null);
             return offerSearchModel;
         }
 

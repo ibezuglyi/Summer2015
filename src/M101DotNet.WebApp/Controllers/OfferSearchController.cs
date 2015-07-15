@@ -39,6 +39,7 @@ namespace WebApp.Controllers
             if (ValidateForm(model))
             {
                 var newOfferSearchViewModel = await _applicationService.GetOfferSearchViewModelAsync(model);
+                CheckIfThereAreNoOffers(newOfferSearchViewModel);
                 return View(newOfferSearchViewModel);
             }
             var offerSearchViewModelWithoutOffers = _applicationService.GetOfferSearchViewModelWithoutOffersAsync(model);
@@ -50,21 +51,22 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Skills.Count < 1)
-                {
-                    ModelState.AddModelError("notEnoughSkills", "Choose one or more skills");
-                }
                 if (_applicationService.AreSkillsDuplicated(model.Skills))
                 {
                     ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
                 }
                 if (_applicationService.IsMinSalaryOverMaxSalary(model.MinSalary, model.MaxSalary))
                 {
-                     ModelState.AddModelError("minOvermax", "MaxSalary must be grater or equal MinSalary");
+                     ModelState.AddModelError("minOvermax", "Max salary must be grater or equal than min salary");
                 }
             }
             return ModelState.IsValid;
         }
 
+        private void CheckIfThereAreNoOffers(OfferSearchViewModel offerSearchViewModel)
+        {
+            if (offerSearchViewModel.Offers.OffersList.Count == 0)
+                ModelState.AddModelError("noOffers", "There are no offers for given parameters");
+        }
 	}
 }
