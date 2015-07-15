@@ -30,6 +30,12 @@ namespace WebApp.Services
             return offerViewModelList;
         }
 
+        public ScoredOfferListViewModel MapToScoredOfferListViewModel(List<ScoredOfferViewModel> scoredOffersViewModel)
+        {
+            var scoredOfferListViewModel = new ScoredOfferListViewModel(scoredOffersViewModel);
+            return scoredOfferListViewModel;
+        }
+
         public  JobOffer MapToJobOffer(OfferModel model, string id)
         {
             var skills = MapSkillModelsToSkills(model.Skills);
@@ -132,6 +138,7 @@ namespace WebApp.Services
             return offerSearchModel;
         }
 
+        
         public List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels)
         {
             var skills = new List<Skill>();
@@ -163,6 +170,7 @@ namespace WebApp.Services
         {
             return new OfferSearchViewModel(offerSearchModel, offerListViewModel);
         }
+               
 
         public CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail)
         {
@@ -177,6 +185,11 @@ namespace WebApp.Services
         public OfferViewModel MapToOfferViewModel(OfferModel offerModel, string IdRecruiter)
         {
             return new OfferViewModel(offerModel, IdRecruiter);
+        }
+
+        public ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel)
+        {
+            return new ScoredOfferViewModel(offerModel);
         }
     }
 }
