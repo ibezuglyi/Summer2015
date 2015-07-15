@@ -159,7 +159,7 @@ namespace WebApp.Services
         private async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(OfferSearchModel offerSearch)
         {
             var skills = _mappingService.MapSkillModelsToSkills(offerSearch.Skills);
-            var offerList = await _dbService.GetOffersByOfferSearchModelAsync(skills, offerSearch.MinSalary, offerSearch.MaxSalary, offerSearch.Name, 3);
+            var offerList = await _dbService.GetOffersByOfferSearchModelAsync(skills, offerSearch.MinSalary, offerSearch.MaxSalary, offerSearch.Name);
             return offerList;
         }
 

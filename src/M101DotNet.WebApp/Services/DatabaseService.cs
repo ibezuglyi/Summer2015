@@ -52,12 +52,12 @@ namespace WebApp.Services
             return offerList;
         }
 
-        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, int skillsIntersectionCount)
+        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name)
         {
             var filter = GetCompleteFilter(skills, minSalary, maxSalary, name);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
-            var projectBson = GetSkillsIntersectionProjectionBson(skillsName, skillsIntersectionCount);
+            var projectBson = GetSkillsIntersectionProjectionBson(skillsName, skills.Count);
 
             var offers = await dbContext.JobOffers
                 .Aggregate()
