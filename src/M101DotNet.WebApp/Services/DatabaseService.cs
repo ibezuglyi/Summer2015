@@ -1,17 +1,10 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Web;
 using WebApp.Entities;
 using WebApp.Models;
-using WebApp.Models.Account;
-using MongoDB.Driver;
-using WebApp.Models.Offer;
-using WebApp.Models.Recruiter;
-using WebApp.Models.Candidate;
-using MongoDB.Bson;
 
 namespace WebApp.Services
 {
@@ -59,11 +52,56 @@ namespace WebApp.Services
             return offerList;
         }
 
-        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name)
+        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, int skillsIntersectionCount)
         {
             var filter = GetCompleteFilter(skills, minSalary, maxSalary, name);
-            var offers = await dbContext.JobOffers.Find(filter).ToListAsync();
+            var skillsName = skills.Select(r => r.Name).ToList();
+            var matchBson = GetMatchedSkillsStageBson(skillsName);
+            var projectBson = GetSkillsIntersectionProjectionBson(skillsName, skillsIntersectionCount);
+
+            var offers = await dbContext.JobOffers
+                .Aggregate()
+                .Match(filter)
+                .Match(new BsonDocumentFilterDefinition<JobOffer>(matchBson))
+                .Project(new BsonDocumentProjectionDefinition<JobOffer, BsonDocument>(projectBson))
+                .Match(new BsonDocumentFilterDefinition<BsonDocument>(new BsonDocument("Matched", true)))
+                .Project(new BsonDocumentProjectionDefinition<BsonDocument, JobOffer>(new BsonDocument("IdRecruiter", 1).Add("Salary", 1).Add("Name", 1).Add("Skills", 1)))
+                .ToListAsync();
+
             return offers;
+        }
+
+        private static BsonDocument GetSkillsIntersectionProjectionBson(List<string> skillsName, int skillsIntersectionCount)
+        {
+            BsonDocument projectBson = new BsonDocument("IdRecruiter", 1);
+            projectBson.Add("Salary", 1);
+            projectBson.Add("Name", 1);
+            projectBson.Add("Skills", 1);
+
+            var bsonArray = GetMapBsonArray(skillsName);
+            var intersectbsonDocument = new BsonDocument("$setIntersection", bsonArray);
+            var sizebsonDocument = new BsonDocument("$size", intersectbsonDocument);
+            var gte = new BsonArray().Add(sizebsonDocument).Add(skillsIntersectionCount);
+            projectBson.Add("Matched", new BsonDocument("$gte", gte));
+            return projectBson;
+        }
+
+        private static BsonArray GetMapBsonArray(List<string> skillsName)
+        {
+            var mapbsonDocument = new BsonDocument("input", "$Skills");
+            mapbsonDocument.Add("as", "s");
+            mapbsonDocument.Add("in", "$$s.Name");
+            var bsonArray = new BsonArray();
+            bsonArray.Add(new BsonDocument("$map", mapbsonDocument));
+            bsonArray.Add(new BsonArray(skillsName));
+            return bsonArray;
+        }
+
+        private static BsonDocument GetMatchedSkillsStageBson(List<string> skillsName)
+        {
+            var matchBson = new BsonDocument("Skills.Name", new BsonDocument("$in", new BsonArray(skillsName)));
+            matchBson.Add("Skills.2", new BsonDocument("$exists", true));
+            return matchBson;
         }
 
         private static FilterDefinition<JobOffer> GetCompleteFilter(List<Skill> skills, int? minSalary, int? maxSalary, string name)
@@ -84,17 +122,18 @@ namespace WebApp.Services
                 var nameFilter = GetNameFilter(name);
                 filterDefinitions.Add(nameFilter);
             }
-            var skillFilter = GetSkillsFilter(skills);
-            filterDefinitions.Add(skillFilter);
+            //var skillFilter = GetSkillsFilter(skills);
+            //filterDefinitions.Add(skillFilter);
             var filter = Builders<JobOffer>.Filter.And(filterDefinitions);
             return filter;
         }
 
         private static FilterDefinition<JobOffer> GetSkillsFilter(List<Skill> skills)
         {
-            var values = skills.Select(r => r.Name).ToList();
+            var skillNames = skills.Select(r => r.Name).ToList();
+
             var skillDefinition = Builders<JobOffer>.Filter.ToBsonDocument();
-            skillDefinition.Add("Skills.Name", new BsonDocument("$all", new BsonArray(values)));
+            //skillDefinition.Add("Skills.Name", new BsonDocument("$all", new BsonArray(values)));
             return skillDefinition;
         }
 
@@ -187,5 +226,6 @@ namespace WebApp.Services
             var skillNames = skills.SelectMany(r => r).Select(r => r.Name).ToList();
             return skillNames;
         }
+
     }
 }

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using MongoDB.Driver;
 using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Account;
 using WebApp.Models.Candidate;
-using WebApp.Models.Recruiter;
 using WebApp.Models.Offer;
-using System.Web.Mvc;
-using System.Security.Claims;
+using WebApp.Models.Recruiter;
 
 
 namespace WebApp.Services
@@ -23,9 +18,9 @@ namespace WebApp.Services
         IMappingService _mappingService;
         IDatabaseService _dbService;
 
-        public ApplicationService(IMappingService mapService, IDatabaseService dbService)
+        public ApplicationService(IMappingService mappingService, IDatabaseService dbService)
         {
-            _mappingService = mapService;
+            _mappingService = mappingService;
             _dbService = dbService;
         }
 
@@ -164,7 +159,7 @@ namespace WebApp.Services
         private async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(OfferSearchModel offerSearch)
         {
             var skills = _mappingService.MapSkillModelsToSkills(offerSearch.Skills);
-            var offerList = await _dbService.GetOffersByOfferSearchModelAsync(skills, offerSearch.MinSalary, offerSearch.MaxSalary, offerSearch.Name);
+            var offerList = await _dbService.GetOffersByOfferSearchModelAsync(skills, offerSearch.MinSalary, offerSearch.MaxSalary, offerSearch.Name, 3);
             return offerList;
         }
 
