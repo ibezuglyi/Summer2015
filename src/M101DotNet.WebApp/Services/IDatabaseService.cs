@@ -22,6 +22,6 @@ namespace WebApp.Services
         Task InsertJobOfferAsync(JobOffer offer);
 
         Task<List<string>> GetSkillsMatchingQuery(string query);
-        
+        Task<List<JobOffer>> GetAllOffersListAsync();
     }
 }

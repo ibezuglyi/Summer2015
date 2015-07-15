@@ -139,7 +139,7 @@ namespace WebApp.Services
 
         private static FilterDefinition<JobOffer> GetNameFilter(string name)
         {
-            var nameFilter = Builders<JobOffer>.Filter.Where(r => r.Name == name);
+            var nameFilter = Builders<JobOffer>.Filter.Where(r => r.Name.ToLower() == name.ToLower());
             return nameFilter;
         }
 
@@ -227,5 +227,12 @@ namespace WebApp.Services
             return skillNames;
         }
 
+
+        public async Task<List<JobOffer>> GetAllOffersListAsync()
+        {
+            FilterDefinition<JobOffer> filter = "{}";
+            var offers = await dbContext.JobOffers.Find(filter).ToListAsync();
+            return offers;
+        }
     }
 }

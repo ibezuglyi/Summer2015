@@ -250,5 +250,43 @@ namespace WebApp.Services
             var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, recruiterId);
             return offerViewModel;
         }
+
+        public double MeasureMatchingBetweenCandidateAndOffer(CandidateUserModel candidateModel, OfferModel offerModel)
+        {
+            int pointsSum = 0;
+            foreach (var candidateSkill in candidateModel.Skills)
+            {
+                foreach (var offerSkill in offerModel.Skills)
+                {
+                    if (candidateSkill.Name == offerSkill.Name)
+                    {
+                        pointsSum += (offerSkill.Level - candidateSkill.Level);
+                    }
+                }
+            }
+            double matchFactor = pointsSum / offerModel.Skills.Count;
+            return matchFactor;
+        }
+
+        public async Task<CandidateUserModel> GetCandidateUserModelByIdAsync(string candidateId)
+        {
+            var candidate = await GetCandidateByIdAsync(candidateId);
+            var candidateModel = _mappingService.MapToCandidateUserModel(candidate);
+            return candidateModel;
+        }
+
+
+        //public async Task<OfferListViewModel> GetAllOffersListViewModelAsync()
+        //{
+        //    var offerList = await _dbService.GetAllOffersListAsync();
+        //    var offerViewModelList = new List<OfferViewModel>();
+        //    foreach (var offer in offerList)
+        //    {
+        //        var offerModel = _mappingService.MapToOfferModel(offer);
+        //        var offerViewModel = _mappingService.MapToOfferViewModel(offer, offer.IdRecruiter);
+        //        offerViewModelList.Add(offerViewModel);
+        //    }
+        //    var offersListViewModel = _mappingService.MapToOfferViewModelList(offerViewModelList);
+        //}
     }
 }
