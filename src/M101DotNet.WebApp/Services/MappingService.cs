@@ -42,6 +42,7 @@ namespace WebApp.Services
             var skill = new Skill
             {
                 Name = model.Name,
+                NameToLower = model.Name.ToLower(),
                 Level = model.Level,
             };
             return skill;
@@ -132,6 +133,7 @@ namespace WebApp.Services
                 var skill = new Skill()
                 {   
                     Name = skillModel.Name,
+                    NameToLower = skillModel.Name.ToLower(),
                     Level = skillModel.Level,
                 };
                 skills.Add(skill);

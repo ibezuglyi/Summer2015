@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
 using WebApp.Entities;
@@ -86,14 +87,15 @@ namespace WebApp.Services
             //var skillFilter = GetSkillsFilter(skills);
             //filterDefinitions.Add(skillFilter);
             var filter = Builders<JobOffer>.Filter.And(filterDefinitions);
-            
             return filter;
         }
 
         private static FilterDefinition<JobOffer> GetSkillsFilter(List<Skill> skills)
         {
-            var skillFilter = Builders<JobOffer>.Filter.All(r => r.Skills, skills);
-            return skillFilter;
+            var values = skills.Select(r => r.Name).ToList();
+            var skillDefinition = Builders<JobOffer>.Filter.ToBsonDocument();
+            skillDefinition.Add("Skills.Name", new BsonDocument("$all", new BsonArray(values)));
+            return skillDefinition;
         }
 
         private static FilterDefinition<JobOffer> GetNameFilter(string name)
@@ -173,16 +175,17 @@ namespace WebApp.Services
 
         public async Task<List<string>> GetSkillsMatchingQuery(string query)
         {
-            var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.Name, new BsonRegularExpression(query));
+            var queryToLower = query.ToLower();
+            var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.NameToLower, new BsonRegularExpression(queryToLower));
             var filter = Builders<CandidateUser>.Filter.ElemMatch(user => user.Skills, skillFilterDefinition);
 
             var skills = await dbContext.CandidateUsers
                 .Find(filter)
-                .Project(r => r.Skills.Where(s => s.Name.StartsWith(query)))
+                .Project(r => r.Skills.Where(s => s.NameToLower.StartsWith(queryToLower)))
                 .ToListAsync();
 
-            var allSkills = skills.SelectMany(r => r).Select(r => r.Name).ToList();
-            return allSkills;
+            var skillNames = skills.SelectMany(r => r).Select(r => r.Name).ToList();
+            return skillNames;
         }
     }
 }
