@@ -83,8 +83,8 @@ namespace WebApp.Services
                 var nameFilter = GetNameFilter(name);
                 filterDefinitions.Add(nameFilter);
             }
-            var skillFilter = GetSkillsFilter(skills);
-            filterDefinitions.Add(skillFilter);
+            //var skillFilter = GetSkillsFilter(skills);
+            //filterDefinitions.Add(skillFilter);
             var filter = Builders<JobOffer>.Filter.And(filterDefinitions);
             
             return filter;
