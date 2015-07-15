@@ -175,16 +175,17 @@ namespace WebApp.Services
 
         public async Task<List<string>> GetSkillsMatchingQuery(string query)
         {
-            var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.Name, new BsonRegularExpression(query));
+            var queryToLower = query.ToLower();
+            var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.NameToLower, new BsonRegularExpression(queryToLower));
             var filter = Builders<CandidateUser>.Filter.ElemMatch(user => user.Skills, skillFilterDefinition);
 
             var skills = await dbContext.CandidateUsers
                 .Find(filter)
-                .Project(r => r.Skills.Where(s => s.Name.StartsWith(query)))
+                .Project(r => r.Skills.Where(s => s.NameToLower.StartsWith(queryToLower)))
                 .ToListAsync();
 
-            var allSkills = skills.SelectMany(r => r).Select(r => r.Name).ToList();
-            return allSkills;
+            var skillNames = skills.SelectMany(r => r).Select(r => r.Name).ToList();
+            return skillNames;
         }
     }
 }
