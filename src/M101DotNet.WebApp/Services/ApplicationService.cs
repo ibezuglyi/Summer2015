@@ -139,23 +139,40 @@ namespace WebApp.Services
             return candidateViewModel;
         }
 
+        //public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(string candidateId)
+        //{
+        //    var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
+        //    var offerSearchModel = _mappingService.MapToOfferSearchModel(candidate);
+        //    var offerList = await GetOfferViewModelListAsync(offerSearchModel);
+        //    var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+        //    return offerSearchViewModel;
+        //}
+
         public async Task<OfferSearchViewModel> GetDefaultOfferSearchViewModelAsync(string candidateId)
         {
             var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
             var offerSearchModel = _mappingService.MapToOfferSearchModel(candidate);
-            var offerList = await GetOfferViewModelListAsync(offerSearchModel);
-            var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+            var offerList = await GetScoredOfferViewModelListAsync(offerSearchModel);
+            var offerSearchViewModel = _mappingService.MapToOfferSearchViewModel(offerSearchModel, offerList);
             return offerSearchViewModel;
         }
-
         
-        public async Task<OfferListViewModel> GetOfferViewModelListAsync(OfferSearchModel offerSearchModel)
-        {            
+        //public async Task<OfferListViewModel> GetOfferViewModelListAsync(OfferSearchModel offerSearchModel)
+        //{            
+        //    var offerList = await GetOffersByOfferSearchModelAsync(offerSearchModel);
+        //    var offersViewModel = _mappingService.MapToOffersViewModel(offerList);
+        //    var offerViewModelList = _mappingService.MapToOfferViewModelList(offersViewModel);
+        //    return offerViewModelList;
+        //}
+
+        public async Task<ScoredOfferListViewModel> GetScoredOfferViewModelListAsync(OfferSearchModel offerSearchModel)
+        {
             var offerList = await GetOffersByOfferSearchModelAsync(offerSearchModel);
-            var offersViewModel = _mappingService.MapToOffersViewModel(offerList);
-            var offerViewModelList = _mappingService.MapToOfferViewModelList(offersViewModel);
-            return offerViewModelList;
+            var scoredOffersViewModel = _mappingService.MapToScoredOffersViewModel(offerList);
+            var scoredOfferViewModelList = _mappingService.MapToScoredOfferListViewModel(scoredOffersViewModel);
+            return scoredOfferViewModelList;
         }
+                
 
         private async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(OfferSearchModel offerSearch)
         {
@@ -195,17 +212,31 @@ namespace WebApp.Services
             return offerViewModel;
         }
 
+        //public async Task<OfferSearchViewModel> GetOfferSearchViewModelAsync(OfferSearchModel offerSearchModel)
+        //{
+        //    var offerList = await GetOfferViewModelListAsync(offerSearchModel);
+        //    var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+        //    return offerSearchViewModel;
+        //}
+
         public async Task<OfferSearchViewModel> GetOfferSearchViewModelAsync(OfferSearchModel offerSearchModel)
         {
-            var offerList = await GetOfferViewModelListAsync(offerSearchModel);
-            var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+            var offerList = await GetScoredOfferViewModelListAsync(offerSearchModel);
+            var offerSearchViewModel = _mappingService.MapToOfferSearchViewModel(offerSearchModel, offerList);
             return offerSearchViewModel;
         }
 
-        public OfferSearchViewModel GetOfferSearchViewModelWithoutOffersAsync(OfferSearchModel offerSearchModel)
+        //public OfferSearchViewModel GetOfferSearchViewModelWithoutOffersAsync(OfferSearchModel offerSearchModel)
+        //{
+        //    var offerList = new OfferListViewModel();
+        //    var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+        //    return offerSearchViewModel;
+        //}
+
+        public OfferSearchViewModel GetOfferSearchViewModelWithoutOffers(OfferSearchModel offerSearchModel)
         {
-            var offerList = new OfferListViewModel();
-            var offerSearchViewModel = new OfferSearchViewModel(offerSearchModel, offerList);
+            var offerList = new ScoredOfferListViewModel();
+            var offerSearchViewModel = _mappingService.MapToOfferSearchViewModel(offerSearchModel, offerList);
             return offerSearchViewModel;
         }
 

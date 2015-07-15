@@ -42,7 +42,8 @@ namespace WebApp.Controllers
                 CheckIfThereAreNoOffers(newOfferSearchViewModel);
                 return View(newOfferSearchViewModel);
             }
-            var offerSearchViewModelWithoutOffers = _applicationService.GetOfferSearchViewModelWithoutOffersAsync(model);
+            AddNoOffersError();
+            var offerSearchViewModelWithoutOffers = _applicationService.GetOfferSearchViewModelWithoutOffers(model);
             return View(offerSearchViewModelWithoutOffers);
         }
 
@@ -65,8 +66,13 @@ namespace WebApp.Controllers
 
         private void CheckIfThereAreNoOffers(OfferSearchViewModel offerSearchViewModel)
         {
-            if (offerSearchViewModel.Offers.OffersList.Count == 0)
-                ModelState.AddModelError("noOffers", "There are no offers for given parameters");
+            if (offerSearchViewModel.Offers.ScoredOffersList.Count == 0)
+                AddNoOffersError();
+        }
+
+        private void AddNoOffersError()
+        {
+            ModelState.AddModelError("noOffers", "There are no offers for given parameters");
         }
 	}
 }

@@ -18,11 +18,7 @@
                 </div>
                 <div class="form-search-field">
                     @Html.Label("Max salary:")
-                    <span class="small-textBox">@Html.TextBox("maxSalary", Model.SearchParams.MaxSalary)</span>                   
-                </div><br /> 
-                <span class="red-text text-darken-2">@Html.ValidationMessage("minSalary")</span><br />
-                <span class="red-text text-darken-2">@Html.ValidationMessage("maxSalary")</span><br />
-                <span class="red-text text-darken-2">@Html.ValidationMessage("minOvermax")</span>
+                    <span class="small-textBox">@Html.TextBox("maxSalary", Model.SearchParams.MaxSalary)</span>  </div>
         </div>
         @Html.Label("Skills:")
         @Html.Partial("_SkillFormPartial", Model.SearchParams.Skills)
@@ -34,14 +30,14 @@
     @Html.Partial("_BlankSkillRowPartial", Model.SearchParams.Skills)
 </div>
 <span class="red-text text-darken-2 ">@Html.ValidationMessage("noOffers")</span>  
-@for (int i = Model.Offers.OffersList.Count-1; i >= 0 ; i--)
+@for (int i = Model.Offers.ScoredOffersList.Count - 1; i >= 0; i--)
 {
     <div class="grey lighten-3 card-panel">
-        @Html.Partial("_OfferTitlePartial", Model.Offers.OffersList[i].Offer)
+        @Html.Partial("_ScoredOfferTitlePartial", Model.Offers.ScoredOffersList[i].Offer)
                 <div class="offer-buttons">
-                    @Html.ActionLink("Details", "Details", "Offer", new { id = Model.Offers.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })               
+                    @Html.ActionLink("Details", "Details", "Offer", new { id = Model.Offers.ScoredOffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })               
                 </div>               
-        @Html.Partial("_SkillsListpartial", Model.Offers.OffersList[i].TopSkills)
+        @Html.Partial("_SkillsListpartial", Model.Offers.ScoredOffersList[i].TopSkills)
         </div>    
 }
 @Scripts.Render("~/bundles/skills")

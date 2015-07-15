@@ -33,7 +33,10 @@ namespace WebApp.Services
         OfferViewModel MapToOfferViewModel(OfferModel offerModel, string IdRecruiter);
 
         SkillSuggestionModel MapToSkillSugestionModel(string query, List<string> hints);
+
+        OfferSearchViewModel MapToOfferSearchViewModel(OfferSearchModel offerSearchModel, ScoredOfferListViewModel scoredOfferListViewModel);
         ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel);
+        List<ScoredOfferViewModel> MapToScoredOffersViewModel(List<JobOffer> offers);
         ScoredOfferListViewModel MapToScoredOfferListViewModel(List<ScoredOfferViewModel> scoredOffersViewModel);
     }
 }

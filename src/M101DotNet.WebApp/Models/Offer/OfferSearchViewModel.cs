@@ -8,15 +8,15 @@ namespace WebApp.Models.Offer
     public class OfferSearchViewModel
     {
         public OfferSearchModel SearchParams { get; set; }
-        public OfferListViewModel Offers { get; set; }
+        public ScoredOfferListViewModel Offers { get; set; }
 
         public OfferSearchViewModel() 
         {
             SearchParams = new OfferSearchModel();
-            Offers = new OfferListViewModel();
+            Offers = new ScoredOfferListViewModel();
         }
 
-        public OfferSearchViewModel(OfferSearchModel searchParams, OfferListViewModel offers)
+        public OfferSearchViewModel(OfferSearchModel searchParams, ScoredOfferListViewModel offers)
         {
             SearchParams = searchParams;
             Offers = offers;
