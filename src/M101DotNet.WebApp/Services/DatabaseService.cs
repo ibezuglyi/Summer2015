@@ -84,8 +84,11 @@ namespace WebApp.Services
                 var nameFilter = GetNameFilter(name);
                 filterDefinitions.Add(nameFilter);
             }
-            //var skillFilter = GetSkillsFilter(skills);
-            //filterDefinitions.Add(skillFilter);
+            if (skills.Count > 0)
+            {
+                var skillFilter = GetSkillsFilter(skills);
+                filterDefinitions.Add(skillFilter);
+            }
             var filter = Builders<JobOffer>.Filter.And(filterDefinitions);
             return filter;
         }
@@ -100,7 +103,7 @@ namespace WebApp.Services
 
         private static FilterDefinition<JobOffer> GetNameFilter(string name)
         {
-            var nameFilter = Builders<JobOffer>.Filter.Where(r => r.Name == name);
+            var nameFilter = Builders<JobOffer>.Filter.Where(r => r.Name.ToLower() == name.ToLower());
             return nameFilter;
         }
 

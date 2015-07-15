@@ -10,9 +10,9 @@ namespace WebApp.Models.Offer
     public class OfferSearchModel
     {
         public string Name { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Salary value can't be negative")]
+        [Range(0, int.MaxValue, ErrorMessage = "Min salary should be [0 .. 2 147 483 647]")]
         public int? MinSalary { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Salary value can't be negative")]
+        [Range(0, int.MaxValue, ErrorMessage = "Max salary should be [0 .. 2 147 483 647]")]
         public int? MaxSalary { get; set; }
         public List<SkillModel> Skills { get; set; }
 
