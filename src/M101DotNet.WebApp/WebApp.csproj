@@ -183,8 +183,11 @@
     <Compile Include="Entities\RecruiterUser.cs" />
     <Compile Include="Entities\Skill.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Models\Offer\ScoredOfferListViewModel.cs" />
     <Compile Include="Models\Offer\OfferListViewModel.cs" />
     <Compile Include="Models\Offer\OfferModel.cs" />
+    <Compile Include="Models\Offer\ScoredOfferModel.cs" />
+    <Compile Include="Models\Offer\ScoredOfferViewModel.cs" />
     <Compile Include="Models\Offer\OfferSearchModel.cs" />
     <Compile Include="Models\Offer\OfferSearchViewModel.cs" />
     <Compile Include="Models\Offer\OfferViewModel.cs" />

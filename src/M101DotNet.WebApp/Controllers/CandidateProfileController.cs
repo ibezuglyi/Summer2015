@@ -79,5 +79,13 @@ namespace WebApp.Controllers
                 ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
             }
         }
+
+        //public Task<ActionResult> BestOffers()
+        //{
+        //    if (_authenticationService.IsCandidate())
+        //    {
+        //        var offers = await _applicationService.GetAllOffersListAsync();
+        //    }
+        //}
     }
 }

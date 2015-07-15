@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApp.Models.Candidate;
 using WebApp.Models.Offer;
 using WebApp.Services;
 
@@ -64,5 +65,6 @@ namespace WebApp.Controllers
             }
             return ModelState.IsValid;
         }
+
 	}
 }

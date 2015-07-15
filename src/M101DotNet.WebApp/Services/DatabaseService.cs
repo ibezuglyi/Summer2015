@@ -187,5 +187,13 @@ namespace WebApp.Services
             var skillNames = skills.SelectMany(r => r).Select(r => r.Name).ToList();
             return skillNames;
         }
+
+
+        public async Task<List<JobOffer>> GetAllOffersListAsync()
+        {
+            FilterDefinition<JobOffer> filter = "{}";
+            var offers = await dbContext.JobOffers.Find(filter).ToListAsync();
+            return offers;
+        }
     }
 }

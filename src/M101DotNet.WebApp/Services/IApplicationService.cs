@@ -43,5 +43,6 @@ namespace WebApp.Services
         OfferSearchViewModel GetOfferSearchViewModelWithoutOffersAsync(OfferSearchModel offerSearchModel);
         Task<string> GetIdRecruiterByOfferIdAsync(string offerId);
         Task<RecruiterModel> GetRecruiterModelByEmailAsync(string email);
+        Task<CandidateUserModel> GetCandidateUserModelByIdAsync(string candidateId);
     }
 }
