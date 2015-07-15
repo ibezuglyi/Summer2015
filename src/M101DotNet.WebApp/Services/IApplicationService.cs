@@ -44,5 +44,6 @@ namespace WebApp.Services
         Task<string> GetIdRecruiterByOfferIdAsync(string offerId);
         Task<RecruiterModel> GetRecruiterModelByEmailAsync(string email);
         Task<CandidateUserModel> GetCandidateUserModelByIdAsync(string candidateId);
+        Task<ScoredOfferListViewModel> GetOffersSortedByMatch(CandidateUserModel candidate);
     }
 }

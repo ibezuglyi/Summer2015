@@ -1,0 +1,33 @@
+﻿@model WebApp.Models.Offer.ScoredOfferListViewModel
+
+@{
+    ViewBag.Title = "Best offers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="card-panel red lighten-4">@ViewBag.Title</h3>
+@foreach (var offerViewModel in Model.ScoredOffersList)
+{
+    <div class="grey lighten-3 card-panel">
+        <div class="offer-title">
+            <div class="inline-field">
+                <div class="card-panel orange lighten-3">
+                    <span>@offerViewModel.Offer.Name</span>
+                </div>
+            </div>
+            <div class="inline-field">
+                <div class="card-panel orange lighten-3">
+                    <span>@offerViewModel.Offer.Salary PLN</span>
+                </div>
+            </div>
+            <div class="inline-field">
+                <div class="card-panel orange lighten-3">
+                    <span>Score: @offerViewModel.Offer.Score</span>
+                </div>
+            </div>
+        </div>
+
+        @Html.Partial("_SkillsListPartial", offerViewModel.Offer.Skills)
+    </div>
+}
+

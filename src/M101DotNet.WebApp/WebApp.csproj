@@ -161,6 +161,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\BestOffersController.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CandidateProfileController.cs" />
     <Compile Include="Controllers\OfferSearchController.cs" />
@@ -296,6 +297,7 @@
     <Content Include="Views\OfferSearch\Index.cshtml" />
     <Content Include="Views\Shared\_OfferTitlePartial.cshtml" />
     <Content Include="Views\Shared\_SkillsListPartial.cshtml" />
+    <Content Include="Views\BestOffers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

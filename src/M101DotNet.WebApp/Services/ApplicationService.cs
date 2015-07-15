@@ -252,20 +252,20 @@ namespace WebApp.Services
             return offerViewModel;
         }
 
-        public double MeasureScoreBetweenCandidateAndOffer(CandidateUser candidateModel, JobOffer offerModel)
+        public double MeasureScoreBetweenCandidateAndOffer(List<Skill> referenceSkills, List<Skill> skills)
         {
-            int pointsSum = 0;
-            foreach (var candidateSkill in candidateModel.Skills)
+            double pointsSum = 0;
+            foreach (var referenceSkill in referenceSkills)
             {
-                foreach (var offerSkill in offerModel.Skills)
+                foreach (var skill in skills)
                 {
-                    if (candidateSkill.Name == offerSkill.Name)
+                    if (referenceSkill.Name == skill.Name)
                     {
-                        pointsSum += (offerSkill.Level - candidateSkill.Level);
+                        pointsSum += 1 - (referenceSkill.Level - skill.Level)/10.0;
                     }
                 }
             }
-            double matchFactor = pointsSum / offerModel.Skills.Count;
+            double matchFactor = pointsSum / referenceSkills.Count;
             return matchFactor;
         }
 
@@ -277,15 +277,27 @@ namespace WebApp.Services
         }
 
 
-        //public async Task<OfferListViewModel> GetOffersSortedByMatch(CandidateUser candidate)
-        //{
-        //    var offerList = await _dbService.GetAllOffersListAsync();
-        //    var scoredOfferList = new List<ScoredOfferModel>();
-        //    foreach (var offer in offerList){
-        //        var score = MeasureScoreBetweenCandidateAndOffer(candidate, offer);
-        //        var scoredOffer = _mappingService.MapToScoredOfferModel(offer, score);
+        public async Task<ScoredOfferListViewModel> GetOffersSortedByMatch(CandidateUserModel candidateModel)
+        {
+            var offerList = await _dbService.GetAllOffersListAsync();
+            var candidate = _mappingService.MapToCandidateUser(candidateModel);
+            var scoredOfferViewModelList = CalculateScoresForOffers(candidate, offerList);
+            var sortedScoredOfferViewModelList = scoredOfferViewModelList.OrderByDescending(r => r.Offer.Score).ToList();
+            var sortedScoredOfferListViewModel =_mappingService.MapToScoredOfferListViewModel(sortedScoredOfferViewModelList);
+            return sortedScoredOfferListViewModel;
+        }
 
-        //    }
-        //}
+        private List<ScoredOfferViewModel> CalculateScoresForOffers(CandidateUser candidate, List<JobOffer> offerList)
+        {
+            var scoredOfferViewModelList = new List<ScoredOfferViewModel>();
+            foreach (var offer in offerList)
+            {
+                var score = MeasureScoreBetweenCandidateAndOffer(candidate.Skills, offer.Skills);
+                var scoredOfferModel = _mappingService.MapToScoredOfferModel(offer, score);
+                var scoredOfferViewModel = _mappingService.MapToScoredOfferViewModel(scoredOfferModel);
+                scoredOfferViewModelList.Add(scoredOfferViewModel);
+            }
+            return scoredOfferViewModelList;
+        }
     }
 }

@@ -5,8 +5,9 @@
             using (Html.BeginForm("Logout", "Candidate", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
             {
             <ul class="right hide-on-med-and-down">
-                <li>@Html.ActionLink("Search offer", "Index", "OfferSearch")</li>
                 <li>@Html.ActionLink(User.Identity.Name + " profile", "Index", "CandidateProfile")</li>
+                <li>@Html.ActionLink("Search offer", "Index", "OfferSearch")</li>
+                <li>@Html.ActionLink("Best offers", "Index", "BestOffers")</li>
                 <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
             </ul>
             }
