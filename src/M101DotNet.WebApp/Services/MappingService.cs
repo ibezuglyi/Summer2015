@@ -209,13 +209,6 @@ namespace WebApp.Services
         public ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel)
         {
             return new ScoredOfferViewModel(offerModel);
-        }
-
-        public ScoredOfferModel MapToScoredOfferModel(JobOffer offer, double score)
-        {
-            var skills = MapSkillsToSkillModels(offer.Skills);
-            var scoredOfferModel = new ScoredOfferModel(offer.Id, offer.Name, offer.Salary, score, skills);
-            return scoredOfferModel;
-        }
+        }                
     }
 }
