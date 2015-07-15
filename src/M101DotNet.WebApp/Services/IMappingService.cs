@@ -17,6 +17,7 @@ namespace WebApp.Services
         OfferListViewModel MapToOfferViewModelList(List<OfferViewModel> offersModelView);
         JobOffer MapToJobOffer(OfferModel model, string id);
         OfferModel MapToOfferModel(JobOffer offer);
+        ScoredOfferModel MapToScoredOfferModel(JobOffer offer, double score);
         Skill MapToSkill(SkillModel model);
         CandidateUser MapToCandidateUser(CandidateUserModel candidateModel);
         RecruiterUser MapToRecruiterUser(RecruiterModel recruiterModel);

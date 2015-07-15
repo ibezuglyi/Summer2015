@@ -256,7 +256,7 @@ namespace WebApp.Services
             return offerViewModel;
         }
 
-        public double MeasureMatchingBetweenCandidateAndOffer(CandidateUserModel candidateModel, OfferModel offerModel)
+        public double MeasureScoreBetweenCandidateAndOffer(CandidateUser candidateModel, JobOffer offerModel)
         {
             int pointsSum = 0;
             foreach (var candidateSkill in candidateModel.Skills)
@@ -281,17 +281,15 @@ namespace WebApp.Services
         }
 
 
-        //public async Task<OfferListViewModel> GetAllOffersListViewModelAsync()
+        //public async Task<OfferListViewModel> GetOffersSortedByMatch(CandidateUser candidate)
         //{
         //    var offerList = await _dbService.GetAllOffersListAsync();
-        //    var offerViewModelList = new List<OfferViewModel>();
-        //    foreach (var offer in offerList)
-        //    {
-        //        var offerModel = _mappingService.MapToOfferModel(offer);
-        //        var offerViewModel = _mappingService.MapToOfferViewModel(offer, offer.IdRecruiter);
-        //        offerViewModelList.Add(offerViewModel);
+        //    var scoredOfferList = new List<ScoredOfferModel>();
+        //    foreach (var offer in offerList){
+        //        var score = MeasureScoreBetweenCandidateAndOffer(candidate, offer);
+        //        var scoredOffer = _mappingService.MapToScoredOfferModel(offer, score);
+
         //    }
-        //    var offersListViewModel = _mappingService.MapToOfferViewModelList(offerViewModelList);
         //}
     }
 }

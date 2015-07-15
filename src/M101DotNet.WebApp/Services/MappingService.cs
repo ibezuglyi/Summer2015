@@ -72,11 +72,18 @@ namespace WebApp.Services
             return recruiter;
         }
 
-         public OfferModel MapToOfferModel(JobOffer offer)
+        public OfferModel MapToOfferModel(JobOffer offer)
         {
             var skills = MapSkillsToSkillModels(offer.Skills);
             var offerModel = new OfferModel(offer.Id, offer.Name, offer.Salary, skills);
             return offerModel;
+        }
+
+        public ScoredOfferModel MapToScoredOfferModel(JobOffer offer, double score)
+        {
+            var skills = MapSkillsToSkillModels(offer.Skills);
+            var scoredOfferModel = new ScoredOfferModel(offer.Id, offer.Name, offer.Salary, score, skills);
+            return scoredOfferModel;
         }
 
         public RecruiterModel MapToRecruiterModel(RecruiterUser recruiter)
