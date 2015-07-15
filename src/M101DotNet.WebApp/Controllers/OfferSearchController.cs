@@ -23,8 +23,12 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
-            var offerSearchViewModel = await _applicationService.GetDefaultOfferSearchViewModelAsync(currentUserId);
+            if (_authenticationService.IsCandidate(Request))
+            {
+                var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
+                var offerSearchViewModel = await _applicationService.GetDefaultOfferSearchViewModelAsync(currentUserId);
+                return View(offerSearchViewModel);
+            }
             return View(new OfferSearchViewModel());
         }
 

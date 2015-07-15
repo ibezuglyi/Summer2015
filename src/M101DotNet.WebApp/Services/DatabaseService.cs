@@ -68,23 +68,32 @@ namespace WebApp.Services
         private static FilterDefinition<JobOffer> GetCompleteFilter(List<Skill> skills, int? minSalary, int? maxSalary, string name)
         {
             var filterDefinitions = new List<FilterDefinition<JobOffer>>();
-            if (minSalary.HasValue)            
+            if (minSalary.HasValue)
             {
-                var minFilter = GetMinSalaryFilter(minSalary);
+                var minFilter = GetMinSalaryFilter(minSalary.Value);
                 filterDefinitions.Add(minFilter);
             }
             if (maxSalary.HasValue)
             {
-                var maxFilter = GetMaxSalaryFilter(maxSalary);
+                var maxFilter = GetMaxSalaryFilter(maxSalary.Value);
                 filterDefinitions.Add(maxFilter);
             }
-            if (name!=null)
+            if (name != null)
             {
                 var nameFilter = GetNameFilter(name);
                 filterDefinitions.Add(nameFilter);
             }
+            var skillFilter = GetSkillsFilter(skills);
+            filterDefinitions.Add(skillFilter);
             var filter = Builders<JobOffer>.Filter.And(filterDefinitions);
+            
             return filter;
+        }
+
+        private static FilterDefinition<JobOffer> GetSkillsFilter(List<Skill> skills)
+        {
+            var skillFilter = Builders<JobOffer>.Filter.All(r => r.Skills, skills);
+            return skillFilter;
         }
 
         private static FilterDefinition<JobOffer> GetNameFilter(string name)
@@ -93,15 +102,15 @@ namespace WebApp.Services
             return nameFilter;
         }
 
-        private static FilterDefinition<JobOffer> GetMaxSalaryFilter(int? max)
+        private static FilterDefinition<JobOffer> GetMaxSalaryFilter(int max)
         {
-            var maxFilter = Builders<JobOffer>.Filter.Where(r => r.Salary <= max.Value);
+            var maxFilter = Builders<JobOffer>.Filter.Where(r => r.Salary <= max);
             return maxFilter;
         }
 
-        private static FilterDefinition<JobOffer> GetMinSalaryFilter(int? min)
+        private static FilterDefinition<JobOffer> GetMinSalaryFilter(int min)
         {
-            var minFilter = Builders<JobOffer>.Filter.Where(r => r.Salary >= min.Value);
+            var minFilter = Builders<JobOffer>.Filter.Where(r => r.Salary >= min);
             return minFilter;
         }
 
@@ -159,9 +168,9 @@ namespace WebApp.Services
                 .Set(r => r.Salary, candidate.Salary)
                 .Set(r => r.Skills, candidate.Skills);
 
-            await dbContext.CandidateUsers.UpdateOneAsync(filter, update); 
+            await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
         }
-        
+
         public async Task<List<string>> GetSkillsMatchingQuery(string query)
         {
             var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.Name, new BsonRegularExpression(query));
