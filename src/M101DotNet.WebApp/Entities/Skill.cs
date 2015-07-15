@@ -7,6 +7,8 @@ namespace WebApp.Entities
         
         public string Name { get; set; }
 
+        public string NameToLower { get; set; }
+
         public int Level { get; set; }
     }
 }

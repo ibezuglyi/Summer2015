@@ -25,7 +25,8 @@ namespace WebApp
 
             bundles.Add(new ScriptBundle("~/bundles/site").Include(
                         "~/Scripts/Site/candidateProfile.js",
-                        "~/Scripts/Site/offer.js"));
+                        "~/Scripts/Site/offer.js",
+                        "~/Scripts/Site/autocompleteHandling.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery-autocomplete").Include(
                         "~/Scripts/jquery.autocomplete.js"));
