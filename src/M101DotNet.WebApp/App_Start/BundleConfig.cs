@@ -23,13 +23,13 @@ namespace WebApp
                       "~/Scripts/materialize.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/site").Include(
+            bundles.Add(new ScriptBundle("~/bundles/skills").Include(
                         "~/Scripts/Site/candidateProfile.js",
-                        "~/Scripts/Site/offer.js",
+                        "~/Scripts/jquery.autocomplete.js",
                         "~/Scripts/Site/autocompleteHandling.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery-autocomplete").Include(
-                        "~/Scripts/jquery.autocomplete.js"));
+            bundles.Add(new ScriptBundle("~/bundles/offer").Include(
+                        "~/Scripts/Site/offer.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/materialize.css",

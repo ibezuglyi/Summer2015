@@ -9,8 +9,7 @@
         <p>Are you sure you want to remove this offer?</p>
     </div>
     <div class="modal-footer">
-        @Html.ActionLink("Disagree", "Offerslist", "Offer", null, new { @class = "modal-action modal-close waves-effect waves-green btn-flat" })   
-        @Html.ActionLink("Agree", "Remove", "Offer", new { id = Model.Id }, new { @class = "modal-action modal-close waves-effect waves-green btn-flat" })   
-    </div>
+        <span class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</span>
+              @Html.ActionLink("Agree", "Remove", "Offer", new { id = Model.Id }, new { @class = "modal-action modal-close waves-effect waves-green btn-flat" })</div>
 </div>
 
