@@ -1,17 +1,17 @@
 ﻿
+var autocompleteSkillSugestionOptions = {
+    serviceUrl: '/SkillSuggestion/GetHints',
+    onSelect: function (suggestion) {
+        $(this).attr('val', suggestion);
+    }
+};
+
 $(document).ready(function () {
     deleteRowOnClick();
     addRowOnClick();
     rangeInputHandling();
     addAutocomplete('.autocomplete', autocompleteSkillSugestionOptions);
 });
-
-autocompleteSkillSugestionOptions = {
-    serviceUrl: '/SkillSuggestion/GetHints',
-    onSelect: function (suggestion) {
-        $(this).attr('val', suggestion);
-    }
-};
 
 function rangeInputHandling() {
     setRangeInputValue();

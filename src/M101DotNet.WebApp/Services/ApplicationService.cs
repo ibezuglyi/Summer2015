@@ -255,17 +255,22 @@ namespace WebApp.Services
         public double MeasureScoreBetweenCandidateAndOffer(List<Skill> referenceSkills, List<Skill> skills)
         {
             double pointsSum = 0;
-            foreach (var referenceSkill in referenceSkills)
+            double matchFactor = 0;
+            if (referenceSkills.Count != 0 && skills.Count != 0)
             {
-                foreach (var skill in skills)
+                foreach (var referenceSkill in referenceSkills)
                 {
-                    if (referenceSkill.Name == skill.Name)
+                    foreach (var skill in skills)
                     {
-                        pointsSum += 1 - (referenceSkill.Level - skill.Level)/10.0;
+                        if (referenceSkill.Name == skill.Name)
+                        {
+                            var difference = (referenceSkill.Level - skill.Level) / 10.0;
+                            pointsSum += 1 - (difference > 0 ? difference : - difference * 0.8);
+                        }
                     }
                 }
-            }
-            double matchFactor = pointsSum / referenceSkills.Count;
+                matchFactor = pointsSum / referenceSkills.Count;
+            }       
             return matchFactor;
         }
 
