@@ -166,3 +166,11 @@ select{
     width: 200px;
     display:inline-block;
 }
+
+.switch label{
+    margin:5px;
+}
+
+.switch{
+    margin-bottom: 15px;
+}

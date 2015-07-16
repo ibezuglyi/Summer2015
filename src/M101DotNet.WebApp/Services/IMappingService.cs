@@ -36,7 +36,6 @@ namespace WebApp.Services
 
         OfferSearchViewModel MapToOfferSearchViewModel(OfferSearchModel offerSearchModel, ScoredOfferListViewModel scoredOfferListViewModel);
         ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel);
-        List<ScoredOfferViewModel> MapToScoredOffersViewModel(List<JobOffer> offers);
         ScoredOfferListViewModel MapToScoredOfferListViewModel(List<ScoredOfferViewModel> scoredOffersViewModel);
     }
 }
