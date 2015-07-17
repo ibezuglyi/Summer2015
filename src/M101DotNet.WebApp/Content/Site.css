@@ -221,3 +221,11 @@ a  {
     color: black;
 }
 
+
+.switch label{
+    margin:5px;
+}
+
+.switch{
+    margin-bottom: 15px;
+}

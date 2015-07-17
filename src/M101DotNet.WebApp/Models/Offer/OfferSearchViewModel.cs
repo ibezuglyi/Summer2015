@@ -21,5 +21,10 @@ namespace WebApp.Models.Offer
             SearchParams = searchParams;
             Offers = offers;
         }
+
+        public bool HasOffers()
+        {
+            return (Offers.ScoredOffersList.Count>0)?true:false;
+        }
     }
 }
