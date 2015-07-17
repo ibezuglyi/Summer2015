@@ -225,7 +225,8 @@ namespace WebApp.Services
                 .Update
                 .Set(r => r.Name, offer.Name)
                 .Set(r => r.Salary, offer.Salary)
-                .Set(r => r.Skills, offer.Skills);
+                .Set(r => r.Skills, offer.Skills)
+                .Set(r => r.ModificationDate, offer.ModificationDate);
 
             await dbContext.JobOffers.UpdateOneAsync(filter, update);
         }
@@ -238,7 +239,8 @@ namespace WebApp.Services
                 .Set(r => r.ExperienceDescription, candidate.ExperienceDescription)
                 .Set(r => r.ExperienceInYears, candidate.ExperienceInYears)
                 .Set(r => r.Salary, candidate.Salary)
-                .Set(r => r.Skills, candidate.Skills);
+                .Set(r => r.Skills, candidate.Skills)
+                .Set(r => r.ModificationDate, candidate.ModificationDate);
 
             await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
         }

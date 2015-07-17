@@ -5,19 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h4 class="orange lighten-2 card-panel">@ViewBag.Title</h4>
-
 @for (int i = Model.OffersList.Count-1; i >= 0 ; i--)
 {    
-    <div class="grey lighten-3 card-panel">
-        @Html.Partial("_OfferTitlePartial", Model.OffersList[i].Offer)                
-            <div class="offer-buttons">
-                @Html.ActionLink("Details", "Details", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
-                @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.OffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })  
-                <a href="#remove-modal" class="btn-large waves-effect waves-light btn modal-trigger">Remove</a>
-            </div>
-        @Html.Partial("_SkillsListpartial", Model.OffersList[i].TopSkills)               
-   </div>    
-   @Html.Partial("_RemoveModalPartial", Model.OffersList[i].Offer)
+    @Html.Partial("_OfferPartial", Model.OffersList[i].Offer)
+    @Html.Partial("_RemoveModalPartial", Model.OffersList[i].Offer)
 }
 @Scripts.Render("~/bundles/offer")
+

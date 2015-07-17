@@ -2,9 +2,9 @@
     ViewBag.Title = "Home Page";
 }
 
-@if(!Request.IsAuthenticated)
+@if (!Request.IsAuthenticated)
 {
-   <div class="main-content row">
+    <div class="main-content row card-panel grey lighten-5">
         <div class="main-photo">
             <img src="~/Content/Images/manwithpen.jpg" />
         </div>
@@ -17,7 +17,7 @@
             <div class="buttons-group">
                 @Html.ActionLink("Login as a candidate", "Login", "Candidate", null, new { @class = "btn-large waves-effect waves-light" })<br />
                 @Html.ActionLink("Register as a candidate", "Register", "Candidate", null, new { @class = "btn-flat waves-effect waves-light" })<br />
-            </div>   
+            </div>
         </div>
     </div>
 }

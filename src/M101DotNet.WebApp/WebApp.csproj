@@ -295,10 +295,11 @@
     <Content Include="Views\Offer\Edit.cshtml" />
     <Content Include="Views\Shared\_RemoveModalPartial.cshtml" />
     <Content Include="Views\OfferSearch\Index.cshtml" />
-    <Content Include="Views\Shared\_OfferTitlePartial.cshtml" />
-    <Content Include="Views\Shared\_SkillsListPartial.cshtml" />
-    <Content Include="Views\Shared\_ScoredOfferTitlepartial.cshtml" />
+    <Content Include="Views\Shared\_ScoredOfferPartial.cshtml" />
+    <Content Include="Views\Shared\_SkillsListShortPartial.cshtml" />
     <Content Include="Views\BestOffers\Index.cshtml" />
+    <Content Include="Views\Shared\_OfferPartial.cshtml" />
+    <Content Include="Views\Shared\_SkillsListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

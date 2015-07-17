@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using WebApp.Models;
 
@@ -6,6 +7,8 @@ namespace WebApp.Entities
 {
     public class CandidateUser : User
     {
+        public DateTime ModificationDate { get; set; }
+        
         public string ExperienceDescription { get; set; }
 
         public int? ExperienceInYears { get; set; }

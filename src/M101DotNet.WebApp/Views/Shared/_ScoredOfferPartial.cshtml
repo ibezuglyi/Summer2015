@@ -1,0 +1,32 @@
+﻿@model WebApp.Models.Offer.ScoredOfferModel
+@{
+    ViewBag.Title = "_ScoredOfferPartial";
+}
+
+<div class="grey lighten-5 card-panel list-panel row flex-container">
+    <div class="left panel-part-left">
+        <a href="@Url.Action("Details", "Offer", new {id = Model.Id })">
+            <div>
+                <div class="offer-title ofer-title-panel">
+                    <div class="inline-field">
+                        <h5>@Model.Name</h5>
+                    </div>
+                </div>
+                @Html.Partial("_SkillsListShortPartial", Model.Skills)
+            </div>
+        </a>
+    </div>
+
+    <div class="right panel-part-right">
+        <div class="additional-info">
+            <div class="additional-info-element">
+                <h5>@Model.Salary PLN</h5>
+            </div>
+            <div class="additional-info-element">
+                <span>
+                    @String.Format("{0:0.00}", Model.Score)
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

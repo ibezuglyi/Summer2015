@@ -5,14 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="card-panel red lighten-4">@ViewBag.Title</h3>
+@*<h3 class="card-panel red lighten-4">@ViewBag.Title</h3>*@
+
 @foreach (var offerViewModel in Model.ScoredOffersList)
 {
-    <div class="grey lighten-3 card-panel">
-        @Html.Partial("_ScoredOfferTitlepartial", offerViewModel.Offer)
-        @Html.Partial("_SkillsListPartial", offerViewModel.Offer.Skills)
-    </div>
-
-
+    @Html.Partial("_ScoredOfferPartial", offerViewModel.Offer)
 }
+
 
