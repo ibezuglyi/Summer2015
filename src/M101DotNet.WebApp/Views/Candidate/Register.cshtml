@@ -3,14 +3,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="card-panel grey lighten-5" >
+    <h4>@ViewBag.Title as a candidate</h4>
 
-<h4>@ViewBag.Title as a candidate</h4>
-
-@using (Html.BeginForm())
-{
-    @Html.EditorForModel()
-
-    <p>
-        <button type="submit" class="btn">Register &raquo;</button>
-    </p>
-}
+    @using (Html.BeginForm())
+    {
+        @Html.EditorForModel()
+        <p>
+            <button type="submit" class="btn">Register &raquo;</button>
+        </p>
+    }
+</div>

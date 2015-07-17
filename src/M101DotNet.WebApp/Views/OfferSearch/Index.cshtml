@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Index";
 }
-<div class="grey lighten-3 card-panel">
+<div class="grey lighten-5 card-panel row">
     @using (Html.BeginForm())
     {
         <div class="form-search-part">
@@ -32,12 +32,6 @@
 <span class="red-text text-darken-2 ">@Html.ValidationMessage("noOffers")</span>  
 @for (int i = Model.Offers.ScoredOffersList.Count - 1; i >= 0; i--)
 {
-    <div class="grey lighten-3 card-panel">
-        @Html.Partial("_ScoredOfferTitlePartial", Model.Offers.ScoredOffersList[i].Offer)
-                <div class="offer-buttons">
-                    @Html.ActionLink("Details", "Details", "Offer", new { id = Model.Offers.ScoredOffersList[i].Offer.Id }, new { @class = "btn-large waves-effect waves-light" })               
-                </div>               
-        @Html.Partial("_SkillsListpartial", Model.Offers.ScoredOffersList[i].TopSkills)
-        </div>    
+    @Html.Partial("_ScoredOfferPartial", Model.Offers.ScoredOffersList[i].Offer)    
 }
 @Scripts.Render("~/bundles/skills")

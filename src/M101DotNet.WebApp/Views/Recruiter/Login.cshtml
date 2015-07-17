@@ -4,12 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h4>@ViewBag.Title as a recruiter</h4>
+<div class="card-panel grey lighten-5"  >
+    <h4>@ViewBag.Title as a recruiter</h4>
 
-@using (Html.BeginForm("Login", "Recruiter"))
-{
-    @Html.EditorForModel()
-    <p>
-        <button type="submit" class="btn">Login &raquo;</button>
-    </p>
-}
+    @using (Html.BeginForm("Login", "Recruiter"))
+    {
+        @Html.EditorForModel()
+        <p>
+            <button type="submit" class="btn">Login &raquo;</button>
+        </p>
+    }
+</div>

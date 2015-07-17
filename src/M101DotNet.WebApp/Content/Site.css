@@ -166,3 +166,58 @@ select{
     width: 200px;
     display:inline-block;
 }
+
+.offer-title-panel{
+    width: 100%;
+}
+
+.list-panel{
+    padding:0px;
+}
+
+.panel-part-left{
+    padding: 20px;
+    flex-grow:8;
+}
+
+.panel-part-right{
+    flex-grow:1;
+}
+
+span.skill-badge{
+    position: relative;
+    display:inline-block;
+    float: left;
+    right: 0;
+}
+
+.additional-info{
+    border-left: 1px solid rgba(0,0,0,.16);
+    height: 90px;
+    min-width: 100px;
+}
+
+.additional-info-element{
+    position:relative;
+    top:20px;
+    left:10px;
+}
+
+.flex-container{
+    display: flex;
+}
+
+.additional-info-icons{
+    float:right;
+    padding-right: 8px;
+    padding-top: 30px;
+}
+
+i.custom-small{
+    font-size: 1.8rem;
+}
+
+a  {
+    color: black;
+}
+

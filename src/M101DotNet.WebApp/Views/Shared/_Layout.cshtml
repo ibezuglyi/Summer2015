@@ -4,15 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
 </head>
-<body>
-    
+<body class=" grey lighten-3">
+
     <nav>
         <div class="nav-wrapper">
-            <div class="container">                
+            <div class="container">
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
@@ -25,9 +26,9 @@
     <div class="container body-content">
         @RenderBody()
         @*@<hr />
-        <footer>
-            <p>&copy; Internship - Summer @DateTime.Now.Year</p>
-        </footer>*@
+            <footer>
+                <p>&copy; Internship - Summer @DateTime.Now.Year</p>
+            </footer>*@
     </div>
 
 

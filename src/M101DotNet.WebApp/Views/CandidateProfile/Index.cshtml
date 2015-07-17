@@ -5,22 +5,22 @@
 }
 
 
-
-<div class="form-part">
-    <label>Name: </label> @Model.Name 
-</div>
-<div class="form-part">
-    <label>Email: </label> @Model.Email 
-</div>
+<div class="card-panel grey lighten-5"  >
+    <div class="form-part">
+        <label>Name: </label> @Model.Name
+    </div>
+    <div class="form-part">
+        <label>Email: </label> @Model.Email
+    </div>
 
     @using (Html.BeginForm())
     {
         <div class="form-part">
-        @Html.Label("Experience in years:") <br>
+            @Html.Label("Experience in years:") <br>
             @Html.TextBox("experienceInYears", Model.Candidate.ExperienceInYears)
-            <span class="red-text text-darken-2">@Html.ValidationMessage("experienceInYears")</span>          
+            <span class="red-text text-darken-2">@Html.ValidationMessage("experienceInYears")</span>
         </div>
-        <div class="form-part">        
+        <div class="form-part">
             @Html.Label("Experience description:") <br />
             @Html.TextArea("experienceDescription", Model.Candidate.ExperienceDescription, new { @class = "materialize-textarea" })
         </div>
@@ -29,22 +29,9 @@
             @Html.TextBox("salary", Model.Candidate.Salary)
             <span class="red-text text-darken-2">@Html.ValidationMessage("salary")</span>
         </div>
-
-    @*for (int i = 0; i < Model.Skills.Count; i++)
-    {
-           <input type="hidden" name="Skills.Index" value="@i" />
-        <div class="row">
-            <span>
-                @Html.TextBoxFor(r => r.Skills[i].Name)
-            </span>
-            <span>
-                @Html.TextBoxFor(r => r.Skills[i].Level)
-            </span>
-        </div>
-    }*@
-        @Html.Label("Skills:")<br/>
+        @Html.Label("Skills:")<br />
         @Html.Partial("_SkillFormPartial", Model.Candidate.Skills)
-        
+
         <div class="row">
             <button type="submit" class="btn ">Save &raquo;</button>
         </div>
@@ -52,4 +39,4 @@
     @Html.Partial("_BlankSkillRowPartial", Model.Candidate.Skills)
 
     @Scripts.Render("~/bundles/skills")
-    
+</div>  

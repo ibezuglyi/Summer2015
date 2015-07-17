@@ -4,29 +4,31 @@
     ViewBag.Title = "Edit an offer";
 }
 
-<h4>@ViewBag.Title</h4>
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(r=>r.Offer.Id)
-    
-    <div class="form-part">
-        @Html.Label("Offer name:")<br />
-        @Html.TextBox("name", Model.Offer.Name)
-        <span class="red-text text-darken-2">@Html.ValidationMessage("name")</span>
-    </div>
-    <div class="form-part">
-        @Html.Label("Salary:")<br />
-        @Html.TextBox("salary", Model.Offer.Salary)
-        <span class="red-text text-darken-2">@Html.ValidationMessage("salary")</span>
-    </div>
+<div class="card-panel grey lighten-5">
+    <h4>@ViewBag.Title</h4>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(r => r.Offer.Id)
 
-    @Html.Label("Skills:")<br />
-    @Html.Partial("_SkillFormPartial", Model.Offer.Skills)
+        <div class="form-part">
+            @Html.Label("Offer name:")<br />
+            @Html.TextBox("name", Model.Offer.Name)
+            <span class="red-text text-darken-2">@Html.ValidationMessage("name")</span>
+        </div>
+        <div class="form-part">
+            @Html.Label("Salary:")<br />
+            @Html.TextBox("salary", Model.Offer.Salary)
+            <span class="red-text text-darken-2">@Html.ValidationMessage("salary")</span>
+        </div>
 
-    <div class="row">
-        <button type="submit" class="btn ">Save &raquo;</button>
-    </div>
-}
-@Html.Partial("_BlankSkillRowPartial", Model.Offer.Skills)
+        @Html.Label("Skills:")<br />
+        @Html.Partial("_SkillFormPartial", Model.Offer.Skills)
+
+        <div class="row">
+            <button type="submit" class="btn ">Save &raquo;</button>
+        </div>
+    }
+    @Html.Partial("_BlankSkillRowPartial", Model.Offer.Skills)
+</div>
 @Scripts.Render("~/bundles/skills")
 @Scripts.Render("~/bundles/offer")

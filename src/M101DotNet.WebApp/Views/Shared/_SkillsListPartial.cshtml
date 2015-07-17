@@ -1,18 +1,16 @@
 ﻿@model List<WebApp.Models.Candidate.SkillModel>
-@{
-    ViewBag.Title = "_SkillsListPartial";
-}
-    
-<div class="skill-list">
-    @foreach (var skill in Model)
-    {
-        <div class="inline-field">
-            <div class="card-panel amber lighten-4">
-                @skill.Name
-                @skill.Level
-            </div>
-        </div>
+    @{
+        ViewBag.Title = "_SkillsListPartial";
     }
-</div>
 
-
+    <div class="skill-list">
+        @foreach (var skill in Model)
+        {
+            <div class="inline-field">
+                <div class="card-panel amber lighten-4">
+                    @skill.Name
+                    @skill.Level
+                </div>
+            </div>
+        }
+    </div>
