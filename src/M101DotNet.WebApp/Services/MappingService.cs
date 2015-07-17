@@ -17,7 +17,7 @@ namespace WebApp.Services
             foreach (var offer in offers)
             {
                 var offerModel = MapToOfferModel(offer);
-                var offerViewModel = new OfferViewModel(offerModel, offer.IdRecruiter);
+                var offerViewModel = new OfferViewModel(offerModel, offer.RecruiterId);
                 offersViewModel.Add(offerViewModel);
             }
             return offersViewModel;
@@ -39,7 +39,7 @@ namespace WebApp.Services
         public  JobOffer MapToJobOffer(OfferModel model, string id)
         {
             var skills = MapSkillModelsToSkills(model.Skills);
-            var offer = new JobOffer(model.Name, model.Salary, id, skills);
+            var offer = new JobOffer(model.Name, model.Salary, id, model.Description, skills);
             return offer;
         }
 
@@ -81,14 +81,14 @@ namespace WebApp.Services
         public OfferModel MapToOfferModel(JobOffer offer)
         {
             var skills = MapSkillsToSkillModels(offer.Skills);
-            var offerModel = new OfferModel(offer.Id, offer.Name, offer.Salary, skills);
+            var offerModel = new OfferModel(offer.Id, offer.Name, offer.Salary, offer.Description, skills);
             return offerModel;
         }
 
         public ScoredOfferModel MapToScoredOfferModel(JobOffer offer, double score)
         {
             var skills = MapSkillsToSkillModels(offer.Skills);
-            var scoredOfferModel = new ScoredOfferModel(offer.Id, offer.Name, offer.Salary, score, skills);
+            var scoredOfferModel = new ScoredOfferModel(offer.Id, offer.Name, offer.Salary, score, offer.Description, skills);
             return scoredOfferModel;
         }
 

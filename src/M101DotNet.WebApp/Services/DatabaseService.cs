@@ -48,7 +48,7 @@ namespace WebApp.Services
 
         public async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id)
         {
-            var offerList = await dbContext.JobOffers.Find(r => r.IdRecruiter == id).ToListAsync();
+            var offerList = await dbContext.JobOffers.Find(r => r.RecruiterId == id).ToListAsync();
             return offerList;
         }
 
@@ -195,6 +195,7 @@ namespace WebApp.Services
                 .Set(r => r.Name, offer.Name)
                 .Set(r => r.Salary, offer.Salary)
                 .Set(r => r.Skills, offer.Skills)
+                .Set(r => r.Description, offer.Description)
                 .Set(r => r.ModificationDate, offer.ModificationDate);
 
             await dbContext.JobOffers.UpdateOneAsync(filter, update);

@@ -196,7 +196,7 @@ namespace WebApp.Services
         {
             var offer = await _dbService.GetJobOfferByIdAsync(offerId);
             var offerModel = _mappingService.MapToOfferModel(offer);
-            var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, offer.IdRecruiter);
+            var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, offer.RecruiterId);
             return offerViewModel;
         }
         

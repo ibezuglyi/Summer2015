@@ -18,6 +18,8 @@ namespace WebApp.Models.Offer
         [Required(ErrorMessage = "Field salary is required")]
         [Range(0, int.MaxValue, ErrorMessage = "Salary should be [0 .. 2 147 483 647]")]
         public int Salary { get; set; }
+
+        public string Description { get; set; }
         public List<SkillModel> Skills { get; set; }
 
         public OfferModel()
@@ -25,11 +27,12 @@ namespace WebApp.Models.Offer
             Skills = new List<SkillModel>();
         }
 
-        public OfferModel(string offerId, string name, int salary, List<SkillModel> skills)
+        public OfferModel(string offerId, string name, int salary, string description, List<SkillModel> skills)
         {
             Id = offerId;
             Name = name;
             Salary = salary;
+            Description = description;
             Skills = skills;
         }
     }

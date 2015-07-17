@@ -12,10 +12,11 @@ namespace WebApp.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
-        public string IdRecruiter { get; set; }
+        public string RecruiterId { get; set; }
         [BsonRepresentation(BsonType.DateTime)]
         public DateTime ModificationDate { get; set; }
 
+        public string Description { get; set; } 
         [Required]
         public int Salary { get; set; }
         [Required]
@@ -28,11 +29,12 @@ namespace WebApp.Entities
             Skills = new List<Skill>();
         }
 
-        public JobOffer(string name, int salary, string idRecruitert, List<Skill> skills)
+        public JobOffer(string name, int salary, string recruiterId, string description, List<Skill> skills)
         {
             Name = name;
             Salary = salary;
-            IdRecruiter = idRecruitert;
+            RecruiterId = recruiterId;
+            Description = description;
             Skills = skills;
         }
     }

@@ -20,6 +20,10 @@
             @Html.TextBox("salary", Model.Offer.Salary)
             <span class="red-text text-darken-2">@Html.ValidationMessage("salary")</span>
         </div>
+        <div>
+            @Html.Label("Description:")<br/>
+            @Html.TextArea("description", Model.Offer.Description, new { @class="materialize-textarea"})
+        </div>
 
         @Html.Label("Skills:")<br />
         @Html.Partial("_SkillFormPartial", Model.Offer.Skills)

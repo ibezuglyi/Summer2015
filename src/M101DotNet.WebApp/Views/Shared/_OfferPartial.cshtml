@@ -1,27 +1,31 @@
-﻿@model WebApp.Models.Offer.OfferModel
+﻿@model WebApp.Models.Offer.OfferViewModel
     
 @{  
     ViewBag.Title = "OfferPartial";
 }
 
- <div class="grey lighten-5 card-panel list-panel row flex-container">
+<div class="grey lighten-5 card-panel list-panel row flex-container">
     <div class="left panel-part-left">
-        <a href="@Url.Action("Details", "Offer", new {id = Model.Id })">
-            <div class="offer-title">
-                <div class="inline-field">
-                    <h5>@Model.Name</h5>
-                </div>
+        <a href="@Url.Action("Details", "Offer", new {id = Model.Offer.Id })">
+            <div class="inline-field offer-title">
+                <h5>@Model.Offer.Name</h5>
             </div>
-            @Html.Partial("_SkillsListShortPartial", Model.Skills)
+            <div class="description">
+                <p>
+                    @Model.Offer.Description.Substring(0, Math.Min(Model.Offer.Description.Count(), 200))
+                    ...
+                </p>
+            </div>
+            @Html.Partial("_SkillsListShortPartial", Model.TopSkills)
         </a>
     </div>
     <div class="right panel-part-right">
         <div class="additional-info">
             <div class="additional-info-element">
-                <h5>@Model.Salary PLN</h5>
+                <h5>@Model.Offer.Salary PLN</h5>
             </div>
             <div class="additional-info-icons">
-                <a href="@Url.Action("Edit", "Offer", new { id = Model.Id})"<i class="custom-small material-icons">description</i></a>
+                <a href="@Url.Action("Edit", "Offer", new { id = Model.Offer.Id})"<i class="custom-small material-icons">description</i></a>
                 <a href="#remove-modal" class="modal-trigger"><i class="custom-small material-icons">delete</i></a>
             </div>
         </div>

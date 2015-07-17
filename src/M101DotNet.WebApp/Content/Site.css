@@ -114,6 +114,7 @@ select{
     display:inline;
     float:left;
     font-size: 14px;
+    width: 100%;
 }
 .inline-field
 {
@@ -167,9 +168,6 @@ select{
     display:inline-block;
 }
 
-.offer-title-panel{
-    width: 100%;
-}
 
 .list-panel{
     padding:0px;
@@ -182,6 +180,7 @@ select{
 
 .panel-part-right{
     flex-grow:1;
+    flex-shrink:0.1;
 }
 
 span.skill-badge{
@@ -228,4 +227,8 @@ a  {
 
 .switch{
     margin-bottom: 15px;
+}
+
+.description{
+    margin-bottom: 30px;
 }

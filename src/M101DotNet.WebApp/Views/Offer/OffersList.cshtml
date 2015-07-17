@@ -7,7 +7,7 @@
 
 @for (int i = Model.OffersList.Count-1; i >= 0 ; i--)
 {    
-    @Html.Partial("_OfferPartial", Model.OffersList[i].Offer)
+    @Html.Partial("_OfferPartial", Model.OffersList[i])
     @Html.Partial("_RemoveModalPartial", Model.OffersList[i].Offer)
 }
 @Scripts.Render("~/bundles/offer")
