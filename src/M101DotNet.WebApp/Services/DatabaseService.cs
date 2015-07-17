@@ -52,23 +52,66 @@ namespace WebApp.Services
             return offerList;
         }
 
-        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name)
+        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, string sortBy)
         {
-            var filter = GetCompleteFilter(skills, minSalary, maxSalary, name);
+            var filter = GetSimpleTypePartFilter(minSalary, maxSalary, name);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetSkillsIntersectionProjectionBson(skillsName, skills.Count);
+            var sortDefinition = GetSortDefinition(sortBy);
 
-            var offers = await dbContext.JobOffers
+            var offersQuery = dbContext.JobOffers
                 .Aggregate()
                 .Match(filter)
                 .Match(new BsonDocumentFilterDefinition<JobOffer>(matchBson))
                 .Project(new BsonDocumentProjectionDefinition<JobOffer, BsonDocument>(projectBson))
                 .Match(new BsonDocumentFilterDefinition<BsonDocument>(new BsonDocument("Matched", true)))
-                .Project(new BsonDocumentProjectionDefinition<BsonDocument, JobOffer>(new BsonDocument("IdRecruiter", 1).Add("Salary", 1).Add("Name", 1).Add("Skills", 1)))
-                .ToListAsync();
+                .Project(new BsonDocumentProjectionDefinition<BsonDocument, JobOffer>(new BsonDocument("IdRecruiter", 1).Add("Salary", 1).Add("Name", 1).Add("Skills", 1)));
+
+            if (sortDefinition!=null)
+            {
+                offersQuery = offersQuery.Sort(sortDefinition);
+            }
+            var offers = await offersQuery.ToListAsync();
 
             return offers;
+        }
+
+        public static SortDefinition<JobOffer> GetSortDefinition(string sortBy)
+        {
+            SortDefinition<JobOffer> sortDefinition = null;
+            switch (sortBy)
+            {
+                case "salaryAsc": { sortDefinition = GetSalaryAscSort(); break; }
+                case "salaryDsc": { sortDefinition = GetSalaryDscSort(); break; }
+                case "dateAsc": { sortDefinition = GetDateAscSort(); break; }
+                case "dateDsc": { sortDefinition = GetDateDscSort(); break; }
+            }
+            return sortDefinition;
+        }
+
+        public static SortDefinition<JobOffer> GetSalaryAscSort()
+        {
+            var sortDefinition = Builders<JobOffer>.Sort.Ascending("Salary");
+            return sortDefinition;
+        }
+
+        public static SortDefinition<JobOffer> GetSalaryDscSort()
+        {
+            var sortDefinition = Builders<JobOffer>.Sort.Descending("Salary");
+            return sortDefinition;
+        }
+
+        public static SortDefinition<JobOffer> GetDateAscSort()
+        {
+            var sortDefinition = Builders<JobOffer>.Sort.Ascending("ModyficationDate");
+            return sortDefinition;
+        }
+
+        public static SortDefinition<JobOffer> GetDateDscSort()
+        {
+            var sortDefinition = Builders<JobOffer>.Sort.Descending("ModyficationDate");
+            return sortDefinition;
         }
 
         private static BsonDocument GetSkillsIntersectionProjectionBson(List<string> skillsName, int skillsIntersectionCount)
@@ -100,11 +143,10 @@ namespace WebApp.Services
         private static BsonDocument GetMatchedSkillsStageBson(List<string> skillsName)
         {
             var matchBson = new BsonDocument("Skills.Name", new BsonDocument("$in", new BsonArray(skillsName)));
-            matchBson.Add("Skills.2", new BsonDocument("$exists", true));
             return matchBson;
         }
 
-        private static FilterDefinition<JobOffer> GetCompleteFilter(List<Skill> skills, int? minSalary, int? maxSalary, string name)
+        private static FilterDefinition<JobOffer> GetSimpleTypePartFilter(int? minSalary, int? maxSalary, string name)
         {
             var filterDefinitions = new List<FilterDefinition<JobOffer>>();
             if (minSalary.HasValue)
@@ -122,19 +164,8 @@ namespace WebApp.Services
                 var nameFilter = GetNameFilter(name);
                 filterDefinitions.Add(nameFilter);
             }
-            //var skillFilter = GetSkillsFilter(skills);
-            //filterDefinitions.Add(skillFilter);
             var filter = Builders<JobOffer>.Filter.And(filterDefinitions);
             return filter;
-        }
-
-        private static FilterDefinition<JobOffer> GetSkillsFilter(List<Skill> skills)
-        {
-            var skillNames = skills.Select(r => r.Name).ToList();
-
-            var skillDefinition = Builders<JobOffer>.Filter.ToBsonDocument();
-            //skillDefinition.Add("Skills.Name", new BsonDocument("$all", new BsonArray(values)));
-            return skillDefinition;
         }
 
         private static FilterDefinition<JobOffer> GetNameFilter(string name)

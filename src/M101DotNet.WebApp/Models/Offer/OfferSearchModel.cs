@@ -15,9 +15,8 @@ namespace WebApp.Models.Offer
         [Range(0, int.MaxValue, ErrorMessage = "Max salary should be [0 .. 2 147 483 647]")]
         public int? MaxSalary { get; set; }
         public List<SkillModel> Skills { get; set; }
-        public bool IsSalarySort { get; set; }
-        public bool IsScoreSort { get; set; }
-        public bool IsDateSort { get; set; }
+        public string SortBy { get; set; }
+
 
         public OfferSearchModel()
         {
@@ -28,17 +27,15 @@ namespace WebApp.Models.Offer
         {
             Skills = skills;
             MinSalary = minSalary;
+            SortBy = "scoreDsc";
         }
 
-        public OfferSearchModel(List<SkillModel> skills, int? minSalary, int? maxSalary, string name, bool isSalarySort, bool isScoreSort, bool isDateSort)
+        public OfferSearchModel(List<SkillModel> skills, int? minSalary, int? maxSalary, string name)
         {   
             Skills = skills;
             MinSalary = minSalary;
             MaxSalary = maxSalary;
             Name = name;
-            IsSalarySort = isSalarySort;
-            IsScoreSort = isScoreSort;
-            IsDateSort = isDateSort;
         }
     }
 }
