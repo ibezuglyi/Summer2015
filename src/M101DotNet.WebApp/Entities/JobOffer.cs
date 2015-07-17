@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using WebApp.Models;
+using System;
 
 namespace WebApp.Entities
 {
@@ -12,7 +13,9 @@ namespace WebApp.Entities
         public string Id { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string IdRecruiter { get; set; }
-        
+        [BsonRepresentation(BsonType.DateTime)]
+        public DateTime ModificationDate { get; set; }
+
         [Required]
         public int Salary { get; set; }
         [Required]
