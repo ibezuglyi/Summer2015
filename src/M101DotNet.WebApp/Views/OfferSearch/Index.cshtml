@@ -21,28 +21,34 @@
                     <span class="small-textBox">@Html.TextBox("maxSalary", Model.SearchParams.MaxSalary)</span>  </div>
         </div>
         @Html.Label("Skills:")
-        @Html.Partial("_SkillFormPartial", Model.SearchParams.Skills)             
+        @Html.Partial("_SkillFormPartial", Model.SearchParams.Skills)
         
-        <div class="switch">
-            <label>
-                Salary: Dsc
-                <input type="checkbox" id="IsSalarySort" name="IsSalarySort" value="@Model.SearchParams.IsSalarySort.ToString()" />
-                <span class="lever"></span>            
-                Asc
-            </label>
-            <label>
-                Score: Dsc
-                <input type="checkbox" id="IsScoreSort" name="IsScoreSort" value="@Model.SearchParams.IsScoreSort.ToString()" />
-                <span class="lever"></span>
-                Asc
-            </label>
-            <label>
-                Date: Dsc
-                <input type="checkbox" id="IsDateSort" name="IsDateSort" value="@Model.SearchParams.IsDateSort.ToString()" />
-                <span class="lever"></span>
-                Asc
-            </label>
+        <div class="radio-twins">
+            <label>Salary: </label>
+            
+            <input id="IsSalarySortAsc"  name="sortBy" type="radio" value="salaryAsc" />
+            <label for="IsSalarySortAsc">Asc</label>
+
+            <input id="IsSalarySortDsc" name="sortBy" type="radio" value="salaryDsc" />
+            <label for="IsSalarySortDsc">Dsc</label>
         </div>
+        <div class="radio-twins">
+            <label>Score: </label>
+            <input id="IsScoreSortAsc" name="sortBy" type="radio" value="scoreAsc" />
+            <label for="IsScoreSortAsc">Asc</label>
+
+            <input name="sortBy" id="IsScoreSortDsc" type="radio" value="scoreDsc" />
+            <label for="IsScoreSortDsc">Dsc</label>
+        </div>
+        <div class="radio-twins">
+            <label>Date: </label>
+            <input id="IsDateSortAsc"  name="sortBy" type="radio" value="dateAsc" />
+            <label for="IsDateSortAsc">Asc</label>
+
+            <input id="IsDateSortDsc"  name="sortBy" type="radio" value="dateDsc" />
+            <label for="IsDateSortDsc">Dsc</label>
+        </div>
+        
         <div class="row">
             <button type="submit" class="btn ">Search &raquo;</button>
         </div>

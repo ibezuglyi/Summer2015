@@ -39,8 +39,10 @@ namespace WebApp.Controllers
             if (ValidateForm(model))
             {
                 var newOfferSearchViewModel = await _applicationService.GetOfferSearchViewModelAsync(model);
-                if(CheckIfThereAreNoOffers(newOfferSearchViewModel))
+                if (!newOfferSearchViewModel.Offers.HasOffers())
+                {
                     AddNoOffersError();
+                }
                 return View(newOfferSearchViewModel);
             }
             AddNoOffersError();
@@ -63,11 +65,6 @@ namespace WebApp.Controllers
                 }
             }
             return ModelState.IsValid;
-        }
-
-        private bool CheckIfThereAreNoOffers(OfferSearchViewModel offerSearchViewModel)
-        {
-            return (!offerSearchViewModel.HasOffers())?true:false;
         }
 
         private void AddNoOffersError()

@@ -18,5 +18,10 @@ namespace WebApp.Models.Offer
         {
             ScoredOffersList = scoredOffersList;
         }
+
+        public bool HasOffers()
+        {
+            return ScoredOffersList.Count>0;
+        }
     }
 }
