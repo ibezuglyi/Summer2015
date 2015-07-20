@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebApp.Entities;
@@ -17,7 +18,7 @@ namespace WebApp.Services
             foreach (var offer in offers)
             {
                 var offerModel = MapToOfferModel(offer);
-                var offerViewModel = new OfferViewModel(offerModel, offer.RecruiterId);
+                var offerViewModel = new OfferViewModel(offerModel, offer.RecruiterId, offer.ModificationDate);
                 offersViewModel.Add(offerViewModel);
             }
             return offersViewModel;
@@ -182,14 +183,14 @@ namespace WebApp.Services
             return new RecruiterViewModel(recruiterModel, recruiterName, recruiterEmail);
         }
 
-        public OfferViewModel MapToOfferViewModel(OfferModel offerModel, string IdRecruiter)
+        public OfferViewModel MapToOfferViewModel(OfferModel offerModel, string recruiterId, DateTime modificationDate)
         {
-            return new OfferViewModel(offerModel, IdRecruiter);
+            return new OfferViewModel(offerModel, recruiterId, modificationDate);
         }
 
-        public ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel)
+        public ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel, DateTime modificationDate)
         {
-            return new ScoredOfferViewModel(offerModel);
+            return new ScoredOfferViewModel(offerModel, modificationDate);
         }                
     }
 }

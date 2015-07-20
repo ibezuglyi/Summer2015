@@ -27,7 +27,7 @@ namespace WebApp.Controllers
                 var candidateViewModel = await _applicationService.GetCandidateViewModelByIdAsync(currentUserId);
                 return View(candidateViewModel);
             }
-            return RedirectToAction("DeniedPermision", "Home");
+            return RedirectToAction("DeniedPermission", "Home");
         }
 
         [HttpGet]
@@ -38,7 +38,7 @@ namespace WebApp.Controllers
                 var candidateViewModel = await _applicationService.GetCandidateViewModelByIdAsync(id);
                 return View(candidateViewModel);
             }
-            return RedirectToAction("DeniedPermision", "Home");
+            return RedirectToAction("DeniedPermission", "Home");
         }
 
         [HttpPost]

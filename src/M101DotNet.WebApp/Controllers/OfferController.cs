@@ -48,7 +48,7 @@ namespace WebApp.Controllers
                 var offers = await _applicationService.GetOfferViewModelListAsync(currentUserId);
                 return View(offers);               
             }
-            return RedirectToAction("DeniedPermision", "Home");
+            return RedirectToAction("DeniedPermission", "Home");
         }
 
         [HttpGet]
@@ -66,8 +66,8 @@ namespace WebApp.Controllers
                 await _applicationService.RemoveJobOfferAsync(model.Id);
                 return RedirectToAction("OffersList", "Offer");
             }
-            return RedirectToAction("DeniedPermision", "Home");
-        }
+            return RedirectToAction("DeniedPermission", "Home");
+        }        
 
         [HttpGet]
         public async Task<ActionResult> Details(string id)
@@ -77,7 +77,7 @@ namespace WebApp.Controllers
                 var offer = await _applicationService.GetOfferViewModelByIdAsync(id);
                 return View(offer);
             }
-            return RedirectToAction("DeniedPermision", "Home");
+            return RedirectToAction("DeniedPermission", "Home");
         }        
 
         [HttpGet]
@@ -93,10 +93,10 @@ namespace WebApp.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("DeniedPermision", "Home");
+                    return RedirectToAction("DeniedPermission", "Home");
                 }
             }
-            return RedirectToAction("DeniedPermision", "Home");
+            return RedirectToAction("DeniedPermission", "Home");
         }
 
         [HttpPost]

@@ -12,16 +12,18 @@ namespace WebApp.Models.Offer
         public OfferModel Offer { get; set; }
         public string IdRecruiter { get; set; }
         public List<SkillModel> TopSkills { get; set; }
+        public DateTime ModificationDate { get; set; }
 
         public OfferViewModel()
         {
             Offer = new OfferModel();
             TopSkills = new List<SkillModel>();
         }
-        public OfferViewModel(OfferModel offer, string idRecruiter)
+        public OfferViewModel(OfferModel offer, string idRecruiter, DateTime modificationDate)
         {
             Offer = offer;
             IdRecruiter = idRecruiter;
+            ModificationDate = modificationDate;
             TopSkills = CalculateTopSkills(offer.Skills);
         }
 
