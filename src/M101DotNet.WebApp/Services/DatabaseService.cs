@@ -47,9 +47,10 @@ namespace WebApp.Services
             return jobOffer;
         }
 
-        public async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id)
+        public async Task<List<JobOffer>> GetOffersByIdRecruiterSortedByDateAsync(string id)
         {
-            var offerList = await dbContext.JobOffers.Find(r => r.RecruiterId == id).ToListAsync();
+            var sortDefinition = GetDateAscSort();
+            var offerList = await dbContext.JobOffers.Find(r => r.RecruiterId == id).Sort(sortDefinition).ToListAsync();
             return offerList;
         }
 

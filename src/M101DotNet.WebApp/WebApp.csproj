@@ -289,7 +289,7 @@
     <Content Include="Views\Shared\_SkillFormPartial.cshtml" />
     <Content Include="Views\Offer\Create.cshtml" />
     <Content Include="Views\Offer\OffersList.cshtml" />
-    <Content Include="Views\Home\DeniedPermision.cshtml" />
+    <Content Include="Views\Home\DeniedPermission.cshtml" />
     <Content Include="Views\Shared\_BlankSkillRowPartial.cshtml" />
     <Content Include="Views\Offer\Details.cshtml" />
     <Content Include="Views\Offer\Edit.cshtml" />

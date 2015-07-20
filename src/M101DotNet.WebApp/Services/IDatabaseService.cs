@@ -12,7 +12,7 @@ namespace WebApp.Services
         Task<RecruiterUser> GetRecruiterByIdAsync(string id);
         Task<CandidateUser> GetCandidateByIdAsync(string id);
         Task<JobOffer> GetJobOfferByIdAsync(string id);
-        Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id);
+        Task<List<JobOffer>> GetOffersByIdRecruiterSortedByDateAsync(string id);
         Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, SortBy sortBy);
         Task UpdateRecruiterAsync(RecruiterUser recruiter, string recruiterId);
         Task UpdateCandidateAsync(CandidateUser candidate, string candidateId);

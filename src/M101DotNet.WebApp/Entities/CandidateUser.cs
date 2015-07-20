@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using WebApp.Models;
@@ -7,6 +9,7 @@ namespace WebApp.Entities
 {
     public class CandidateUser : User
     {
+        [BsonRepresentation(BsonType.DateTime)]
         public DateTime ModificationDate { get; set; }
         
         public string ExperienceDescription { get; set; }

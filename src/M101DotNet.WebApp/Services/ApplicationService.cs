@@ -57,7 +57,7 @@ namespace WebApp.Services
 
         private async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string recruiterId)
         {
-            var offerList = await _dbService.GetOffersByIdRecruiterAsync(recruiterId);
+            var offerList = await _dbService.GetOffersByIdRecruiterSortedByDateAsync(recruiterId);
             return offerList;
         }
 
@@ -140,7 +140,7 @@ namespace WebApp.Services
         {
             var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
             var candidateModel = _mappingService.MapToCandidateUserModel(candidate);
-            var candidateViewModel = _mappingService.MapToCandidateViewModel(candidateModel, candidate.Name, candidate.Email);
+            var candidateViewModel = _mappingService.MapToCandidateViewModel(candidateModel, candidate.Name, candidate.Email, candidate.ModificationDate);
             return candidateViewModel;
         }
 
@@ -190,7 +190,7 @@ namespace WebApp.Services
         public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId)
         {
             var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
-            var candiateViewModel = _mappingService.MapToCandidateViewModel(candidateModel, candidate.Name, candidate.Email);
+            var candiateViewModel = _mappingService.MapToCandidateViewModel(candidateModel, candidate.Name, candidate.Email, candidate.ModificationDate);
             return candiateViewModel;
         }
 

@@ -28,7 +28,7 @@ namespace WebApp.Services
         RecruiterModel MapToRecruiterModel(RecruiterUser recruiter);
         List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels);
         List<SkillModel> MapSkillsToSkillModels(List<Skill> skills);
-        CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail);
+        CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail, DateTime modificationDate);
         RecruiterViewModel MapToRecruiterViewModel(RecruiterModel recruiterModel, string recruiterName, string recruiterEmail);
         OfferViewModel MapToOfferViewModel(OfferModel offerModel, string IdRecruiter, DateTime ModificationDate);
 

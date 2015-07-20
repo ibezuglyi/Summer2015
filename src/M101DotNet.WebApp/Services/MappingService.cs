@@ -173,9 +173,9 @@ namespace WebApp.Services
         }
                
 
-        public CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail)
+        public CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail, DateTime modificationDate)
         {
-            return new CandidateViewModel(candidateModel, candidateName, candidateEmail);
+            return new CandidateViewModel(candidateModel, candidateName, candidateEmail, modificationDate);
         }
 
         public RecruiterViewModel MapToRecruiterViewModel(RecruiterModel recruiterModel, string recruiterName, string recruiterEmail)
