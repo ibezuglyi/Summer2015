@@ -33,7 +33,7 @@ namespace WebApp.Services
         Task<OfferViewModel> GetOfferViewModelByIdAsync(string offerId); 
         Task UpdateJobOfferAsync(OfferModel model, string idOffer);
         Task RemoveJobOfferAsync(string idOffer);
-        OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, string recruiterId);
+        Task<OfferViewModel> GetOfferViewModelAsync(OfferModel offerModel, string recruiterId);
         bool AreSkillsDuplicated(List<SkillModel> skills);
         Task<List<string>> GetSortedSkillsMatchingQuery(string query);
         SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints);

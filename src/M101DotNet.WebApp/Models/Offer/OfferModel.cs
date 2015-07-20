@@ -19,6 +19,7 @@ namespace WebApp.Models.Offer
         [Range(0, int.MaxValue, ErrorMessage = "Salary should be [0 .. 2 147 483 647]")]
         public int Salary { get; set; }
 
+        
         public string Description { get; set; }
         public List<SkillModel> Skills { get; set; }
 

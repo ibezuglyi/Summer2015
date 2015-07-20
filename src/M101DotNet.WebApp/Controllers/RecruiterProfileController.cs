@@ -33,7 +33,7 @@ namespace WebApp.Controllers
                 var recruiterViewModel = await _applicationService.GetRecruiterViewModelByIdAsync(currentUserId);
                 return View(recruiterViewModel);                
             }
-            return RedirectToAction("DeniedPermision", "Home");          
+            return RedirectToAction("DeniedPermission", "Home");          
         }
 
         [HttpPost]

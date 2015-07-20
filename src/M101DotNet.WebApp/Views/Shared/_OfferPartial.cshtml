@@ -10,6 +10,7 @@
             <div class="inline-field offer-title">
                 <h5>@Model.Offer.Name</h5>
             </div>
+            <div> @Model.ModificationDate</div>
             <div class="description">
                 <p>
                     @Model.Offer.Description.Substring(0, Math.Min(Model.Offer.Description.Count(), 200))

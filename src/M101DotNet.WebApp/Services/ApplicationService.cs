@@ -214,7 +214,7 @@ namespace WebApp.Services
         {
             var offer = await _dbService.GetJobOfferByIdAsync(offerId);
             var offerModel = _mappingService.MapToOfferModel(offer);
-            var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, offer.RecruiterId);
+            var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, offer.RecruiterId, offer.ModificationDate);
             return offerViewModel;
         }
 
@@ -269,9 +269,10 @@ namespace WebApp.Services
             return offerViewModel.IdRecruiter;
         }
 
-        public OfferViewModel GetOfferViewModelAsync(OfferModel offerModel, string recruiterId)
+        public async Task<OfferViewModel> GetOfferViewModelAsync(OfferModel offerModel, string recruiterId)
         {
-            var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, recruiterId);
+            var offer = await _dbService.GetJobOfferByIdAsync(offerModel.Id);
+            var offerViewModel = _mappingService.MapToOfferViewModel(offerModel, recruiterId, offer.ModificationDate);
             return offerViewModel;
         }
 
@@ -330,7 +331,7 @@ namespace WebApp.Services
         {
             var score = MeasureScoreBetweenCandidateAndOffer(skills, offer.Skills);
             var scoredOfferModel = _mappingService.MapToScoredOfferModel(offer, score);
-            var scoredOfferViewModel = _mappingService.MapToScoredOfferViewModel(scoredOfferModel);
+            var scoredOfferViewModel = _mappingService.MapToScoredOfferViewModel(scoredOfferModel, offer.ModificationDate);
             return scoredOfferViewModel;
         }
     }

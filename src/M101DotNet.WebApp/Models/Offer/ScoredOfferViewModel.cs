@@ -10,6 +10,7 @@ namespace WebApp.Models.Offer
     {
         const int TopSkillNumber = 5;
         public ScoredOfferModel Offer { get; set; }
+        public DateTime ModificationDate { get; set; }
         public List<SkillModel> TopSkills { get; set; }
 
         public ScoredOfferViewModel()
@@ -17,9 +18,10 @@ namespace WebApp.Models.Offer
             Offer = new ScoredOfferModel();
             TopSkills = new List<SkillModel>();
         }
-        public ScoredOfferViewModel(ScoredOfferModel offer)
+        public ScoredOfferViewModel(ScoredOfferModel offer, DateTime modificationDate)
         {
             Offer = offer;
+            ModificationDate = modificationDate;
             TopSkills = CalculateTopSkills(offer.Skills);
         }
 
