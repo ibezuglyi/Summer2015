@@ -52,16 +52,22 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Remove(string id)
+        public ActionResult Remove()
         {
-            var ifRecruiterHaveRightsToRemove = await IsCurrentUserOwnerOfOffer(id);
+            return View();
+        }     
+   
+        [HttpPost]
+        public async Task<ActionResult> Remove(OfferModel model)
+        {
+            var ifRecruiterHaveRightsToRemove = await IsCurrentUserOwnerOfOffer(model.Id);
             if (_authenticationService.IsAuthenticated(Request) && ifRecruiterHaveRightsToRemove)
             {
-                await _applicationService.RemoveJobOfferAsync(id);
+                await _applicationService.RemoveJobOfferAsync(model.Id);
                 return RedirectToAction("OffersList", "Offer");
             }
             return RedirectToAction("DeniedPermision", "Home");
-        }        
+        }
 
         [HttpGet]
         public async Task<ActionResult> Details(string id)

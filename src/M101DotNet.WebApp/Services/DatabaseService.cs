@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Entities;
 using WebApp.Models;
+using WebApp.Models.Offer;
 
 namespace WebApp.Services
 {
@@ -52,9 +53,9 @@ namespace WebApp.Services
             return offerList;
         }
 
-        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, string sortBy)
+        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, SortBy sortBy)
         {
-            var filter = GetSimpleTypePartFilter(minSalary, maxSalary, name);
+            var filter = GetNameSalaryFilter(minSalary, maxSalary, name);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetSkillsIntersectionProjectionBson(skillsName, skills.Count);
@@ -77,15 +78,15 @@ namespace WebApp.Services
             return offers;
         }
 
-        public static SortDefinition<JobOffer> GetSortDefinition(string sortBy)
+        public static SortDefinition<JobOffer> GetSortDefinition(SortBy sortBy)
         {
             SortDefinition<JobOffer> sortDefinition = null;
             switch (sortBy)
             {
-                case "salaryAsc": { sortDefinition = GetSalaryAscSort(); break; }
-                case "salaryDsc": { sortDefinition = GetSalaryDscSort(); break; }
-                case "dateAsc": { sortDefinition = GetDateAscSort(); break; }
-                case "dateDsc": { sortDefinition = GetDateDscSort(); break; }
+                case SortBy.salaryAsc: { sortDefinition = GetSalaryAscSort(); break; }
+                case SortBy.salaryDsc: { sortDefinition = GetSalaryDscSort(); break; }
+                case SortBy.dateAsc: { sortDefinition = GetDateAscSort(); break; }
+                case SortBy.dateDsc: { sortDefinition = GetDateDscSort(); break; }
             }
             return sortDefinition;
         }
@@ -104,13 +105,13 @@ namespace WebApp.Services
 
         public static SortDefinition<JobOffer> GetDateAscSort()
         {
-            var sortDefinition = Builders<JobOffer>.Sort.Ascending("ModyficationDate");
+            var sortDefinition = Builders<JobOffer>.Sort.Ascending("ModificationDate");
             return sortDefinition;
         }
 
         public static SortDefinition<JobOffer> GetDateDscSort()
         {
-            var sortDefinition = Builders<JobOffer>.Sort.Descending("ModyficationDate");
+            var sortDefinition = Builders<JobOffer>.Sort.Descending("ModificationDate");
             return sortDefinition;
         }
 
@@ -146,7 +147,7 @@ namespace WebApp.Services
             return matchBson;
         }
 
-        private static FilterDefinition<JobOffer> GetSimpleTypePartFilter(int? minSalary, int? maxSalary, string name)
+        private static FilterDefinition<JobOffer> GetNameSalaryFilter(int? minSalary, int? maxSalary, string name)
         {
             var filterDefinitions = new List<FilterDefinition<JobOffer>>();
             if (minSalary.HasValue)

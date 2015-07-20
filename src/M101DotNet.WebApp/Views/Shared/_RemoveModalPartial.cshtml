@@ -3,13 +3,17 @@
     ViewBag.Title = "_RemoveModalPartial";
 }
 
-<div id="remove-modal" class="modal">
-    <div class="modal-content">
-        <h4>Confirm</h4>
-        <p>Are you sure you want to remove this offer?</p>
-    </div>
-    <div class="modal-footer">
-        <span class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</span>
-        @Html.ActionLink("Agree", "Remove", "Offer", new { id = Model.Id }, new { @class = "modal-action modal-close waves-effect waves-green btn-flat" })</div>
-</div>
-
+@using (Html.BeginForm("Remove", "Offer"))
+{
+    @Html.HiddenFor(r => r.Id)
+    <div id="remove-modal" class="modal">
+        <div class="modal-content">
+            <h4>Confirm</h4>
+            <p>Are you sure you want to remove this offer?</p>
+        </div>
+        <div class="modal-footer">
+            <span class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</span>
+            <button type="submit" class="btn-flat">Agree</button>
+        </div>
+    </div> 
+}

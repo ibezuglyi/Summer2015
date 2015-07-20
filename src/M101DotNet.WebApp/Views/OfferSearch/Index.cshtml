@@ -25,27 +25,65 @@
         
         <div class="radio-twins">
             <label>Salary: </label>
-            
-            <input id="IsSalarySortAsc"  name="sortBy" type="radio" value="salaryAsc" />
+            @if(Model.SearchParams.SortBy.ToString() == "salaryAsc")
+            {
+                <input id="IsSalarySortAsc"  name="sortBy" type="radio" value="salaryAsc" checked="checked"/>
+            }
+            else
+            {
+                <input id="IsSalarySortAsc"  name="sortBy" type="radio" value="salaryAsc" />
+            }
             <label for="IsSalarySortAsc">Asc</label>
-
-            <input id="IsSalarySortDsc" name="sortBy" type="radio" value="salaryDsc" />
+            @if (Model.SearchParams.SortBy.ToString() == "salaryDsc")
+            {
+                <input id="IsSalarySortDsc" name="sortBy" type="radio" value="salaryDsc" checked="checked"/>
+            }
+            else
+            {
+                <input id="IsSalarySortDsc" name="sortBy" type="radio" value="salaryDsc" />
+            }
             <label for="IsSalarySortDsc">Dsc</label>
         </div>
         <div class="radio-twins">
             <label>Score: </label>
-            <input id="IsScoreSortAsc" name="sortBy" type="radio" value="scoreAsc" />
+            @if (Model.SearchParams.SortBy.ToString() == "scoreAsc")
+            {
+                <input id="IsScoreSortAsc" name="sortBy" type="radio" value="scoreAsc" checked="checked"/>
+            }
+            else
+            {
+                <input id="IsScoreSortAsc" name="sortBy" type="radio" value="scoreAsc" />
+            }
             <label for="IsScoreSortAsc">Asc</label>
-
-            <input name="sortBy" id="IsScoreSortDsc" type="radio" value="scoreDsc" />
+            @if (Model.SearchParams.SortBy.ToString() == "scoreDsc")
+            {
+                <input name="sortBy" id="IsScoreSortDsc" type="radio" value="scoreDsc" checked="checked"/>
+            }
+            else
+            {
+                <input name="sortBy" id="IsScoreSortDsc" type="radio" value="scoreDsc" />
+            }
             <label for="IsScoreSortDsc">Dsc</label>
         </div>
         <div class="radio-twins">
             <label>Date: </label>
-            <input id="IsDateSortAsc"  name="sortBy" type="radio" value="dateAsc" />
+            @if (Model.SearchParams.SortBy.ToString() == "dateAsc")
+            {
+                <input id="IsDateSortAsc"  name="sortBy" type="radio" value="dateAsc" checked="checked"/>
+            }
+            else
+            {
+                <input id="IsDateSortAsc"  name="sortBy" type="radio" value="dateAsc" />
+            }
             <label for="IsDateSortAsc">Asc</label>
-
-            <input id="IsDateSortDsc"  name="sortBy" type="radio" value="dateDsc" />
+            @if (Model.SearchParams.SortBy.ToString() == "dateDsc")
+            {
+                <input id="IsDateSortDsc"  name="sortBy" type="radio" value="dateDsc" checked="checked"/>
+            }
+            else
+            {
+                <input id="IsDateSortDsc"  name="sortBy" type="radio" value="dateDsc" />
+            }
             <label for="IsDateSortDsc">Dsc</label>
         </div>
         
@@ -58,7 +96,7 @@
 <span class="red-text text-darken-2 ">@Html.ValidationMessage("noOffers")</span>  
 @for (int i = 0; i < Model.Offers.ScoredOffersList.Count; i++)
 {
-    @Html.Partial("_ScoredOfferPartial", Model.Offers.ScoredOffersList[i].Offer)    
+    @Html.Partial("_ScoredOfferPartial", Model.Offers.ScoredOffersList[i])    
 }
 @Scripts.Render("~/bundles/skills")
 @Scripts.Render("~/bundles/offer")
