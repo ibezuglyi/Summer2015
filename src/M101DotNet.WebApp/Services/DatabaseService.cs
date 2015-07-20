@@ -67,7 +67,7 @@ namespace WebApp.Services
                 .Match(new BsonDocumentFilterDefinition<JobOffer>(matchBson))
                 .Project(new BsonDocumentProjectionDefinition<JobOffer, BsonDocument>(projectBson))
                 .Match(new BsonDocumentFilterDefinition<BsonDocument>(new BsonDocument("Matched", true)))
-                .Project(new BsonDocumentProjectionDefinition<BsonDocument, JobOffer>(new BsonDocument("IdRecruiter", 1).Add("Salary", 1).Add("Name", 1).Add("Skills", 1)));
+                .Project(new BsonDocumentProjectionDefinition<BsonDocument, JobOffer>(new BsonDocument("RecruiterId", 1).Add("Salary", 1).Add("Name", 1).Add("Skills", 1).Add("ModificationDate", 1).Add("Description", 1)));
 
             if (sortDefinition!=null)
             {
@@ -117,10 +117,12 @@ namespace WebApp.Services
 
         private static BsonDocument GetSkillsIntersectionProjectionBson(List<string> skillsName, int skillsIntersectionCount)
         {
-            BsonDocument projectBson = new BsonDocument("IdRecruiter", 1);
+            BsonDocument projectBson = new BsonDocument("RecruiterId", 1);
             projectBson.Add("Salary", 1);
             projectBson.Add("Name", 1);
             projectBson.Add("Skills", 1);
+            projectBson.Add("ModificationDate", 1);
+            projectBson.Add("Description", 1);
 
             var bsonArray = GetMapBsonArray(skillsName);
             var intersectbsonDocument = new BsonDocument("$setIntersection", bsonArray);

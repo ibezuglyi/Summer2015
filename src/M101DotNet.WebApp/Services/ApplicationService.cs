@@ -86,7 +86,7 @@ namespace WebApp.Services
         public async Task CreateJobOfferAsync(OfferModel model, string offerId)
         {
             var offer = _mappingService.MapToJobOffer(model, offerId);
-            offer.ModificationDate = DateTime.Now;
+            offer.ModificationDate = DateTime.UtcNow;
             await _dbService.InsertJobOfferAsync(offer);
         }
 
@@ -113,7 +113,7 @@ namespace WebApp.Services
         {
             var user = _mappingService.MapToCandidateUser(model.Name, model.Email);
             user.Password = GenerateHashPassword(model.Password, user);
-            user.ModificationDate = DateTime.Now;
+            user.ModificationDate = DateTime.UtcNow;
             await _dbService.InsertCaniddateUserAsync(user);
         }
 
@@ -125,14 +125,14 @@ namespace WebApp.Services
         public async Task UpdateJobOfferAsync(OfferModel model, string idOffer)
         {
             var offer = _mappingService.MapToJobOffer(model, idOffer);
-            offer.ModificationDate = DateTime.Now;
+            offer.ModificationDate = DateTime.UtcNow;
             await _dbService.UpdateJobOfferAsync(offer, idOffer);
         }
 
         public async Task UpdateCandidateUserAsync(CandidateUserModel model, string candidateId)
         {
             CandidateUser candidate = _mappingService.MapToCandidateUser(model);
-            candidate.ModificationDate = DateTime.Now;
+            candidate.ModificationDate = DateTime.UtcNow;
             await _dbService.UpdateCandidateAsync(candidate, candidateId);
         }
 
