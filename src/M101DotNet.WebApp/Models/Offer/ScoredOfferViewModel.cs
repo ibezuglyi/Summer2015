@@ -21,7 +21,7 @@ namespace WebApp.Models.Offer
         public ScoredOfferViewModel(ScoredOfferModel offer, DateTime modificationDate)
         {
             Offer = offer;
-            ModificationDate = modificationDate;
+            ModificationDate = modificationDate.ToLocalTime();
             TopSkills = CalculateTopSkills(offer.Skills);
         }
 
