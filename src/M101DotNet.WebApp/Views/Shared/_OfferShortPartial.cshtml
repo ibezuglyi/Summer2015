@@ -1,6 +1,6 @@
 ﻿@model WebApp.Models.Offer.OfferViewModel
-    
-@{  
+
+@{
     ViewBag.Title = "OfferPartial";
 }
 
@@ -17,7 +17,7 @@
                     ...
                 </p>
             </div>
-            @Html.Partial("_SkillsListShortPartial", Model.TopSkills)
+            @Html.Partial("_SkillsListPartial", Model.TopSkills)
         </a>
     </div>
     <div class="right panel-part-right">
@@ -25,10 +25,10 @@
             <div class="additional-info-element">
                 <h5>@Model.Offer.Salary PLN</h5>
             </div>
-            <div class="additional-info-icons">
-                <a href="@Url.Action("Edit", "Offer", new { id = Model.Offer.Id})"<i class="custom-small material-icons">description</i></a>
-                <a href="#remove-modal" class="modal-trigger"><i class="custom-small material-icons">delete</i></a>
-            </div>
+            @if (User.IsInRole("Recruiter"))
+            {
+                @Html.Partial("_EditRemoveButtonsPartial", Model.Offer)
+            }
         </div>
     </div>
 </div>

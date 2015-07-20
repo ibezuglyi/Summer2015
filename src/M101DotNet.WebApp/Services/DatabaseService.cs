@@ -49,7 +49,7 @@ namespace WebApp.Services
 
         public async Task<List<JobOffer>> GetOffersByIdRecruiterSortedByDateAsync(string id)
         {
-            var sortDefinition = GetDateAscSort();
+            var sortDefinition = GetDateDscSort();
             var offerList = await dbContext.JobOffers.Find(r => r.RecruiterId == id).Sort(sortDefinition).ToListAsync();
             return offerList;
         }

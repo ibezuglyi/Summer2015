@@ -1,18 +1,17 @@
-﻿@model WebApp.Models.Offer.OfferModel
-@{
+﻿@{
     ViewBag.Title = "_RemoveModalPartial";
 }
 
 @using (Html.BeginForm("Remove", "Offer"))
 {
-    @Html.HiddenFor(r => r.Id)
+    @Html.Hidden("offerId")
     <div id="remove-modal" class="modal">
         <div class="modal-content">
             <h4>Confirm</h4>
             <p>Are you sure you want to remove this offer?</p>
         </div>
         <div class="modal-footer">
-            <span class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</span>
+            <span class="modal-close btn-flat">Disagree</span>
             <button type="submit" class="btn-flat">Agree</button>
         </div>
     </div> 
