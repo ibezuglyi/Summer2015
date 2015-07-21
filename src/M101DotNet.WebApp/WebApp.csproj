@@ -164,13 +164,18 @@
     <Compile Include="Controllers\BestOffersController.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CandidateProfileController.cs" />
+    <Compile Include="Controllers\CandidateSearchController.cs" />
     <Compile Include="Controllers\OfferSearchController.cs" />
     <Compile Include="Controllers\SkillSuggestionController.cs" />
+    <Compile Include="Models\Candidate\CandidatesListViewModel.cs" />
     <Compile Include="Models\Candidate\CandidateViewModel.cs" />
     <Compile Include="Models\Candidate\CandidateUserModel.cs" />
     <Compile Include="Controllers\OfferController.cs" />
     <Compile Include="Controllers\RecruiterController.cs" />
     <Compile Include="Controllers\RecruiterProfileController.cs" />
+    <Compile Include="Models\Candidate\ScoredCandidateModel.cs" />
+    <Compile Include="Models\Candidate\ScoredCandidatesListViewModel.cs" />
+    <Compile Include="Models\Candidate\ScoredCandidateViewModel.cs" />
     <Compile Include="Models\Candidate\SkillModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -184,6 +189,8 @@
     <Compile Include="Entities\RecruiterUser.cs" />
     <Compile Include="Entities\Skill.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Models\Candidate\CandidateSearchModel.cs" />
+    <Compile Include="Models\Candidate\CandidateSearchViewModel.cs" />
     <Compile Include="Models\Offer\ScoredOfferListViewModel.cs" />
     <Compile Include="Models\Offer\OfferListViewModel.cs" />
     <Compile Include="Models\Offer\OfferModel.cs" />
@@ -300,6 +307,8 @@
     <Content Include="Views\BestOffers\Index.cshtml" />
     <Content Include="Views\Shared\_OfferShortPartial.cshtml" />
     <Content Include="Views\Shared\_SkillsListPartial.cshtml" />
+    <Content Include="Views\CandidateSearch\Index.cshtml" />
+    <Content Include="Views\Shared\_CandidatePartial.cshtml" />
     <Content Include="Views\Shared\_EditRemoveButtonsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>

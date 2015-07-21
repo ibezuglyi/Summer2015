@@ -34,12 +34,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Detail(string id)
         {
-            if (_authenticationService.IsRecruiter(Request))
-            {
-                var candidateViewModel = await _applicationService.GetCandidateViewModelByIdAsync(id);
-                return View(candidateViewModel);
-            }
-            return RedirectToAction("DeniedPermission", "Home");
+            var candidateViewModel = await _applicationService.GetCandidateViewModelByIdAsync(id);
+            return View(candidateViewModel);
         }
 
         [HttpPost]
