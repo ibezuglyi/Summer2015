@@ -5,6 +5,7 @@ using WebApp.Models.Account;
 using WebApp.Services;
 using System.Web.Script.Serialization;
 using WebApp.Models;
+using WebApp.Entities;
 
 namespace WebApp.Controllers
 {
@@ -51,13 +52,15 @@ namespace WebApp.Controllers
             {
                 var identity = _authenticationService.CreateCandidateIdentity(user);
                 _authenticationService.SignIn(identity, Request);
-
-                return Redirect(GetRedirectUrl(model.ReturnUrl));
+                if (user.HasSkills())
+                {
+                    return Redirect(GetRedirectUrl(model.ReturnUrl));                    
+                }
+                return RedirectToAction("Index", "CandidateProfile");
             }
-
             AddWrongEmailPasswordError();
             return View(model);
-        }
+        }        
 
         [HttpGet]
         public ActionResult Register()
