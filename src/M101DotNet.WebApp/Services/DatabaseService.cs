@@ -56,7 +56,7 @@ namespace WebApp.Services
 
         public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, SortBy sortBy)
         {
-            var filter = GetNameSalaryFilter(minSalary, maxSalary, name);
+            var filter = GetSimpleTypePartFilter(minSalary, maxSalary, name);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetOfferProjectionBson(skillsName, skills.Count);
