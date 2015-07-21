@@ -27,9 +27,7 @@
                 <h5>@Model.Offer.Salary PLN</h5>
             </div>
             <div class="additional-info-icons">
-                <a href="@Url.Action("Index", "CandidateSearch", new {id = Model.Offer.Id})"<i class="custom-small material-icons">search</i></a> 
-                <a href="@Url.Action("Edit", "Offer", new { id = Model.Offer.Id})"<i class="custom-small material-icons">description</i></a>
-                <a href="#remove-modal" class="modal-trigger"><i class="custom-small material-icons">delete</i></a>
+               @Html.Partial("_EditRemoveButtonsPartial", Model.Offer)
             </div>
         </div>
     </div>

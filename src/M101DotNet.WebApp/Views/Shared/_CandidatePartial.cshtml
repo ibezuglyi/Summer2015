@@ -2,29 +2,7 @@
 
 <div class="grey lighten-5 card-panel list-panel row flex-container">
     <div class="left panel-part-left">
-        @if (User.IsInRole("Recruiter"))
-        {
-            <a href="@Url.Action("Detail", "CandidateProfile", new {id = Model.CandidateId})">
-                <div>
-                    <div class="inline-field offer-title">
-                        <h5>@Model.Candidate.Name</h5>
-                    </div>
-                    <div>@Model.ModificationDate</div>
-                    <div class="description">
-                        <p>
-                            @if (Model.Candidate.ExperienceDescription != null)
-                            {
-                                @Model.Candidate.ExperienceDescription.Substring(0, Math.Min(Model.Candidate.ExperienceDescription.Count(), 200))
-                            }
-                        </p>
-
-                    </div>
-                    @Html.Partial("_SkillsListShortPartial", Model.TopSkills)
-                </div>
-            </a>
-        }
-        else
-        {
+        <a href="@Url.Action("Detail", "CandidateProfile", new {id = Model.CandidateId})">
             <div>
                 <div class="inline-field offer-title">
                     <h5>@Model.Candidate.Name</h5>
@@ -39,9 +17,9 @@
                     </p>
 
                 </div>
-                @Html.Partial("_SkillsListShortPartial", Model.TopSkills)
+                @Html.Partial("_SkillsListPartial", Model.TopSkills)
             </div>
-        }
+        </a>
 
     </div>
 
