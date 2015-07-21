@@ -54,5 +54,7 @@ namespace WebApp.Services
         CandidateSearchViewModel GetCandidatesSearchViewModelWithoutCandidates(CandidateSearchModel model);
 
         bool IsMinExperienceOverMaxExperience(int? minExperience, int? maxExperience);
+
+        Task<CandidateSearchViewModel> GetCandidateSearchViewModelForSpecificOffer(string offerId);
     }
 }

@@ -44,5 +44,7 @@ namespace WebApp.Services
 
         ScoredCandidateViewModel MapToScoredCandidateViewModel(ScoredCandidateModel scoredCandidateModel, DateTime modificationDate, string candidateId);
         ScoredCandidatesListViewModel MapToScoredCandidatesListViewModel(List<ScoredCandidateViewModel> scoredCandidateViewModelsList);
+
+        CandidateSearchModel MapToCandidateSearchModel(JobOffer offer);
     }
 }

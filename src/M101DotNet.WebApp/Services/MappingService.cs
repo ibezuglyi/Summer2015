@@ -214,5 +214,16 @@ namespace WebApp.Services
         {
             return new ScoredCandidatesListViewModel(scoredCandidateViewModelsList);
         }
+
+        public CandidateSearchModel MapToCandidateSearchModel(JobOffer offer)
+        {
+            var skills = MapSkillsToSkillModels(offer.Skills);
+            var candidateSearchModel = new CandidateSearchModel()
+            {
+                Skills = skills,
+                MaxSalary = offer.Salary,
+            };
+            return candidateSearchModel;
+        }
     }
 }

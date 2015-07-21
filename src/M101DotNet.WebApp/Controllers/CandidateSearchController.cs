@@ -21,8 +21,16 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index(string id)
         {
+            if (_authenticationService.IsRecruiter(Request))
+            {
+                if (id != null)
+                {
+                    var candidateSearchViewModel = await _applicationService.GetCandidateSearchViewModelForSpecificOffer(id);
+                    return View(candidateSearchViewModel);
+                }
+            }
             return View(new CandidateSearchViewModel());
         }
 

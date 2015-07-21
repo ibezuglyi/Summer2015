@@ -19,6 +19,7 @@
     @if (User.IsInRole("Recruiter"))
     {
         <div class="offer-buttons">
+            @Html.ActionLink("Find a candidate", "Index", "CandidateSearch", new { id = Model.Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
             @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
             <a href="#remove-modal" class="btn-large waves-effect waves-light btn modal-trigger">Remove</a>
         </div>
