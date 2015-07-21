@@ -290,6 +290,8 @@
     <Content Include="Views\CandidateSearch\Index.cshtml" />
     <Content Include="Views\Shared\_CandidatePartial.cshtml" />
     <Content Include="Views\Shared\_EditRemoveButtonsPartial.cshtml" />
+    <Content Include="Views\Shared\_SortCandidateRadioButtons.cshtml" />
+    <Content Include="Views\Shared\_SortOfferRadioButtons.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

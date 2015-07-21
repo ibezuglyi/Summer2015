@@ -79,7 +79,7 @@ namespace WebApp.Services
             return offers;
         }
 
-        public async Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, string sortBy, List<Skill> skills)
+        public async Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, SortBy sortBy, List<Skill> skills)
         {
             var filter = GetSimpleTypePartCandidateFilter(minSalary, maxSalary, minExperienceInYears, maxExperienceInYears);
             var skillsName = skills.Select(r => r.Name).ToList();
@@ -105,15 +105,15 @@ namespace WebApp.Services
 
         }
 
-        public static SortDefinition<CandidateUser> GetCandidateSortDefinition(string sortBy)
+        public static SortDefinition<CandidateUser> GetCandidateSortDefinition(SortBy sortBy)
         {
             SortDefinition<CandidateUser> sortDefinition = null;
             switch (sortBy)
             {
-                case "salaryAsc": { sortDefinition = GetSalaryAscCandidateSort(); break; }
-                case "salaryDsc": { sortDefinition = GetSalaryDscCandidateSort(); break; }
-                case "dateAsc": { sortDefinition = GetDateAscCandidateSort(); break; }
-                case "dateDsc": { sortDefinition = GetDateDscCandidateSort(); break; }
+                case SortBy.SalaryAsc: { sortDefinition = GetSalaryAscCandidateSort(); break; }
+                case SortBy.SalaryDsc: { sortDefinition = GetSalaryDscCandidateSort(); break; }
+                case SortBy.DateAsc: { sortDefinition = GetDateAscCandidateSort(); break; }
+                case SortBy.DateDsc: { sortDefinition = GetDateDscCandidateSort(); break; }
             }
             return sortDefinition;
         }

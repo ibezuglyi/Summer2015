@@ -25,6 +25,6 @@ namespace WebApp.Services
         Task InsertJobOfferAsync(JobOffer offer);
         Task<List<string>> GetSkillsMatchingQuery(string query);
         Task<List<JobOffer>> GetAllOffersListAsync();
-        Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, string sortBy, List<Skill> skills);
+        Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, SortBy sortBy, List<Skill> skills);
     }
 }
