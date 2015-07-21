@@ -66,12 +66,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {
-            if (_authenticationService.IsAuthenticated(Request))
-            {
-                var offer = await _applicationService.GetOfferViewModelByIdAsync(id);
-                return View(offer);
-            }
-            return RedirectToAction("DeniedPermission", "Home");
+            var offer = await _applicationService.GetOfferViewModelByIdAsync(id);
+            return View(offer);
         }        
 
         [HttpGet]
