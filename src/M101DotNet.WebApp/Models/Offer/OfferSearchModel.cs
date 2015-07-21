@@ -21,6 +21,7 @@ namespace WebApp.Models.Offer
         public OfferSearchModel()
         {
             Skills = new List<SkillModel>();
+            SortBy = SortBy.ScoreDsc;
         }
 
         public OfferSearchModel(List<SkillModel> skills, int? minSalary)

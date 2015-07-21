@@ -26,8 +26,15 @@ namespace WebApp.Controllers
             {
                 var candidateId = _authenticationService.GetUserIdFromRequest(Request);
                 var candidateModel = await _applicationService.GetCandidateUserModelByIdAsync(candidateId);
-                var scoredOfferListViewModel = await _applicationService.GetOffersSortedByScoreAsync(candidateModel);
-                return View(scoredOfferListViewModel);
+                if (candidateModel.HasSkills())
+                {
+                    var scoredOfferListViewModel = await _applicationService.GetOffersSortedByScoreAsync(candidateModel);
+                    return View(scoredOfferListViewModel);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "CandidateProfile");
+                }
             }
             return RedirectToAction("DeniedPermission", "Home");
         }

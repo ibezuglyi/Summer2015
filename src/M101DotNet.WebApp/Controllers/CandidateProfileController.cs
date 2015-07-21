@@ -25,6 +25,7 @@ namespace WebApp.Controllers
             {
                 var currentUserId = _authenticationService.GetUserIdFromRequest(Request);
                 var candidateViewModel = await _applicationService.GetCandidateViewModelByIdAsync(currentUserId);
+                AddNoSkillMessageIfNeeded(candidateViewModel.Candidate);
                 return View(candidateViewModel);
             }
             return RedirectToAction("DeniedPermission", "Home");
@@ -66,6 +67,14 @@ namespace WebApp.Controllers
                 ValidateSkills(model.Skills);
             }
             return ModelState.IsValid;
+        }
+
+        public void AddNoSkillMessageIfNeeded(CandidateUserModel model)
+        {
+            if (!model.HasSkills())
+            {
+                ModelState.AddModelError("NoSkillMessage", "Add at least one skill to get access to all features");
+            }
         }
 
         public void ValidateSkills(List<SkillModel> skills)
