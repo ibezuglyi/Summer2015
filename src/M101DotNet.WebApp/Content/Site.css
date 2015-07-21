@@ -232,6 +232,10 @@ a  {
     margin-bottom: 30px;
 }
 
+.inline-field span{
+    padding: 5px;
+}
+
 .seperated-button{
     margin: 30px;
 }

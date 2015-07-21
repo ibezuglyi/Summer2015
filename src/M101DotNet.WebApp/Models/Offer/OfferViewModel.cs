@@ -23,7 +23,7 @@ namespace WebApp.Models.Offer
         {
             Offer = offer;
             IdRecruiter = idRecruiter;
-            ModificationDate = modificationDate;
+            ModificationDate = modificationDate.ToLocalTime();
             TopSkills = CalculateTopSkills(offer.Skills);
         }
 

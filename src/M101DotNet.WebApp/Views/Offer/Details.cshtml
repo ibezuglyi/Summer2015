@@ -3,33 +3,32 @@
 @{
     ViewBag.Title = "Details";
 }
-<div class="grey lighten-5 card-panel">
-    <div class="offer-title">
-        <div class="inline-field">
-            <div class="">
-                <span>@Model.Offer.Name</span>
+<div class="grey lighten-5 card-panel list-panel row flex-container">
+    <div class="left panel-part-left">        
+        <div class="inline-field offer-title">
+            <h5>@Model.Offer.Name</h5>
             </div>
+        <div> 
+            @Model.ModificationDate
         </div>
-        <div class="inline-field">
-            <div class="">
-                <span>@Model.Offer.Salary</span> PLN
+        <div class="description">
+            <p>
+                @Model.Offer.Description
+            </p>
             </div>
+        @Html.Partial("_SkillsListPartial", Model.Offer.Skills)
         </div>
+    <div class="right panel-part-right">
+        <div class="additional-info">
+            <div class="additional-info-element">
+                <h5>@Model.Offer.Salary PLN</h5>
     </div> 
-    @if (User.IsInRole("Recruiter"))
+            @if(User.IsInRole("Recruiter"))
     {
-        <div class="offer-buttons">
-            @Html.ActionLink("Find a candidate", "Index", "CandidateSearch", new { id = Model.Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
-            @Html.ActionLink("Edit", "Edit", "Offer", new { id = Model.Offer.Id }, new { @class = "btn-large waves-effect waves-light" })
-            <a href="#remove-modal" class="btn-large waves-effect waves-light btn modal-trigger">Remove</a>
-        </div>
+                @Html.Partial("_EditRemoveButtonsPartial", Model.Offer)
     }
-    <div class="left clearfix" >
-        <div class="">
-            @Model.Offer.Description
         </div>
     </div>
-    @Html.Partial("_SkillsListpartial", Model.Offer.Skills)     
 </div>
-@Html.Partial("_RemoveModalPartial", Model.Offer)
+
 @Scripts.Render("~/bundles/offer")

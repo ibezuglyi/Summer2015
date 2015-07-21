@@ -57,7 +57,7 @@ namespace WebApp.Services
 
         private async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string recruiterId)
         {
-            var offerList = await _dbService.GetOffersByIdRecruiterAsync(recruiterId);
+            var offerList = await _dbService.GetOffersByIdRecruiterSortedByDateAsync(recruiterId);
             return offerList;
         }
 
@@ -86,7 +86,7 @@ namespace WebApp.Services
         public async Task CreateJobOfferAsync(OfferModel model, string offerId)
         {
             var offer = _mappingService.MapToJobOffer(model, offerId);
-            offer.ModificationDate = DateTime.Now;
+            offer.ModificationDate = DateTime.UtcNow;
             await _dbService.InsertJobOfferAsync(offer);
         }
 
@@ -113,7 +113,7 @@ namespace WebApp.Services
         {
             var user = _mappingService.MapToCandidateUser(model.Name, model.Email);
             user.Password = GenerateHashPassword(model.Password, user);
-            user.ModificationDate = DateTime.Now;
+            user.ModificationDate = DateTime.UtcNow;
             await _dbService.InsertCaniddateUserAsync(user);
         }
 
@@ -125,14 +125,14 @@ namespace WebApp.Services
         public async Task UpdateJobOfferAsync(OfferModel model, string idOffer)
         {
             var offer = _mappingService.MapToJobOffer(model, idOffer);
-            offer.ModificationDate = DateTime.Now;
+            offer.ModificationDate = DateTime.UtcNow;
             await _dbService.UpdateJobOfferAsync(offer, idOffer);
         }
 
         public async Task UpdateCandidateUserAsync(CandidateUserModel model, string candidateId)
         {
             CandidateUser candidate = _mappingService.MapToCandidateUser(model);
-            candidate.ModificationDate = DateTime.Now;
+            candidate.ModificationDate = DateTime.UtcNow;
             await _dbService.UpdateCandidateAsync(candidate, candidateId);
         }
 
@@ -140,7 +140,7 @@ namespace WebApp.Services
         {
             var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
             var candidateModel = _mappingService.MapToCandidateUserModel(candidate);
-            var candidateViewModel = _mappingService.MapToCandidateViewModel(candidateModel, candidate.Name, candidate.Email);
+            var candidateViewModel = _mappingService.MapToCandidateViewModel(candidateModel, candidate.Name, candidate.Email, candidate.ModificationDate);
             return candidateViewModel;
         }
 
@@ -164,14 +164,14 @@ namespace WebApp.Services
             return scoredOfferViewModelList;
         }
 
-        public List<ScoredOfferViewModel> SortByScoreIfNeeded(List<ScoredOfferViewModel> scoredOffersViewModel, string sortBy)
+        public List<ScoredOfferViewModel> SortByScoreIfNeeded(List<ScoredOfferViewModel> scoredOffersViewModel, SortBy sortBy)
         {
-            if (sortBy == "scoreAsc")
+            if (sortBy == SortBy.ScoreAsc)
             {
                 var sortedScoredOffersViewModel = scoredOffersViewModel.OrderBy(r => r.Offer.Score).ToList();
                 return sortedScoredOffersViewModel;
             }
-            else if (sortBy == "scoreDsc")
+            else if (sortBy == SortBy.ScoreDsc)
             {
                 var sortedScoredOffersViewModel = scoredOffersViewModel.OrderByDescending(r => r.Offer.Score).ToList();
                 return sortedScoredOffersViewModel;
@@ -206,7 +206,7 @@ namespace WebApp.Services
         public async Task<CandidateViewModel> GetCandidateViewModelByIdAsync(CandidateUserModel candidateModel, string candidateId)
         {
             var candidate = await _dbService.GetCandidateByIdAsync(candidateId);
-            var candiateViewModel = _mappingService.MapToCandidateViewModel(candidateModel, candidate.Name, candidate.Email);
+            var candiateViewModel = _mappingService.MapToCandidateViewModel(candidateModel, candidate.Name, candidate.Email, candidate.ModificationDate);
             return candiateViewModel;
         }
 

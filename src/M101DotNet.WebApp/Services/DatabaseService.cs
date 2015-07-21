@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Entities;
 using WebApp.Models;
+using WebApp.Models.Offer;
 
 namespace WebApp.Services
 {
@@ -46,15 +47,16 @@ namespace WebApp.Services
             return jobOffer;
         }
 
-        public async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id)
+        public async Task<List<JobOffer>> GetOffersByIdRecruiterSortedByDateAsync(string id)
         {
-            var offerList = await dbContext.JobOffers.Find(r => r.RecruiterId == id).ToListAsync();
+            var sortDefinition = GetDateDscSort();
+            var offerList = await dbContext.JobOffers.Find(r => r.RecruiterId == id).Sort(sortDefinition).ToListAsync();
             return offerList;
         }
 
-        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, string sortBy)
+        public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, SortBy sortBy)
         {
-            var filter = GetSimpleTypePartFilter(minSalary, maxSalary, name);
+            var filter = GetNameSalaryFilter(minSalary, maxSalary, name);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetOfferProjectionBson(skillsName, skills.Count);
@@ -66,7 +68,7 @@ namespace WebApp.Services
                 .Match(new BsonDocumentFilterDefinition<JobOffer>(matchBson))
                 .Project(new BsonDocumentProjectionDefinition<JobOffer, BsonDocument>(projectBson))
                 .Match(new BsonDocumentFilterDefinition<BsonDocument>(new BsonDocument("Matched", true)))
-                .Project(new BsonDocumentProjectionDefinition<BsonDocument, JobOffer>(new BsonDocument("IdRecruiter", 1).Add("Salary", 1).Add("Name", 1).Add("Skills", 1)));
+                .Project(new BsonDocumentProjectionDefinition<BsonDocument, JobOffer>(new BsonDocument("RecruiterId", 1).Add("Salary", 1).Add("Name", 1).Add("Skills", 1).Add("ModificationDate", 1).Add("Description", 1)));
 
             if (sortDefinition!=null)
             {
@@ -116,15 +118,15 @@ namespace WebApp.Services
             return sortDefinition;
         }
 
-        public static SortDefinition<JobOffer> GetSortDefinition(string sortBy)
+        public static SortDefinition<JobOffer> GetSortDefinition(SortBy sortBy)
         {
             SortDefinition<JobOffer> sortDefinition = null;
             switch (sortBy)
             {
-                case "salaryAsc": { sortDefinition = GetSalaryAscSort(); break; }
-                case "salaryDsc": { sortDefinition = GetSalaryDscSort(); break; }
-                case "dateAsc": { sortDefinition = GetDateAscSort(); break; }
-                case "dateDsc": { sortDefinition = GetDateDscSort(); break; }
+                case SortBy.SalaryAsc: { sortDefinition = GetSalaryAscSort(); break; }
+                case SortBy.SalaryDsc: { sortDefinition = GetSalaryDscSort(); break; }
+                case SortBy.DateAsc: { sortDefinition = GetDateAscSort(); break; }
+                case SortBy.DateDsc: { sortDefinition = GetDateDscSort(); break; }
             }
             return sortDefinition;
         }
@@ -167,13 +169,13 @@ namespace WebApp.Services
 
         public static SortDefinition<JobOffer> GetDateAscSort()
         {
-            var sortDefinition = Builders<JobOffer>.Sort.Ascending("ModyficationDate");
+            var sortDefinition = Builders<JobOffer>.Sort.Ascending("ModificationDate");
             return sortDefinition;
         }
 
         public static SortDefinition<JobOffer> GetDateDscSort()
         {
-            var sortDefinition = Builders<JobOffer>.Sort.Descending("ModyficationDate");
+            var sortDefinition = Builders<JobOffer>.Sort.Descending("ModificationDate");
             return sortDefinition;
         }
 

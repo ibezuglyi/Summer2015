@@ -14,11 +14,11 @@
             <div class="description">
                 <p>
                     @if(Model.Offer.Description != null){
-                        @Model.Offer.Description.Substring(0, Math.Min(Model.Offer.Description.Count(), 200))
+                    @Model.Offer.Description.Substring(0, Math.Min(Model.Offer.Description.Count(), 200))
                     }      
                 </p>
             </div>
-            @Html.Partial("_SkillsListShortPartial", Model.TopSkills)
+            @Html.Partial("_SkillsListPartial", Model.TopSkills)
         </a>
     </div>
     <div class="right panel-part-right">

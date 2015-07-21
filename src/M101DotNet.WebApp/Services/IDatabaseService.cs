@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApp.Entities;
+using WebApp.Models;
+using WebApp.Models.Offer;
 using WebApp.Models.Candidate;
 
 namespace WebApp.Services
@@ -12,8 +14,8 @@ namespace WebApp.Services
         Task<RecruiterUser> GetRecruiterByIdAsync(string id);
         Task<CandidateUser> GetCandidateByIdAsync(string id);
         Task<JobOffer> GetJobOfferByIdAsync(string id);
-        Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string id);
-        Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, string sortBy);
+        Task<List<JobOffer>> GetOffersByIdRecruiterSortedByDateAsync(string id);
+        Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, SortBy sortBy);
         Task UpdateRecruiterAsync(RecruiterUser recruiter, string recruiterId);
         Task UpdateCandidateAsync(CandidateUser candidate, string candidateId);
         Task UpdateJobOfferAsync(JobOffer offer, string offerId);

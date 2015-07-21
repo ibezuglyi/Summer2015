@@ -49,15 +49,15 @@ namespace WebApp.Controllers
                 return View(offers);               
             }
             return RedirectToAction("DeniedPermission", "Home");
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> Remove(string id)
+        }                  
+   
+        [HttpPost]
+        public async Task<ActionResult> Remove(string offerId)
         {
-            var ifRecruiterHaveRightsToRemove = await IsCurrentUserOwnerOfOffer(id);
-            if (_authenticationService.IsAuthenticated(Request) && ifRecruiterHaveRightsToRemove)
+            var ifRecruiterHaveRightsToRemove = await IsCurrentUserOwnerOfOffer(offerId);
+            if (ifRecruiterHaveRightsToRemove)
             {
-                await _applicationService.RemoveJobOfferAsync(id);
+                await _applicationService.RemoveJobOfferAsync(offerId);
                 return RedirectToAction("OffersList", "Offer");
             }
             return RedirectToAction("DeniedPermission", "Home");
@@ -66,12 +66,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {
-            if (_authenticationService.IsAuthenticated(Request))
-            {
-                var offer = await _applicationService.GetOfferViewModelByIdAsync(id);
-                return View(offer);
-            }
-            return RedirectToAction("DeniedPermission", "Home");
+            var offer = await _applicationService.GetOfferViewModelByIdAsync(id);
+            return View(offer);
         }        
 
         [HttpGet]
