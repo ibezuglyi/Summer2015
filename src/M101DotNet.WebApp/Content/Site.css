@@ -28,7 +28,6 @@ select{
 .main-photo{
     display: inline-block;
     width:60%;
-    float: left;
     min-width: 250px;
 
 }
@@ -231,4 +230,8 @@ a  {
 
 .description{
     margin-bottom: 30px;
+}
+
+.seperated-button{
+    margin: 30px;
 }

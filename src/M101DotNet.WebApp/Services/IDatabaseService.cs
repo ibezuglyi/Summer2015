@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApp.Entities;
+using WebApp.Models.Candidate;
 
 namespace WebApp.Services
 {
@@ -20,8 +21,8 @@ namespace WebApp.Services
         Task InsertRecruiterUserAsync(RecruiterUser user);
         Task InsertCaniddateUserAsync(CandidateUser user);
         Task InsertJobOfferAsync(JobOffer offer);
-
         Task<List<string>> GetSkillsMatchingQuery(string query);
         Task<List<JobOffer>> GetAllOffersListAsync();
+        Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, string sortBy, List<Skill> skills);
     }
 }

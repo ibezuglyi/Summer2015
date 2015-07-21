@@ -13,8 +13,9 @@
             <div> @Model.ModificationDate</div>
             <div class="description">
                 <p>
-                    @Model.Offer.Description.Substring(0, Math.Min(Model.Offer.Description.Count(), 200))
-                    ...
+                    @if(Model.Offer.Description != null){
+                        @Model.Offer.Description.Substring(0, Math.Min(Model.Offer.Description.Count(), 200))
+                    }      
                 </p>
             </div>
             @Html.Partial("_SkillsListShortPartial", Model.TopSkills)

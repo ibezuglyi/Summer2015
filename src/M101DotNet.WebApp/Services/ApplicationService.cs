@@ -180,6 +180,22 @@ namespace WebApp.Services
             return scoredOffersViewModel;
         }
 
+        public List<ScoredCandidateViewModel> SortByScoreIfNeeded(List<ScoredCandidateViewModel> scoredCandidateViewModels, string sortBy)
+        {
+            if (sortBy == "scoreAsc")
+            {
+                var sortedScoredCandidateViewModels = scoredCandidateViewModels.OrderBy(r => r.Candidate.Score).ToList();
+                return sortedScoredCandidateViewModels;
+            }
+            else if (sortBy == "scoreDsc")
+            {
+                var sortedScoredCandidateViewModels = scoredCandidateViewModels.OrderByDescending(r => r.Candidate.Score).ToList();
+                return sortedScoredCandidateViewModels;
+            }
+
+            return scoredCandidateViewModels;
+        }
+
         private async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(OfferSearchModel offerSearch)
         {
             var skills = _mappingService.MapSkillModelsToSkills(offerSearch.Skills);
@@ -333,6 +349,52 @@ namespace WebApp.Services
             var scoredOfferModel = _mappingService.MapToScoredOfferModel(offer, score);
             var scoredOfferViewModel = _mappingService.MapToScoredOfferViewModel(scoredOfferModel, offer.ModificationDate);
             return scoredOfferViewModel;
+        }
+
+        public async Task<CandidateSearchViewModel> GetCandidatesSearchViewModelAsync(CandidateSearchModel searchModel)
+        {
+            var candidatesListViewModel = await GetScoredCandidatesListViewModelAsync(searchModel);
+            var candidateSearchViewModel = _mappingService.MapToCandidateSearchViewModel(searchModel, candidatesListViewModel);
+            return candidateSearchViewModel;
+        }
+
+        private async Task<ScoredCandidatesListViewModel> GetScoredCandidatesListViewModelAsync(CandidateSearchModel searchModel)
+        {
+            var skills = _mappingService.MapSkillModelsToSkills(searchModel.Skills);
+            var candidatesList = await _dbService.GetCandidatesListBySearchModelAsync(searchModel.MinSalary, searchModel.MaxSalary, searchModel.MinExperienceInYears, searchModel.MaxExperienceInYears, searchModel.SortBy, skills);
+            var candidateViewModelsList = GetScoredCandidateViewModelList(skills, candidatesList);
+            var sortedCandidateViewModelsList = SortByScoreIfNeeded(candidateViewModelsList, searchModel.SortBy);
+            var candidatesListViewModel = _mappingService.MapToScoredCandidatesListViewModel(sortedCandidateViewModelsList);
+            return candidatesListViewModel;
+        }
+
+        public bool IsMinExperienceOverMaxExperience(int? minExperience, int? maxExperience)
+        {
+            if (minExperience.HasValue && maxExperience.HasValue)
+            {
+                return minExperience > maxExperience;
+            }
+            return false;
+        }
+
+        public List<ScoredCandidateViewModel> GetScoredCandidateViewModelList(List<Skill> skills, List<CandidateUser> candidates)
+        {
+            List<ScoredCandidateViewModel> candidateViewModelsList = new List<ScoredCandidateViewModel>();
+            foreach (var candidate in candidates)
+            {
+                var score = MeasureScoreBetweenCandidateAndOffer(skills, candidate.Skills);
+                var scoredCandidateModel = _mappingService.MapToScoredCandidateModel(candidate, score);
+                var scoredCandidateViewModel = _mappingService.MapToScoredCandidateViewModel(scoredCandidateModel, candidate.ModificationDate, candidate.Id);
+                candidateViewModelsList.Add(scoredCandidateViewModel);
+            }
+            return candidateViewModelsList;
+        }
+
+        public CandidateSearchViewModel GetCandidatesSearchViewModelWithoutCandidates(CandidateSearchModel searchModel)
+        {
+            var scoredCandidatesListViewModel = new ScoredCandidatesListViewModel();
+            var candidateSearchViewModel = _mappingService.MapToCandidateSearchViewModel(searchModel, scoredCandidatesListViewModel);
+            return candidateSearchViewModel;
         }
     }
 }

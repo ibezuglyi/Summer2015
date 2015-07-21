@@ -30,12 +30,19 @@ namespace WebApp.Services
         List<SkillModel> MapSkillsToSkillModels(List<Skill> skills);
         CandidateViewModel MapToCandidateViewModel(CandidateUserModel candidateModel, string candidateName, string candidateEmail);
         RecruiterViewModel MapToRecruiterViewModel(RecruiterModel recruiterModel, string recruiterName, string recruiterEmail);
-        OfferViewModel MapToOfferViewModel(OfferModel offerModel, string IdRecruiter, DateTime ModificationDate);
+        OfferViewModel MapToOfferViewModel(OfferModel offerModel, string recruiterId, DateTime modificationDate);
 
         SkillSuggestionModel MapToSkillSugestionModel(string query, List<string> hints);
 
         OfferSearchViewModel MapToOfferSearchViewModel(OfferSearchModel offerSearchModel, ScoredOfferListViewModel scoredOfferListViewModel);
         ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel, DateTime modificationDate);
         ScoredOfferListViewModel MapToScoredOfferListViewModel(List<ScoredOfferViewModel> scoredOffersViewModel);
+
+        CandidateSearchViewModel MapToCandidateSearchViewModel(CandidateSearchModel model, ScoredCandidatesListViewModel candidatesListViewModel);
+        ScoredCandidateModel MapToScoredCandidateModel(CandidateUser candidate, double score);
+
+
+        ScoredCandidateViewModel MapToScoredCandidateViewModel(ScoredCandidateModel scoredCandidateModel, DateTime modificationDate, string candidateId);
+        ScoredCandidatesListViewModel MapToScoredCandidatesListViewModel(List<ScoredCandidateViewModel> scoredCandidateViewModelsList);
     }
 }

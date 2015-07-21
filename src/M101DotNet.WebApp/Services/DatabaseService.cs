@@ -57,7 +57,7 @@ namespace WebApp.Services
             var filter = GetSimpleTypePartFilter(minSalary, maxSalary, name);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
-            var projectBson = GetSkillsIntersectionProjectionBson(skillsName, skills.Count);
+            var projectBson = GetOfferProjectionBson(skillsName, skills.Count);
             var sortDefinition = GetSortDefinition(sortBy);
 
             var offersQuery = dbContext.JobOffers
@@ -77,6 +77,45 @@ namespace WebApp.Services
             return offers;
         }
 
+        public async Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, string sortBy, List<Skill> skills)
+        {
+            var filter = GetSimpleTypePartCandidateFilter(minSalary, maxSalary, minExperienceInYears, maxExperienceInYears);
+            var skillsName = skills.Select(r => r.Name).ToList();
+            var matchBson = GetMatchedSkillsStageBson(skillsName);
+            var projectBson = GetCandidateProjectionBson(skillsName, skills.Count);
+            var sortDefinition = GetCandidateSortDefinition(sortBy);
+
+            var candidatesQuery = dbContext.CandidateUsers
+                .Aggregate()
+                .Match(filter)
+                .Match(new BsonDocumentFilterDefinition<CandidateUser>(matchBson))
+                .Project(new BsonDocumentProjectionDefinition<CandidateUser, BsonDocument>(projectBson))
+                .Match(new BsonDocumentFilterDefinition<BsonDocument>(new BsonDocument("Matched", true)))
+                .Project(new BsonDocumentProjectionDefinition<BsonDocument, CandidateUser>(new BsonDocument("Skills", 1).Add("Salary", 1).Add("ExperienceInYears", 1).Add("Name", 1).Add("ModificationDate",1).Add("ExperienceDescription", 1)));
+
+            if (sortDefinition != null)
+            {
+                candidatesQuery = candidatesQuery.Sort(sortDefinition);
+            }
+
+            var candidates = await candidatesQuery.ToListAsync();
+            return candidates;
+
+        }
+
+        public static SortDefinition<CandidateUser> GetCandidateSortDefinition(string sortBy)
+        {
+            SortDefinition<CandidateUser> sortDefinition = null;
+            switch (sortBy)
+            {
+                case "salaryAsc": { sortDefinition = GetSalaryAscCandidateSort(); break; }
+                case "salaryDsc": { sortDefinition = GetSalaryDscCandidateSort(); break; }
+                case "dateAsc": { sortDefinition = GetDateAscCandidateSort(); break; }
+                case "dateDsc": { sortDefinition = GetDateDscCandidateSort(); break; }
+            }
+            return sortDefinition;
+        }
+
         public static SortDefinition<JobOffer> GetSortDefinition(string sortBy)
         {
             SortDefinition<JobOffer> sortDefinition = null;
@@ -87,6 +126,30 @@ namespace WebApp.Services
                 case "dateAsc": { sortDefinition = GetDateAscSort(); break; }
                 case "dateDsc": { sortDefinition = GetDateDscSort(); break; }
             }
+            return sortDefinition;
+        }
+
+        public static SortDefinition<CandidateUser> GetSalaryAscCandidateSort()
+        {
+            var sortDefinition = Builders<CandidateUser>.Sort.Ascending("Salary");
+            return sortDefinition;
+        }
+
+        public static SortDefinition<CandidateUser> GetSalaryDscCandidateSort()
+        {
+            var sortDefinition = Builders<CandidateUser>.Sort.Descending("Salary");
+            return sortDefinition;
+        }
+
+        public static SortDefinition<CandidateUser> GetDateAscCandidateSort()
+        {
+            var sortDefinition = Builders<CandidateUser>.Sort.Ascending("ModificationDate");
+            return sortDefinition;
+        }
+
+        public static SortDefinition<CandidateUser> GetDateDscCandidateSort()
+        {
+            var sortDefinition = Builders<CandidateUser>.Sort.Descending("ModificationDate");
             return sortDefinition;
         }
 
@@ -114,19 +177,38 @@ namespace WebApp.Services
             return sortDefinition;
         }
 
-        private static BsonDocument GetSkillsIntersectionProjectionBson(List<string> skillsName, int skillsIntersectionCount)
+        private static BsonDocument GetSkillsIntersectionProjectionBson(BsonDocument projectBson, List<string> skillsName, int skillsIntersectionCount)
         {
-            BsonDocument projectBson = new BsonDocument("IdRecruiter", 1);
-            projectBson.Add("Salary", 1);
-            projectBson.Add("Name", 1);
-            projectBson.Add("Skills", 1);
-
             var bsonArray = GetMapBsonArray(skillsName);
             var intersectbsonDocument = new BsonDocument("$setIntersection", bsonArray);
             var sizebsonDocument = new BsonDocument("$size", intersectbsonDocument);
             var gte = new BsonArray().Add(sizebsonDocument).Add(skillsIntersectionCount);
             projectBson.Add("Matched", new BsonDocument("$gte", gte));
             return projectBson;
+        }
+
+        private static BsonDocument GetCandidateProjectionBson(List<string> skillsName, int skillsIntersectionCount)
+        {
+            BsonDocument projectBson = new BsonDocument("ExperienceInYears", 1);
+            projectBson.Add("Salary", 1);
+            projectBson.Add("Name", 1);
+            projectBson.Add("Skills", 1);
+            projectBson.Add("ExperienceDescription", 1);
+            projectBson.Add("ModificationDate", 1);
+            var skillsIntersection = GetSkillsIntersectionProjectionBson(projectBson, skillsName, skillsIntersectionCount);
+            return skillsIntersection;
+        }
+
+        private static BsonDocument GetOfferProjectionBson(List<string> skillsName, int skillsIntersectionCount)
+        {
+            BsonDocument projectBson = new BsonDocument("RecruiterId", 1);
+            projectBson.Add("Salary", 1);
+            projectBson.Add("Name", 1);
+            projectBson.Add("Skills", 1);
+            projectBson.Add("ModificationDate", 1);
+            projectBson.Add("Description", 1);
+            var skillsIntersection = GetSkillsIntersectionProjectionBson(projectBson, skillsName, skillsIntersectionCount);
+            return skillsIntersection;
         }
 
         private static BsonArray GetMapBsonArray(List<string> skillsName)
@@ -144,6 +226,33 @@ namespace WebApp.Services
         {
             var matchBson = new BsonDocument("Skills.Name", new BsonDocument("$in", new BsonArray(skillsName)));
             return matchBson;
+        }
+
+        private static FilterDefinition<CandidateUser> GetSimpleTypePartCandidateFilter(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears)
+        {
+            var filterDefinitions = new List<FilterDefinition<CandidateUser>>();
+            if (minSalary.HasValue)
+            {
+                var minFilter = Builders<CandidateUser>.Filter.Where(r => r.Salary >= minSalary);
+                filterDefinitions.Add(minFilter);
+            }
+            if (maxSalary.HasValue)
+            {
+                var maxFilter = Builders<CandidateUser>.Filter.Where(r => r.Salary < maxSalary);
+                filterDefinitions.Add(maxFilter);
+            }
+            if (minExperienceInYears.HasValue)
+            {
+                var minExperienceFilter = Builders<CandidateUser>.Filter.Where(r => r.ExperienceInYears >= minExperienceInYears);
+                filterDefinitions.Add(minExperienceFilter);
+            }
+            if (maxExperienceInYears.HasValue)
+            {
+                var maxExperienceFilter = Builders<CandidateUser>.Filter.Where(r => r.ExperienceInYears < maxExperienceInYears);
+                filterDefinitions.Add(maxExperienceFilter);
+            }
+            var filter = Builders<CandidateUser>.Filter.And(filterDefinitions);
+            return filter;
         }
 
         private static FilterDefinition<JobOffer> GetSimpleTypePartFilter(int? minSalary, int? maxSalary, string name)

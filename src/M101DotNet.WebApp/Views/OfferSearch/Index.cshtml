@@ -58,7 +58,7 @@
 <span class="red-text text-darken-2 ">@Html.ValidationMessage("noOffers")</span>  
 @for (int i = 0; i < Model.Offers.ScoredOffersList.Count; i++)
 {
-    @Html.Partial("_ScoredOfferPartial", Model.Offers.ScoredOffersList[i].Offer)    
+    @Html.Partial("_ScoredOfferPartial", Model.Offers.ScoredOffersList[i])    
 }
 @Scripts.Render("~/bundles/skills")
 @Scripts.Render("~/bundles/offer")
