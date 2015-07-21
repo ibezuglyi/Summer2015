@@ -69,7 +69,7 @@ namespace WebApp.Controllers
         {
             if (!model.HasSkills())
             {
-                ModelState.AddModelError("NoSkillMessage", "Add at least one skill to get access to all features");
+                ModelState.AddModelError("NoSkillMessage", "Add at least one skill to get access to 'Best offers'");
             }
         }
 
