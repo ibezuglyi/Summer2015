@@ -5,10 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@for (int i = 0; i < Model.OffersList.Count; i++)
+@foreach (var offer in  Model.OffersList)
 {    
-    @Html.Partial("_OfferShortPartial", Model.OffersList[i])
-    
+    @Html.Partial("_OfferShortPartial", offer)    
 }
 @Scripts.Render("~/bundles/offer")
 

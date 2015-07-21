@@ -195,6 +195,7 @@
     <Compile Include="Models\Recruiter\RecruiterModel.cs" />
     <Compile Include="Models\Recruiter\RecruiterViewModel.cs" />
     <Compile Include="Models\SkillSuggestionModel.cs" />
+    <Compile Include="Models\SortBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />

@@ -27,7 +27,7 @@ namespace WebApp.Models.Offer
         {
             Skills = skills;
             MinSalary = minSalary;
-            SortBy = SortBy.scoreDsc;
+            SortBy = SortBy.ScoreDsc;
         }
 
         public OfferSearchModel(List<SkillModel> skills, int? minSalary, int? maxSalary, string name)
@@ -37,10 +37,5 @@ namespace WebApp.Models.Offer
             MaxSalary = maxSalary;
             Name = name;
         }
-    }
-
-    public enum SortBy
-    {
-        salaryAsc, salaryDsc, scoreAsc, scoreDsc, dateAsc, dateDsc
-    }
+    }    
 }

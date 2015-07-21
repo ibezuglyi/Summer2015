@@ -166,12 +166,12 @@ namespace WebApp.Services
 
         public List<ScoredOfferViewModel> SortByScoreIfNeeded(List<ScoredOfferViewModel> scoredOffersViewModel, SortBy sortBy)
         {
-            if (sortBy == SortBy.scoreAsc)
+            if (sortBy == SortBy.ScoreAsc)
             {
                 var sortedScoredOffersViewModel = scoredOffersViewModel.OrderBy(r => r.Offer.Score).ToList();
                 return sortedScoredOffersViewModel;
             }
-            else if (sortBy == SortBy.scoreDsc)
+            else if (sortBy == SortBy.ScoreDsc)
             {
                 var sortedScoredOffersViewModel = scoredOffersViewModel.OrderByDescending(r => r.Offer.Score).ToList();
                 return sortedScoredOffersViewModel;

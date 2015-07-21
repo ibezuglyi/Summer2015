@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApp.Entities;
+using WebApp.Models;
 using WebApp.Models.Offer;
 
 namespace WebApp.Services

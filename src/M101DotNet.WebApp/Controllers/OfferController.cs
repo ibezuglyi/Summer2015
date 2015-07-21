@@ -49,19 +49,13 @@ namespace WebApp.Controllers
                 return View(offers);               
             }
             return RedirectToAction("DeniedPermission", "Home");
-        }
-
-        [HttpGet]
-        public ActionResult Remove()
-        {
-            return View();
-        }     
+        }                  
    
         [HttpPost]
         public async Task<ActionResult> Remove(string offerId)
         {
             var ifRecruiterHaveRightsToRemove = await IsCurrentUserOwnerOfOffer(offerId);
-            if (_authenticationService.IsAuthenticated(Request) && ifRecruiterHaveRightsToRemove)
+            if (ifRecruiterHaveRightsToRemove)
             {
                 await _applicationService.RemoveJobOfferAsync(offerId);
                 return RedirectToAction("OffersList", "Offer");

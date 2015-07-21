@@ -1,5 +1,5 @@
-﻿@model WebApp.Models.Offer.OfferSearchViewModel
-
+﻿@using WebApp.Models
+@model WebApp.Models.Offer.OfferSearchViewModel
 @{
     ViewBag.Title = "Index";
 }
@@ -25,64 +25,64 @@
         
         <div class="radio-twins">
             <label>Salary: </label>
-            @if(Model.SearchParams.SortBy.ToString() == "salaryAsc")
+            @if(Model.SearchParams.SortBy == SortBy.SalaryAsc)
             {
-                <input id="IsSalarySortAsc"  name="sortBy" type="radio" value="salaryAsc" checked="checked"/>
+                <input id="IsSalarySortAsc"  name="sortBy" type="radio" value="@SortBy.SalaryAsc.ToString()" checked="checked"/>
             }
             else
             {
-                <input id="IsSalarySortAsc"  name="sortBy" type="radio" value="salaryAsc" />
+                <input id="IsSalarySortAsc" name="sortBy" type="radio" value="@SortBy.SalaryAsc.ToString()" />
             }
             <label for="IsSalarySortAsc">Asc</label>
-            @if (Model.SearchParams.SortBy.ToString() == "salaryDsc")
+            @if (Model.SearchParams.SortBy == SortBy.SalaryDsc)
             {
-                <input id="IsSalarySortDsc" name="sortBy" type="radio" value="salaryDsc" checked="checked"/>
+                <input id="IsSalarySortDsc" name="sortBy" type="radio" value="@SortBy.SalaryDsc.ToString()" checked="checked" />
             }
             else
             {
-                <input id="IsSalarySortDsc" name="sortBy" type="radio" value="salaryDsc" />
+                <input id="IsSalarySortDsc" name="sortBy" type="radio" value="@SortBy.SalaryDsc.ToString()" />
             }
             <label for="IsSalarySortDsc">Dsc</label>
         </div>
         <div class="radio-twins">
             <label>Score: </label>
-            @if (Model.SearchParams.SortBy.ToString() == "scoreAsc")
+            @if (Model.SearchParams.SortBy == SortBy.ScoreAsc)
             {
-                <input id="IsScoreSortAsc" name="sortBy" type="radio" value="scoreAsc" checked="checked"/>
+                <input id="IsScoreSortAsc" name="sortBy" type="radio" value="@SortBy.ScoreAsc.ToString()" checked="checked" />
             }
             else
             {
-                <input id="IsScoreSortAsc" name="sortBy" type="radio" value="scoreAsc" />
+                <input id="IsScoreSortAsc" name="sortBy" type="radio" value="@SortBy.ScoreAsc.ToString()" />
             }
             <label for="IsScoreSortAsc">Asc</label>
-            @if (Model.SearchParams.SortBy.ToString() == "scoreDsc")
+            @if (Model.SearchParams.SortBy == SortBy.ScoreDsc)
             {
-                <input name="sortBy" id="IsScoreSortDsc" type="radio" value="scoreDsc" checked="checked"/>
+                <input name="sortBy" id="IsScoreSortDsc" type="radio" value="@SortBy.ScoreDsc.ToString()" checked="checked" />
             }
             else
             {
-                <input name="sortBy" id="IsScoreSortDsc" type="radio" value="scoreDsc" />
+                <input name="sortBy" id="IsScoreSortDsc" type="radio" value="@SortBy.ScoreDsc.ToString()" />
             }
             <label for="IsScoreSortDsc">Dsc</label>
         </div>
         <div class="radio-twins">
             <label>Date: </label>
-            @if (Model.SearchParams.SortBy.ToString() == "dateAsc")
+            @if (Model.SearchParams.SortBy == SortBy.DateAsc)
             {
-                <input id="IsDateSortAsc"  name="sortBy" type="radio" value="dateAsc" checked="checked"/>
+                <input id="IsDateSortAsc"  name="sortBy" type="radio" value="@SortBy.DateAsc.ToString()" checked="checked"/>
             }
             else
             {
-                <input id="IsDateSortAsc"  name="sortBy" type="radio" value="dateAsc" />
+                <input id="IsDateSortAsc" name="sortBy" type="radio" value="@SortBy.DateAsc.ToString()" />
             }
             <label for="IsDateSortAsc">Asc</label>
-            @if (Model.SearchParams.SortBy.ToString() == "dateDsc")
+            @if (Model.SearchParams.SortBy == SortBy.DateDsc)
             {
-                <input id="IsDateSortDsc"  name="sortBy" type="radio" value="dateDsc" checked="checked"/>
+                <input id="IsDateSortDsc" name="sortBy" type="radio" value="@SortBy.DateDsc.ToString()" checked="checked" />
             }
             else
             {
-                <input id="IsDateSortDsc"  name="sortBy" type="radio" value="dateDsc" />
+                <input id="IsDateSortDsc" name="sortBy" type="radio" value="@SortBy.DateAsc.ToString()" />
             }
             <label for="IsDateSortDsc">Dsc</label>
         </div>

@@ -84,10 +84,10 @@ namespace WebApp.Services
             SortDefinition<JobOffer> sortDefinition = null;
             switch (sortBy)
             {
-                case SortBy.salaryAsc: { sortDefinition = GetSalaryAscSort(); break; }
-                case SortBy.salaryDsc: { sortDefinition = GetSalaryDscSort(); break; }
-                case SortBy.dateAsc: { sortDefinition = GetDateAscSort(); break; }
-                case SortBy.dateDsc: { sortDefinition = GetDateDscSort(); break; }
+                case SortBy.SalaryAsc: { sortDefinition = GetSalaryAscSort(); break; }
+                case SortBy.SalaryDsc: { sortDefinition = GetSalaryDscSort(); break; }
+                case SortBy.DateAsc: { sortDefinition = GetDateAscSort(); break; }
+                case SortBy.DateDsc: { sortDefinition = GetDateDscSort(); break; }
             }
             return sortDefinition;
         }

@@ -1,10 +1,15 @@
 ﻿$(document).ready(function () {
-    $('.modal-trigger').leanModal({
-    });
+    LeanModal();
+    GetOfferToRemoveOnClick();
 });
 
-$(document).ready(function () {
+function LeanModal() {
+    $('.modal-trigger').leanModal({
+    });
+}
+
+function GetOfferToRemoveOnClick() {
     $('.modal-trigger').click(function () {
         $('#offerId').val($(this).attr('data-offerid'));
-    })
-});
+    });
+};
