@@ -27,5 +27,10 @@ namespace WebApp.Models.Candidate
             Salary = salary;
             Skills = skillModels;
         }
+
+        public bool HasSkills()
+        {
+            return (Skills.Count > 0);
+        }
     }
 }

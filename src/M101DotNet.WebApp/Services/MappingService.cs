@@ -191,6 +191,39 @@ namespace WebApp.Services
         public ScoredOfferViewModel MapToScoredOfferViewModel(ScoredOfferModel offerModel, DateTime modificationDate)
         {
             return new ScoredOfferViewModel(offerModel, modificationDate);
-        }                
+        }
+
+        public CandidateSearchViewModel MapToCandidateSearchViewModel(CandidateSearchModel searchModel, ScoredCandidatesListViewModel candidatesListViewModel)
+        {
+            return new CandidateSearchViewModel(searchModel, candidatesListViewModel);
+        }
+
+        public ScoredCandidateModel MapToScoredCandidateModel(CandidateUser candidate, double score)
+        {
+            var skillModels = MapSkillsToSkillModels(candidate.Skills);
+            var scoredCandidateModel = new ScoredCandidateModel(candidate.Name, candidate.Salary, candidate.ExperienceDescription, candidate.ExperienceInYears, score, skillModels);
+            return scoredCandidateModel;
+        }
+
+        public ScoredCandidateViewModel MapToScoredCandidateViewModel(ScoredCandidateModel scoredCandidateModel, DateTime modificationDate, string candidateId)
+        {
+            return new ScoredCandidateViewModel(scoredCandidateModel, modificationDate, candidateId);
+        }
+
+        public ScoredCandidatesListViewModel MapToScoredCandidatesListViewModel(List<ScoredCandidateViewModel> scoredCandidateViewModelsList)
+        {
+            return new ScoredCandidatesListViewModel(scoredCandidateViewModelsList);
+        }
+
+        public CandidateSearchModel MapToCandidateSearchModel(JobOffer offer)
+        {
+            var skills = MapSkillsToSkillModels(offer.Skills);
+            var candidateSearchModel = new CandidateSearchModel()
+            {
+                Skills = skills,
+                MaxSalary = offer.Salary,
+            };
+            return candidateSearchModel;
+        }
     }
 }

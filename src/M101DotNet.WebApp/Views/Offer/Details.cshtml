@@ -7,7 +7,7 @@
     <div class="left panel-part-left">        
         <div class="inline-field offer-title">
             <h5>@Model.Offer.Name</h5>
-        </div>
+            </div>
         <div> 
             @Model.ModificationDate
         </div>
@@ -15,18 +15,18 @@
             <p>
                 @Model.Offer.Description
             </p>
-        </div>
+            </div>
         @Html.Partial("_SkillsListPartial", Model.Offer.Skills)
-    </div>
+        </div>
     <div class="right panel-part-right">
         <div class="additional-info">
             <div class="additional-info-element">
                 <h5>@Model.Offer.Salary PLN</h5>
-            </div>
+    </div> 
             @if(User.IsInRole("Recruiter"))
-            {
+    {
                 @Html.Partial("_EditRemoveButtonsPartial", Model.Offer)
-            }            
+    }
         </div>
     </div>
 </div>

@@ -1,0 +1,66 @@
+﻿@model WebApp.Models.Candidate.CandidateSearchViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="grey lighten-5 card-panel row">
+    @using (Html.BeginForm())
+    {
+        <div class="form-search-part">
+            <div class="form-search-field">
+                @Html.Label("Min salary:")
+                <span class="small-textBox">@Html.TextBox("minSalary", Model.SearchParams.MinSalary)</span>
+
+            </div>
+            <div class="form-search-field">
+                @Html.Label("Max salary:")
+                <span class="small-textBox">@Html.TextBox("maxSalary", Model.SearchParams.MaxSalary)</span>
+            </div>
+            <div class="form-search-field">
+                @Html.Label("Min experience:")
+                <span class="small-textBox">@Html.TextBox("minExperienceInYears", Model.SearchParams.MinExperienceInYears)</span>
+
+            </div>
+            <div class="form-search-field">
+                @Html.Label("Max experience:")
+                <span class="small-textBox">@Html.TextBox("maxExperienceInYears", Model.SearchParams.MaxExperienceInYears)</span>
+            </div>
+        </div>
+        <div class="red-text text-darken-2">
+            @Html.ValidationMessage("minOverMaxSalary")
+        </div>
+        <div class="red-text text-darken-2"> 
+            @Html.ValidationMessage("minOverMaxExperience")
+        </div>
+        <div class="red-text text-darken-2">
+            @Html.ValidationMessage("MinSalary")
+        </div>
+        <div class="red-text text-darken-2">
+            @Html.ValidationMessage("MaxSalary")
+        </div>
+        <div class="red-text text-darken-2">
+            @Html.ValidationMessage("MinExperienceInYears")
+        </div>    
+        <div class="red-text text-darken-2">
+            @Html.ValidationMessage("MaxExperienceInYears")
+        </div>
+        @Html.Label("Skills:")
+        @Html.Partial("_SkillFormPartial", Model.SearchParams.Skills)
+
+        @Html.Partial("_SortCandidateRadioButtons", Model)
+
+        <div >
+            <button type="submit" class="btn ">Search &raquo;</button>
+        </div>
+    }
+    @Html.Partial("_BlankSkillRowPartial", Model.SearchParams.Skills)
+</div>
+<span class="red-text text-darken-2 ">@Html.ValidationMessage("noCandidates")</span>
+@for (int i = 0; i < Model.Candidates.CandidatesList.Count; i++)
+{
+    @Html.Partial("_CandidatePartial", Model.Candidates.CandidatesList[i])
+}
+@Scripts.Render("~/bundles/skills")
+@Scripts.Render("~/bundles/offer")
+

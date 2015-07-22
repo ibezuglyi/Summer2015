@@ -25,5 +25,9 @@ namespace WebApp.Entities
             Skills = new List<Skill>();
         }
 
+        public bool HasSkills()
+        {
+            return (Skills.Count > 0);
+        }
     }
 }

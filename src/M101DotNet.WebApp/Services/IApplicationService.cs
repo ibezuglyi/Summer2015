@@ -47,5 +47,14 @@ namespace WebApp.Services
         Task<ScoredOfferListViewModel> GetOffersSortedByScoreAsync(CandidateUserModel candidate);
         ScoredOfferViewModel GetScoredOfferViewModel(List<Skill> skills, JobOffer offer);
         List<ScoredOfferViewModel> GetScoredOffersViewModel(List<Skill> skills, List<JobOffer> offerList);
+        List<ScoredCandidateViewModel> GetScoredCandidateViewModelList(List<Skill> skills, List<CandidateUser> candidates);
+
+        Task<CandidateSearchViewModel> GetCandidatesSearchViewModelAsync(CandidateSearchModel model);
+
+        CandidateSearchViewModel GetCandidatesSearchViewModelWithoutCandidates(CandidateSearchModel model);
+
+        bool IsMinExperienceOverMaxExperience(int? minExperience, int? maxExperience);
+
+        Task<CandidateSearchViewModel> GetCandidateSearchViewModelForSpecificOffer(string offerId);
     }
 }

@@ -5,7 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<h3 class="card-panel red lighten-4">@ViewBag.Title</h3>*@
+<div class="card-panel">
+    <span class="red-text text-darken-2">@Html.ValidationMessage("FillSkillsMessage")</span>
+</div>
 
 @foreach (var offerViewModel in Model.ScoredOffersList)
 {

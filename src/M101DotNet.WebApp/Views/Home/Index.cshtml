@@ -4,8 +4,8 @@
 
 @if (!Request.IsAuthenticated)
 {
-    <div class="main-content row card-panel grey lighten-5">
-        <div class="main-photo">
+    <div class="row card-panel grey lighten-5">
+        <div class="main-photo left">
             <img src="~/Content/Images/manwithpen.jpg" />
         </div>
 
@@ -19,12 +19,22 @@
                 @Html.ActionLink("Register as a candidate", "Register", "Candidate", null, new { @class = "btn-flat waves-effect waves-light" })<br />
             </div>
         </div>
-        <a href="/OfferSearch/Index" class="btn-large waves-effect green darken-2 waves-light">
-            <i class="large material-icons right">search</i>
-            Search offers
-        </a>
+        <div class="clearfix">
+            <div class="left wide-btn-container">
+                <div class="small-padding-right">
+                    @Html.ActionLink("Find a candidate", "Index", "CandidateSearch", null, new { @class = "btn-large btn-wide waves-effect waves-light red lighten-2" })
+                </div>
+                
+            </div>
+            <div class="left wide-btn-container">
+                <div class="small-padding-left">
+                    @Html.ActionLink("Find a job offer", "Index", "OfferSearch", null, new { @class = "btn-large btn-wide waves-effect waves-light red lighten-2" })
+                </div> 
+            </div>
+        </div>
     </div>
-    
+
+
 }
 else
 {
