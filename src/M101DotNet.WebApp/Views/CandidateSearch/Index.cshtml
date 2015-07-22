@@ -48,31 +48,7 @@
         @Html.Label("Skills:")
         @Html.Partial("_SkillFormPartial", Model.SearchParams.Skills)
 
-        <div class="radio-twins">
-            <label>Salary: </label>
-
-            <input id="IsSalarySortAsc" name="sortBy" type="radio" value="salaryAsc" />
-            <label for="IsSalarySortAsc">Asc</label>
-
-            <input id="IsSalarySortDsc" name="sortBy" type="radio" value="salaryDsc" />
-            <label for="IsSalarySortDsc">Dsc</label>
-        </div>
-        <div class="radio-twins">
-            <label>Score: </label>
-            <input id="IsScoreSortAsc" name="sortBy" type="radio" value="scoreAsc" />
-            <label for="IsScoreSortAsc">Asc</label>
-
-            <input name="sortBy" id="IsScoreSortDsc" type="radio" value="scoreDsc" />
-            <label for="IsScoreSortDsc">Dsc</label>
-        </div>
-        <div class="radio-twins">
-            <label>Date: </label>
-            <input id="IsDateSortAsc" name="sortBy" type="radio" value="dateAsc" />
-            <label for="IsDateSortAsc">Asc</label>
-
-            <input id="IsDateSortDsc" name="sortBy" type="radio" value="dateDsc" />
-            <label for="IsDateSortDsc">Dsc</label>
-        </div>
+        @Html.Partial("_SortCandidateRadioButtons", Model)
 
         <div >
             <button type="submit" class="btn ">Search &raquo;</button>

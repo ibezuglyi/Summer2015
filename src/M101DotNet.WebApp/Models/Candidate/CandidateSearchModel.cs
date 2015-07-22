@@ -16,7 +16,7 @@ namespace WebApp.Models.Candidate
 
         public List<SkillModel> Skills { get; set; }
 
-        public string SortBy { get; set; }
+        public SortBy SortBy { get; set; }
 
         [Range(0, 100, ErrorMessage = "Min experience must be between 0 and 100 years")]
         public int? MinExperienceInYears {get; set;}
