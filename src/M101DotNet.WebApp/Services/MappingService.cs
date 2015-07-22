@@ -142,29 +142,43 @@ namespace WebApp.Services
         
         public List<Skill> MapSkillModelsToSkills(List<SkillModel> skillModels)
         {
-            var skills = new List<Skill>();
-            foreach(var skillModel in skillModels)
+            if(skillModels == null)
             {
-                var skill = new Skill()
-                {   
-                    Name = skillModel.Name,
-                    NameToLower = skillModel.Name.ToLower(),
-                    Level = skillModel.Level,
-                };
-                skills.Add(skill);
+                return new List<Skill>();
             }
-            return skills;
+            else
+            {
+                var skills = new List<Skill>();
+                foreach (var skillModel in skillModels)
+                {
+                    var skill = new Skill()
+                    {
+                        Name = skillModel.Name,
+                        NameToLower = skillModel.Name.ToLower(),
+                        Level = skillModel.Level,
+                    };
+                    skills.Add(skill);
+                }
+                return skills;
+            }            
         }
 
         public List<SkillModel> MapSkillsToSkillModels(List<Skill> skills)
         {
-            var skillModels = new List<SkillModel>();
-            foreach (var skill in skills)
+            if(skills == null)
             {
-                var skillModel = new SkillModel(skill.Name, skill.Level);
-                skillModels.Add(skillModel);
+                return new List<SkillModel>();
             }
-            return skillModels;
+            else
+            {
+                var skillModels = new List<SkillModel>();
+                foreach (var skill in skills)
+                {
+                    var skillModel = new SkillModel(skill.Name, skill.Level);
+                    skillModels.Add(skillModel);
+                }
+                return skillModels;
+            }            
         }
         
         public OfferSearchViewModel MapToOfferSearchViewModel(OfferSearchModel offerSearchModel, ScoredOfferListViewModel scoredOfferListViewModel)

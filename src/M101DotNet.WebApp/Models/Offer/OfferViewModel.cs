@@ -27,11 +27,18 @@ namespace WebApp.Models.Offer
             TopSkills = CalculateTopSkills(offer.Skills);
         }
 
-        private List<SkillModel> CalculateTopSkills(List<SkillModel> skills)
-        {            
-            var sorterdSkills = skills.OrderByDescending(r => r.Level).ToList();
-            var topSkills = sorterdSkills.Take(TopSkillNumber).ToList();
-            return topSkills;
+        public List<SkillModel> CalculateTopSkills(List<SkillModel> skills)
+        {
+            if(skills == null)
+            {
+                return new List<SkillModel>();
+            }
+            else
+            {
+                var sorterdSkills = skills.OrderByDescending(r => r.Level).ToList();
+                var topSkills = sorterdSkills.Take(TopSkillNumber).ToList();
+                return topSkills;
+            }            
         }
     }
 }
