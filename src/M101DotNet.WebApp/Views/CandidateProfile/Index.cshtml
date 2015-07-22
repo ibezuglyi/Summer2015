@@ -4,14 +4,16 @@
     ViewBag.Title = "Index";
 }
 
-@if (!ModelState.IsValid)
+@if (@ViewData.ModelState.IsValid == false)
 {
     <div class="card-panel">
-        <span class="red-text text-darken-2">@Html.ValidationMessage("NoSkillMessage")</span>
+        <span class="red-text text-darken-2">
+            @Html.ValidationSummary()
+        </span>
     </div>
 }
 
-<div class="card-panel grey lighten-5"  >
+<div class="card-panel grey lighten-5">
     <div class="form-part">
         <label>Name: </label> @Model.Name
     </div>
@@ -48,4 +50,4 @@
     @Html.Partial("_BlankSkillRowPartial", Model.Candidate.Skills)
 
     @Scripts.Render("~/bundles/skills")
-</div>  
+</div>
