@@ -217,13 +217,16 @@ namespace WebApp.Services
 
         public CandidateSearchModel MapToCandidateSearchModel(JobOffer offer)
         {
-            var skills = MapSkillsToSkillModels(offer.Skills);
-            var candidateSearchModel = new CandidateSearchModel()
+            if (offer != null)
             {
-                Skills = skills,
-                MaxSalary = offer.Salary,
-            };
-            return candidateSearchModel;
+                var skills = MapSkillsToSkillModels(offer.Skills);
+                var candidateSearchModel = new CandidateSearchModel(skills, offer.Salary);
+                return candidateSearchModel;
+            }
+            else
+            {
+                return new CandidateSearchModel();
+            }
         }
     }
 }

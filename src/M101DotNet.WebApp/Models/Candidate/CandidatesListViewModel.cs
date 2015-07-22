@@ -14,9 +14,9 @@ namespace WebApp.Models.Candidate
             CandidatesList = new List<CandidateViewModel>();
         }
 
-        public CandidatesListViewModel(List<CandidateViewModel> offersList)
+        public CandidatesListViewModel(List<CandidateViewModel> candidatesList)
         {
-            CandidatesList = offersList;
+            CandidatesList = candidatesList;
         }
     }
 }

@@ -397,7 +397,7 @@ namespace WebApp.Services
             return candidateSearchViewModel;
         }
 
-        public async Task<CandidateSearchViewModel> GetCandidateSearchViewModelForSpecificOffer(string offerId)
+        public async Task<CandidateSearchViewModel> GetCandidateSearchViewModelForOffer(string offerId)
         {
             var offer = await GetJobOfferByIdAsync(offerId);
             var candidateSearchModel = _mappingService.MapToCandidateSearchModel(offer);

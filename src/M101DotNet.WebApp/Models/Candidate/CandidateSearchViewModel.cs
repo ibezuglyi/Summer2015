@@ -21,5 +21,10 @@ namespace WebApp.Models.Candidate
             SearchParams = searchParams;
             Candidates = candidates;
         }
+
+        public bool HasCandidates()
+        {
+            return Candidates.CandidatesList.Any();
+        }
     }
 }
