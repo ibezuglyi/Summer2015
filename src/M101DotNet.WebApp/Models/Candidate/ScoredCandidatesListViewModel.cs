@@ -19,5 +19,9 @@ namespace WebApp.Models.Candidate
             CandidatesList = candidatesList;
         }
 
+        public bool HasCandidates()
+        {
+            return CandidatesList.Any();
+        }
     }
 }
