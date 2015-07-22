@@ -27,7 +27,7 @@ namespace WebApp.Controllers
             {
                 if (id != null)
                 {
-                    var candidateSearchViewModel = await _applicationService.GetCandidateSearchViewModelForSpecificOffer(id);
+                    var candidateSearchViewModel = await _applicationService.GetCandidateSearchViewModelForOffer(id);
                     return View(candidateSearchViewModel);
                 }
             }
@@ -40,7 +40,7 @@ namespace WebApp.Controllers
             if (ValidateForm(model))
             {
                 var newCandidateSearchViewModel = await _applicationService.GetCandidatesSearchViewModelAsync(model);
-                if (!newCandidateSearchViewModel.Candidates.HasCandidates())
+                if (!newCandidateSearchViewModel.HasCandidates())
                 {
                     AddNoCandidatesError();
                 }
@@ -52,20 +52,17 @@ namespace WebApp.Controllers
 
         private bool ValidateForm(CandidateSearchModel model)
         {
-            if (ModelState.IsValid)
+            if (_applicationService.AreSkillsDuplicated(model.Skills))
             {
-                if (_applicationService.AreSkillsDuplicated(model.Skills))
-                {
-                    ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
-                }
-                if (_applicationService.IsMinSalaryOverMaxSalary(model.MinSalary, model.MaxSalary))
-                {
-                    ModelState.AddModelError("minOverMaxSalary", "Max salary must be grater or equal than min salary");
-                }
-                if (_applicationService.IsMinExperienceOverMaxExperience(model.MinExperienceInYears, model.MaxExperienceInYears))
-                {
-                    ModelState.AddModelError("minOverMaxExperience", "Max experience must be greater or equal than min experience");
-                }
+                ModelState.AddModelError("duplicateSkills", "You can't have repeated skills");
+            }
+            if (_applicationService.IsMinSalaryOverMaxSalary(model.MinSalary, model.MaxSalary))
+            {
+                ModelState.AddModelError("minOverMaxSalary", "Max salary must be grater or equal than min salary");
+            }
+            if (_applicationService.IsMinExperienceOverMaxExperience(model.MinExperienceInYears, model.MaxExperienceInYears))
+            {
+                ModelState.AddModelError("minOverMaxExperience", "Max experience must be greater or equal than min experience");
             }
             return ModelState.IsValid;
         }

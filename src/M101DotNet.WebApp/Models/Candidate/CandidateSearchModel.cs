@@ -29,5 +29,11 @@ namespace WebApp.Models.Candidate
             Skills = new List<SkillModel>();
         }
 
+        public CandidateSearchModel(List<SkillModel> skills, int maxSalary)
+        {
+            Skills = skills;
+            MaxSalary = maxSalary;
+        }
+
     }
 }

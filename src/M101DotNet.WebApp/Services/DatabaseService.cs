@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using WebApp.Helpers;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,19 +32,19 @@ namespace WebApp.Services
 
         public async Task<RecruiterUser> GetRecruiterByIdAsync(string id)
         {
-            var recruiter = await dbContext.RecruiterUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            var recruiter = await dbContext.RecruiterUsers.FindById(r => r.Id == id);
             return recruiter;
         }
 
         public async Task<CandidateUser> GetCandidateByIdAsync(string id)
         {
-            var candidate = await dbContext.CandidateUsers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            var candidate = await dbContext.CandidateUsers.FindById(r => r.Id == id);
             return candidate;
         }
 
         public async Task<JobOffer> GetJobOfferByIdAsync(string id)
         {
-            var jobOffer = await dbContext.JobOffers.Find(r => r.Id == id).SingleOrDefaultAsync();
+            var jobOffer = await dbContext.JobOffers.FindById(r => r.Id == id);
             return jobOffer;
         }
 
@@ -56,7 +57,7 @@ namespace WebApp.Services
 
         public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, SortBy sortBy)
         {
-            var filter = GetSimpleTypePartFilter(minSalary, maxSalary, name);
+            var filter = GetSalaryNameFilter(minSalary, maxSalary, name);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetOfferProjectionBson(skillsName, skills.Count);
@@ -81,7 +82,7 @@ namespace WebApp.Services
 
         public async Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, SortBy sortBy, List<Skill> skills)
         {
-            var filter = GetSimpleTypePartCandidateFilter(minSalary, maxSalary, minExperienceInYears, maxExperienceInYears);
+            var filter = GetSalaryExperienceFilter(minSalary, maxSalary, minExperienceInYears, maxExperienceInYears);
             var skillsName = skills.Select(r => r.Name).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetCandidateProjectionBson(skillsName, skills.Count);
@@ -230,7 +231,7 @@ namespace WebApp.Services
             return matchBson;
         }
 
-        private static FilterDefinition<CandidateUser> GetSimpleTypePartCandidateFilter(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears)
+        private static FilterDefinition<CandidateUser> GetSalaryExperienceFilter(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears)
         {
             var filterDefinitions = new List<FilterDefinition<CandidateUser>>();
             if (minSalary.HasValue)
@@ -257,7 +258,7 @@ namespace WebApp.Services
             return filter;
         }
 
-        private static FilterDefinition<JobOffer> GetSimpleTypePartFilter(int? minSalary, int? maxSalary, string name)
+        private static FilterDefinition<JobOffer> GetSalaryNameFilter(int? minSalary, int? maxSalary, string name)
         {
             var filterDefinitions = new List<FilterDefinition<JobOffer>>();
             if (minSalary.HasValue)
