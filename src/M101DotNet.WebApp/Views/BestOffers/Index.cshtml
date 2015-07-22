@@ -5,10 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if(!ModelState.IsValid)
-{ 
+@if (@ViewData.ModelState.IsValid == false)
+{
     <div class="card-panel">
-        <span class="red-text text-darken-2">@Html.ValidationMessage("FillSkillsMessage")</span>
+        <span class="red-text text-darken-2">
+            @Html.ValidationSummary()
+        </span>
     </div>
 }
 

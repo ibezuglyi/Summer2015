@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApp.Entities;
 using WebApp.Services;
+using FluentAssertions;
 
 namespace WebApp.Tests
 {
@@ -15,55 +16,98 @@ namespace WebApp.Tests
     {
         private Moq.Mock<IMappingService> mappingService;
         private Moq.Mock<IDatabaseService> dbService;
-        
+        public ApplicationService applicationService;
+
         [SetUp]
         public void SetUp()
         {
             mappingService = new Mock<IMappingService>();
             dbService = new Mock<IDatabaseService>();
+            applicationService = new ApplicationService(mappingService.Object, dbService.Object);
+        }
+
+        [TestCase]
+        public async Task CanGetOffersByIdRecruiter()
+        {
+            var jobOffers = new List<JobOffer>()
+            {
+                { new JobOffer() { Id="1", Name="First", Salary=100, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill(){ Name = "C", Level = 9 }}}},
+                { new JobOffer() { Id="2", Name="Second", Salary=200, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill(){ Name = "C#", Level = 2 }}}},
+                { new JobOffer() { Id="3", Name="Third", Salary=300, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill(){ Name = "C++", Level = 6 }}}},
+                { new JobOffer() { Id="4", Name="Forth", Salary=400, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill(){ Name = "CSS", Level = 3 }}}},
+            };
+
+            dbService
+                .Setup(r => r.GetOffersByIdRecruiterSortedByDateAsync(It.IsAny<string>()))
+                .Returns(Task<List<JobOffer>>.FromResult(jobOffers));
+
+            var result = await applicationService.GetOffersByIdRecruiterAsync("17");
+
+            jobOffers.ShouldBeEquivalentTo(
+                result,
+                option => option.WithStrictOrdering()
+            );
+        }
+
+        [TestCase]
+        public async Task CannotGetOffersByIdRecruiter()
+        {
+            List<JobOffer> jobOffers = null;
+
+            dbService
+                .Setup(r => r.GetOffersByIdRecruiterSortedByDateAsync(It.IsAny<string>()))
+                .Returns(Task<List<JobOffer>>.FromResult(jobOffers));
+
+            var result = await applicationService.GetOffersByIdRecruiterAsync("17");
+
+            Assert.IsNull(result);
+        }
+
+        [TestCase]
+        public async Task CanGetOffersByIdRecruiterEmpty()
+        {
+            var jobOffers = new List<JobOffer>();
+
+            dbService
+                .Setup(r => r.GetOffersByIdRecruiterSortedByDateAsync(It.IsAny<string>()))
+                .Returns(Task<List<JobOffer>>.FromResult(jobOffers));
+
+            var result = await applicationService.GetOffersByIdRecruiterAsync("17");
+
+            Assert.IsEmpty(result);
         }
 
         [TestCase]
         public async Task CanGetRecruiterByEmail()
         {
-            //arrange
             var recruiterUser = new RecruiterUser() { CompanyDescription = "a", Id = "12345", Name = "b" };
-
+            
             dbService
                 .Setup(r => r.GetRecruterByEmailAsync(It.IsAny<string>()))
-                .Returns(Task<RecruiterUser>.FromResult(recruiterUser));
+                .Returns(Task<RecruiterUser>.FromResult(recruiterUser));   
 
-            var applicationService = new ApplicationService(mappingService.Object, dbService.Object);
-
-            //act
             var result = await applicationService.GetRecruterByEmailAsync("blsabla");
 
-            //assert
             Assert.AreEqual(result.Id, recruiterUser.Id);
         }
 
         [TestCase]
         public async Task CannotGetRecruiterByEmail()
         {
-            //arrange
             RecruiterUser recruiterUser = null;
 
             dbService
                 .Setup(r => r.GetRecruterByEmailAsync(It.IsAny<string>()))
                 .Returns(Task<RecruiterUser>.FromResult(recruiterUser));
 
-            var applicationService = new ApplicationService(mappingService.Object, dbService.Object);
-            //act
             var result = await applicationService.GetRecruterByEmailAsync("blsabla");
 
-            //assert
             Assert.IsNull(result);
         }
 
         [TestCase]
         public async Task CanGetJobOfferById()
         {
-            //arrange
             JobOffer jobOffer = new JobOffer()
             {
                 Name = "AA",
@@ -77,19 +121,14 @@ namespace WebApp.Tests
                 .Setup(r => r.GetJobOfferByIdAsync(It.IsAny<string>()))
                 .Returns(Task<JobOffer>.FromResult(jobOffer));
 
-            var applicationService = new ApplicationService(mappingService.Object, dbService.Object);
-            //act
-
             var result = await applicationService.GetJobOfferByIdAsync("11111");
 
-            //assert
             Assert.AreEqual(jobOffer.Name, result.Name);
         }
 
         [TestCase]
         public async Task CannotGetJobOfferById()
         {
-            //arrange
             JobOffer jobOffer = null;
 
             dbService
@@ -97,11 +136,9 @@ namespace WebApp.Tests
                 .Returns(Task<JobOffer>.FromResult(jobOffer));
 
             var applicationService = new ApplicationService(mappingService.Object, dbService.Object);
-            //act
 
             var result = await applicationService.GetJobOfferByIdAsync("11111");
 
-            //assert
             Assert.IsNull(result);
         }
 

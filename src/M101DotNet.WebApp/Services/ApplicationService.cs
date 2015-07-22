@@ -55,7 +55,7 @@ namespace WebApp.Services
             return jobOffer;
         }
 
-        private async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string recruiterId)
+        public async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string recruiterId)
         {
             var offerList = await _dbService.GetOffersByIdRecruiterSortedByDateAsync(recruiterId);
             return offerList;
@@ -63,7 +63,7 @@ namespace WebApp.Services
 
         public async Task<OfferListViewModel> GetOfferViewModelListAsync(string recruiterId)
         {
-            var offerList = await GetOffersByIdRecruiterAsync(recruiterId);
+            var offerList = await GetOffersByIdRecruiterAsync(null);
             var offersViewModel = _mappingService.MapToOffersViewModel(offerList);
             var offerViewModelList = _mappingService.MapToOfferViewModelList(offersViewModel);
             return offerViewModelList;

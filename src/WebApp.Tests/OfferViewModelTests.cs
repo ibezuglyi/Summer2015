@@ -24,7 +24,6 @@ namespace WebApp.Tests
         [TestCase]
         public void CanCalculateSkills()
         {
-            //arrange
             offerViewModel = new OfferViewModel()
             {
                 TopSkills = new List<SkillModel>()
@@ -48,10 +47,8 @@ namespace WebApp.Tests
                 { new SkillModel() { Name = "CSS", Level = 7 } }
             };
 
-            //act
             var result = offerViewModel.CalculateTopSkills(skillModels);
 
-            //assert
             offerViewModel.TopSkills.ShouldBeEquivalentTo(
                 result, 
                 options => options.WithStrictOrdering()
@@ -61,26 +58,20 @@ namespace WebApp.Tests
         [TestCase]
         public void CanCalculateSkillsEmpty()
         {
-            //arrange
             List<SkillModel> skillModels = new List<SkillModel>();
 
-            //act
             var result = offerViewModel.CalculateTopSkills(skillModels);
 
-            //assert
             Assert.IsEmpty(result);
         }
 
         [TestCase]
         public void CannotCalculateSkills()
         {
-            //arrange
             List<SkillModel> skillModels = null;
 
-            //act
             var result = offerViewModel.CalculateTopSkills(skillModels);
 
-            //assert
             Assert.IsEmpty(result);
         }
     }

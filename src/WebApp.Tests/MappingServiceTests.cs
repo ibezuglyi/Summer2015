@@ -25,7 +25,6 @@ namespace WebApp.Tests
         [TestCase]
         public void CanMapSkillModelsToSkills()
         {
-            //arrange
             var skillModelList = new List<SkillModel>()
             {
                 { new SkillModel() { Name = "C", Level = 2 } },
@@ -44,10 +43,8 @@ namespace WebApp.Tests
                 { new Skill() { Name = "PHP", Level = 6 } }
             };
 
-            //act
             var result = mappingService.MapSkillModelsToSkills(skillModelList);
 
-            //assert
             skillModelList.ShouldBeEquivalentTo(
                 result, 
                 option => option.WithStrictOrdering()
@@ -57,26 +54,20 @@ namespace WebApp.Tests
         [TestCase]
         public void CanMapSkillModelsToSkillsEmpty()
         {
-            //arrange
             var skillModelList = new List<SkillModel>();
 
-            //act
             var result = mappingService.MapSkillModelsToSkills(skillModelList);
 
-            //assert
             Assert.IsEmpty(result);
         }
 
         [TestCase]
         public void CannotMapSkillModelsToSkills()
         {
-            //arrange
             List<SkillModel> skillModelList = null;
 
-            //act
             var result = mappingService.MapSkillModelsToSkills(skillModelList);
 
-            //assert
             Assert.IsEmpty(result);
         }
     }
