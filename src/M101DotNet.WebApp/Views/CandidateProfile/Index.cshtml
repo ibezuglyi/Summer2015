@@ -4,10 +4,13 @@
     ViewBag.Title = "Index";
 }
 
+@if (!ModelState.IsValid)
+{
+    <div class="card-panel">
+        <span class="red-text text-darken-2">@Html.ValidationMessage("NoSkillMessage")</span>
+    </div>
+}
 
-<div class="card-panel">
-    <span class="red-text text-darken-2">@Html.ValidationMessage("NoSkillMessage")</span>
-</div>
 <div class="card-panel grey lighten-5"  >
     <div class="form-part">
         <label>Name: </label> @Model.Name

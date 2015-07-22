@@ -21,7 +21,7 @@ namespace WebApp.Models.Candidate
 
         public bool HasCandidates()
         {
-            return CandidatesList.Count > 0;
+            return CandidatesList.Any();
         }
     }
 }

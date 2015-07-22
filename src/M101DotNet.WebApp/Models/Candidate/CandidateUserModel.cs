@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace WebApp.Models.Candidate
 {
@@ -30,7 +31,7 @@ namespace WebApp.Models.Candidate
 
         public bool HasSkills()
         {
-            return (Skills.Count > 0);
+            return Skills.Any();
         }
     }
 }

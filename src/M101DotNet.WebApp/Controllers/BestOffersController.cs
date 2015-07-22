@@ -28,24 +28,20 @@ namespace WebApp.Controllers
             {
                 var candidateId = _authenticationService.GetUserIdFromRequest(Request);
                 var candidateModel = await _applicationService.GetCandidateUserModelByIdAsync(candidateId);
-                if (CheckIfNoSkills(candidateModel.Skills))
+                if (candidateModel.HasSkills())
                 {
-                    return View(new ScoredOfferListViewModel());
+                    var scoredOfferListViewModel = await _applicationService.GetOffersSortedByScoreAsync(candidateModel);
+                    return View(scoredOfferListViewModel);                    
                 }
-                var scoredOfferListViewModel = await _applicationService.GetOffersSortedByScoreAsync(candidateModel);
-                return View(scoredOfferListViewModel);
+                AddNoSkillsError();
+                return View(new ScoredOfferListViewModel());
             }
             return RedirectToAction("DeniedPermission", "Home");
         }
 
-        public bool CheckIfNoSkills(List<SkillModel> skills)
+        public void AddNoSkillsError()
         {
-            if (skills.Count == 0)
-            {
-                ModelState.AddModelError("FillSkillsMessage", "There are no offers becouse lack of skills in your profile. Edit your profile and add at least one skill.");
-                return true;
-            }
-            return false;
+            ModelState.AddModelError("FillSkillsMessage", "There are no offers becouse lack of skills in your profile. Edit your profile and add at least one skill.");
         }
 	}
 }

@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     LeanModal();
-    GetOfferToRemoveOnClick();
+    BindEventToHandlerOnClick();
 });
 
 function LeanModal() {
@@ -8,7 +8,7 @@ function LeanModal() {
     });
 }
 
-function GetOfferToRemoveOnClick() {
+function BindEventToHandlerOnClick() {
     $('.modal-trigger').click(function () {
         $('#offerId').val($(this).attr('data-offerid'));
     });
