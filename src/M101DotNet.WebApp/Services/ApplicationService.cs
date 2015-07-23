@@ -55,7 +55,7 @@ namespace WebApp.Services
             return jobOffer;
         }
 
-        private async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string recruiterId)
+        public async Task<List<JobOffer>> GetOffersByIdRecruiterAsync(string recruiterId)
         {
             var offerList = await _dbService.GetOffersByIdRecruiterSortedByDateAsync(recruiterId);
             return offerList;
