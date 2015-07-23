@@ -45,7 +45,7 @@ function addRowOnClick() {
 }
 
 var addRow = (function () {
-    var index = $(".blank-row .row input[type='hidden']").val();
+    var index = $(".blank-row  input[type='hidden']").val();
     return function (parent) {
         var blankRow = $(".blank-row").clone(false);
         prepareSnippet(blankRow, index);

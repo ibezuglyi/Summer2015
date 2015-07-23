@@ -1,41 +1,39 @@
 ﻿@model List<WebApp.Models.Candidate.SkillModel>
-               <div class="red-text text-darken-2">
-                   @Html.ValidationMessage("notEnoughSkills")
-                   @Html.ValidationMessage("duplicateSkills")
-               </div>
-    <div id="skills" class="collection">
-        @for (int i = 0; i < Model.Count; i++)
-        {
-            var nameInputName = string.Format("Skills[{0}].Name", i);
-            var levelInputName = string.Format("Skills[{0}].Level", i);
+<div class="red-text text-darken-2">
+    @Html.ValidationMessage("notEnoughSkills")
+    @Html.ValidationMessage("duplicateSkills")
+</div>
+<div id="skills" class="collection">
+@for (int i = 0; i < Model.Count; i++)
+{
+    var nameInputName = string.Format("Skills[{0}].Name", i);
+    var levelInputName = string.Format("Skills[{0}].Level", i);
 
-            <div class="skill-row collection-item">
-                <div class="row">
-                    <input type="hidden" name="Skills.Index" value="@i" />
-                    <span class="col s3">
-                        <input class="autocomplete" id="@nameInputName" name="@nameInputName" value="@Model[i].Name" type="text" />
-                    </span>
-                    <span class="col s3 range-field">
-                        <input type="range" min="1" max="10" id="@levelInputName" name="@levelInputName" value="@Model[i].Level" />
-                    </span>
-                    <span class="value-field value-field-css teal-text text-darken-2"></span>
-                    <button onclick="return false" class="btn-flat delete-skill">Delete</button>
-                </div>
-                <div class="row red-text text-darken-2">
-                    <span class="col s3 ">
-                        @Html.ValidationMessage(nameInputName)
-                    </span>
-                    <span class="col s3 ">
-                        @Html.ValidationMessage(levelInputName)
-                    </span>
-                </div>
-            </div>
+    <div class="skill-row collection-item">
+        <div class="">
+            <input type="hidden" name="Skills.Index" value="@i" />
+            <span class="skill-name">
+                <input class="autocomplete" id="@nameInputName" name="@nameInputName" value="@Model[i].Name" type="text" />
+            </span>
+            <span class="skill-level range-field" >
+                <input type="range" min="1" max="10" id="@levelInputName" name="@levelInputName" value="@Model[i].Level" />
+            </span>
+            <span class="value-field value-field-css teal-text text-darken-2"></span>
+            <button onclick="return false" class="btn-flat delete-skill">Delete</button>
+        </div>
+        <span class="red-text text-darken-2 col s3">
+            @Html.ValidationMessage(nameInputName)
+        </span>
+        <span class="red-text text-darken-2 col s3">
+            @Html.ValidationMessage(levelInputName)
+        </span>
+    </div>
+}                   
+</div>
+<div>
+    <button onclick="return false" class="left add-skill btn">Add</button>
+</div>
 
-        }
-    </div>
-    <div class="row">
-        <button onclick="return false" class="right add-skill btn">Add</button>
-    </div>
-    
+
 
 

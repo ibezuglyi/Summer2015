@@ -5,6 +5,7 @@
 }
 
 <div class="grey lighten-5 card-panel row">
+    <h5 class="card-title">Search for a candidate</h5>
     @using (Html.BeginForm())
     {
         <div class="form-search-part">
@@ -48,10 +49,9 @@
         @Html.Label("Skills:")
         @Html.Partial("_SkillFormPartial", Model.SearchParams.Skills)
 
-        @Html.Partial("_SortCandidateRadioButtons", Model)
-
-        <div >
-            <button type="submit" class="btn ">Search &raquo;</button>
+        <div class="row-padding left clearfix" >
+            @Html.Partial("_SortCandidateRadioButtons", Model)
+            <button type="submit" class="btn right">Search</button>
         </div>
     }
     @Html.Partial("_BlankSkillRowPartial", Model.SearchParams.Skills)
