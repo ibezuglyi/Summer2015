@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationServiceTests.cs" />
+    <Compile Include="GetMeasureScoreTests.cs" />
     <Compile Include="MappingServiceTests.cs" />
     <Compile Include="OfferViewModelTests.cs" />
     <Compile Include="JobifyMongoCollectionExtensionsTests.cs" />
