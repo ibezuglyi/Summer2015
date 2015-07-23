@@ -31,10 +31,10 @@ namespace WebApp.Tests
         {
             var jobOffers = new List<JobOffer>()
             {
-                { new JobOffer() { Id="1", Name="First", Salary=100, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill(){ Name = "C", Level = 9 }}}},
-                { new JobOffer() { Id="2", Name="Second", Salary=200, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill(){ Name = "C#", Level = 2 }}}},
-                { new JobOffer() { Id="3", Name="Third", Salary=300, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill(){ Name = "C++", Level = 6 }}}},
-                { new JobOffer() { Id="4", Name="Forth", Salary=400, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill(){ Name = "CSS", Level = 3 }}}},
+                { new JobOffer() { Id="1", Name="First", Salary=100, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill("C", 9)}}},
+                { new JobOffer() { Id="2", Name="Second", Salary=200, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill("C#", 2)}}},
+                { new JobOffer() { Id="3", Name="Third", Salary=300, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill("C++", 6)}}},
+                { new JobOffer() { Id="4", Name="Forth", Salary=400, RecruiterId="17", ModificationDate = DateTime.Now, Skills = new List<Skill>(){ new Skill("CSS", 3)}}},
             };
 
             dbService

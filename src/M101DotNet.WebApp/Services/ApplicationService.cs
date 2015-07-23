@@ -342,18 +342,28 @@ namespace WebApp.Services
             var scoredOfferViewModelList = new List<ScoredOfferViewModel>();
             foreach (var offer in offerList)
             {
-                var scoredOfferViewModel = GetScoredOfferViewModel(skills, offer);
-                scoredOfferViewModelList.Add(scoredOfferViewModel);
+                var score = MeasureScoreBetweenCandidateAndOffer(skills, offer.Skills);
+                if(score > 0)
+                {
+                    var scoredOfferViewModel = GetScoredOfferViewModel(score, offer);
+                    scoredOfferViewModelList.Add(scoredOfferViewModel);
+                }                
             }
             return scoredOfferViewModelList;
         }
 
-        public ScoredOfferViewModel GetScoredOfferViewModel(List<Skill> skills, JobOffer offer)
+        public ScoredOfferViewModel GetScoredOfferViewModel(double score, JobOffer offer)
         {
-            var score = MeasureScoreBetweenCandidateAndOffer(skills, offer.Skills);
             var scoredOfferModel = _mappingService.MapToScoredOfferModel(offer, score);
             var scoredOfferViewModel = _mappingService.MapToScoredOfferViewModel(scoredOfferModel, offer.ModificationDate);
             return scoredOfferViewModel;
+        }
+
+        public ScoredCandidateViewModel GetScoredCandidateViewModel(double score, CandidateUser candidate)
+        {
+            var scoredCandidateModel = _mappingService.MapToScoredCandidateModel(candidate, score);
+            var scoredCandidateViewModel = _mappingService.MapToScoredCandidateViewModel(scoredCandidateModel, candidate.ModificationDate, candidate.Id);
+            return scoredCandidateViewModel;
         }
 
         public async Task<CandidateSearchViewModel> GetCandidatesSearchViewModelAsync(CandidateSearchModel searchModel)
@@ -388,13 +398,15 @@ namespace WebApp.Services
             foreach (var candidate in candidates)
             {
                 var score = MeasureScoreBetweenCandidateAndOffer(skills, candidate.Skills);
-                var scoredCandidateModel = _mappingService.MapToScoredCandidateModel(candidate, score);
-                var scoredCandidateViewModel = _mappingService.MapToScoredCandidateViewModel(scoredCandidateModel, candidate.ModificationDate, candidate.Id);
-                candidateViewModelsList.Add(scoredCandidateViewModel);
+                if (score > 0)
+                {
+                    var scoredCandidateViewModel = GetScoredCandidateViewModel(score, candidate);
+                    candidateViewModelsList.Add(scoredCandidateViewModel);
+                }
             }
             return candidateViewModelsList;
         }
-
+        
         public CandidateSearchViewModel GetCandidatesSearchViewModelWithoutCandidates(CandidateSearchModel searchModel)
         {
             var scoredCandidatesListViewModel = new ScoredCandidatesListViewModel();

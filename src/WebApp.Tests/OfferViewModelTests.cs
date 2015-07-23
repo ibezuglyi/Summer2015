@@ -28,23 +28,23 @@ namespace WebApp.Tests
             {
                 TopSkills = new List<SkillModel>()
                 {
-                    { new SkillModel() { Name = "CSS", Level = 7 } },
-                    { new SkillModel() { Name = "PHP", Level = 6 } },
-                    { new SkillModel() { Name = "HTML", Level = 5 } },
-                    { new SkillModel() { Name = "Java", Level = 4 } },
-                    { new SkillModel() { Name = "C#", Level = 3 } }
+                    new SkillModel("CSS",7),
+                    new SkillModel("PHP",6),
+                    new SkillModel("HTML",5),
+                    new SkillModel("Java",4),
+                    new SkillModel("C#",3)
                 }
             };
 
             var skillModels = new List<SkillModel>() 
             { 
-                { new SkillModel() { Name = "C++", Level = 1 } },
-                { new SkillModel() { Name = "C", Level = 2 } },
-                { new SkillModel() { Name = "C#", Level = 3 } },
-                { new SkillModel() { Name = "Java", Level = 4 } },
-                { new SkillModel() { Name = "HTML", Level = 5 } },
-                { new SkillModel() { Name = "PHP", Level = 6 } },
-                { new SkillModel() { Name = "CSS", Level = 7 } }
+                new SkillModel("C++",1),
+                new SkillModel("C",2),
+                new SkillModel("C#",3),
+                new SkillModel("Java",4),
+                new SkillModel("HTML",5),
+                new SkillModel("PHP",6),
+                new SkillModel("CSS",7)
             };
 
             var result = offerViewModel.CalculateTopSkills(skillModels);
