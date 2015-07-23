@@ -27,20 +27,20 @@ namespace WebApp.Tests
         {
             var skillModelList = new List<SkillModel>()
             {
-                { new SkillModel() { Name = "C", Level = 2 } },
-                { new SkillModel() { Name = "C#", Level = 3 } },
-                { new SkillModel() { Name = "Java", Level = 4 } },
-                { new SkillModel() { Name = "HTML", Level = 5 } },
-                { new SkillModel() { Name = "PHP", Level = 6 } }
+                new SkillModel("C", 2),
+                new SkillModel("C#", 3),
+                new SkillModel("Java", 4),
+                new SkillModel("HTML", 5),
+                new SkillModel("PHP", 6)
             };
 
             var skillList = new List<Skill>()
             {
-                { new Skill() { Name = "C", Level = 2 } },
-                { new Skill() { Name = "C#", Level = 3 } },
-                { new Skill() { Name = "Java", Level = 4 } },
-                { new Skill() { Name = "HTML", Level = 5 } },
-                { new Skill() { Name = "PHP", Level = 6 } }
+                new Skill("C", 2),
+                new Skill("C#", 3),
+                new Skill("Java", 4),
+                new Skill("HTML", 5),
+                new Skill("PHP", 6)
             };
 
             var result = mappingService.MapSkillModelsToSkills(skillModelList);

@@ -9,7 +9,9 @@ namespace WebApp.Entities
         public string NameToLower { get; set; }
 
         public int Level { get; set; }
-    
+
+        public Skill() { }
+
         public Skill(string name, int level)
         {
             Name = name;
