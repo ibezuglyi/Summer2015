@@ -265,13 +265,18 @@ namespace WebApp.Services
 
         public async Task<List<string>> GetSortedSkillsMatchingQuery(string query)
         {
-            var list = await _dbService.GetSkillsMatchingQuery(query);
-            var sortedList = list
-                .GroupBy<string, string>(r => r)
-                .OrderByDescending(group => group.Count())
-                .Select(r => r.Key)
-                .ToList();
-            return sortedList;
+            if (query != null)
+            {
+                var list = await _dbService.GetSkillsMatchingQuery(query);
+                var sortedList = list
+                    .GroupBy<string, string>(r => r)
+                    .OrderByDescending(group => group.Count())
+                    .Select(r => r.Key)
+                    .ToList();
+                return sortedList;
+            }
+            var emptyList = new List<string>();
+            return emptyList;
         }
 
         public SkillSuggestionModel MapToSkillSuggestionModel(string query, List<string> hints)

@@ -8,6 +8,7 @@ using WebApp.Entities;
 using WebApp.Models.Candidate;
 using WebApp.Services;
 using FluentAssertions;
+using WebApp.Models;
 
 namespace WebApp.Tests
 {
@@ -69,6 +70,54 @@ namespace WebApp.Tests
             var result = mappingService.MapSkillModelsToSkills(skillModelList);
 
             Assert.IsEmpty(result);
+        }
+
+        [TestCase]
+        public void CanMapToSkillSuggestionModel()
+        {
+            string query = "C";
+            List<string> hints = new List<string>();
+            var skillSuggestionModelExpected = new SkillSuggestionModel()
+            {
+                Query = query,
+                Suggestions = hints,
+            };
+
+            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(query, hints);
+
+            skillSuggestionModel.ShouldBeEquivalentTo(skillSuggestionModelExpected);
+        }
+
+        [TestCase]
+        public void CanMapToSkillSuggestionModelWhenQueryIsNull()
+        {
+            string query = null;
+            List<string> hints = new List<string>();
+            var skillSuggestionModelExpected = new SkillSuggestionModel()
+            {
+                Query = query,
+                Suggestions = hints,
+            };
+
+            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(query, hints);
+
+            skillSuggestionModel.ShouldBeEquivalentTo(skillSuggestionModelExpected);
+        }
+
+        [TestCase]
+        public void CanMapToSkillSuggestionModelWhenHintsAreNull()
+        {
+            string query = "C";
+            List<string> hints = null;
+            var skillSuggestionModelExpected = new SkillSuggestionModel()
+            {
+                Query = query,
+                Suggestions = hints,
+            };
+
+            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(query, hints);
+
+            skillSuggestionModel.ShouldBeEquivalentTo(skillSuggestionModelExpected);
         }
     }
 }

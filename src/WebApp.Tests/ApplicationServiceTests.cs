@@ -134,10 +134,46 @@ namespace WebApp.Tests
             dbService
                 .Setup(r => r.GetJobOfferByIdAsync(It.IsAny<string>()))
                 .Returns(Task<JobOffer>.FromResult(jobOffer));
-            
+
             var result = await applicationService.GetJobOfferByIdAsync("11111");
 
             Assert.IsNull(result);
+        }
+
+        [TestCase]
+        public void CannotGetSortedSkillsMatchingQueryWhenQueryIsNull()
+        {
+            string query = null;
+            var sortedSkillsExpected = new List<Skill>();
+
+            var sortedSkills = applicationService.GetSortedSkillsMatchingQuery(query);
+
+            sortedSkills.Result.ShouldBeEquivalentTo(sortedSkillsExpected);
+        }
+
+        [TestCase]
+        public void CanGetSortedSkillsMatchingQuery()
+        {
+            List<string> hints = new List<string>();
+            hints.Add("C#");
+            hints.Add("C");
+            hints.Add("C#");
+            hints.Add("C#");
+            hints.Add("C++");
+            hints.Add("C++");
+
+            List<string> sortedHintsExpected = new List<string>();
+            sortedHintsExpected.Add("C#");
+            sortedHintsExpected.Add("C++");
+            sortedHintsExpected.Add("C");
+
+            dbService
+                .Setup(r => r.GetSkillsMatchingQuery("C"))
+                .Returns(Task<List<string>>.FromResult(hints));
+
+            var sortedHints = applicationService.GetSortedSkillsMatchingQuery("C");
+
+            sortedHints.Result.ShouldAllBeEquivalentTo(sortedHintsExpected);
         }
     }
 }
