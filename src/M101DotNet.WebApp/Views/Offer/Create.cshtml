@@ -22,11 +22,12 @@
         <div class="form-part">
             @Html.Label("Description:")<br/>
             @Html.TextArea("description",Model.Description, new { @class = "materialize-textarea" })
+            <span class="red-text text-darken-2">@Html.ValidationMessage("description")</span>
         </div>
 
         @Html.Label("Skills:")<br />
-        @Html.Partial("_SkillFormPartial", Model.Skills)
-
+        @Html.Partial("_SkillFormPartial", Model.Skills)      
+        
         <div class="row">
             <button type="submit" class="btn ">Save &raquo;</button>
         </div>
