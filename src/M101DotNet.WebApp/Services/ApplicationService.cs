@@ -63,7 +63,7 @@ namespace WebApp.Services
 
         public async Task<OfferListViewModel> GetOfferViewModelListAsync(string recruiterId)
         {
-            var offerList = await GetOffersByIdRecruiterAsync(null);
+            var offerList = await GetOffersByIdRecruiterAsync(recruiterId);
             var offersViewModel = _mappingService.MapToOffersViewModel(offerList);
             var offerViewModelList = _mappingService.MapToOfferViewModelList(offersViewModel);
             return offerViewModelList;
