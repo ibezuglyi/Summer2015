@@ -4,7 +4,7 @@
     ViewBag.Title = "Edit an offer";
 }
 
-<div class="card-panel grey lighten-5">
+<div class="card-panel card-panel-expanding grey lighten-5">
     <h4>@ViewBag.Title</h4>
     @using (Html.BeginForm())
     {
@@ -28,8 +28,8 @@
         @Html.Label("Skills:")<br />
         @Html.Partial("_SkillFormPartial", Model.Offer.Skills)
 
-        <div class="row">
-            <button type="submit" class="btn ">Save &raquo;</button>
+        <div class="right clearfix">
+            <button type="submit" class="btn ">Save </button>
         </div>
     }
     @Html.Partial("_BlankSkillRowPartial", Model.Offer.Skills)

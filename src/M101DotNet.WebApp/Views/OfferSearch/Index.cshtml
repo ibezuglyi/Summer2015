@@ -4,6 +4,7 @@
     ViewBag.Title = "Index";
 }
 <div class="grey lighten-5 card-panel row">
+    <h5>Search for a job offer</h5>
     @using (Html.BeginForm())
     {
         <div class="form-search-part">
@@ -22,11 +23,10 @@
         </div>
         @Html.Label("Skills:")
         @Html.Partial("_SkillFormPartial", Model.SearchParams.Skills)
-        
-        @Html.Partial("_SortOfferRadioButtons", Model)
-        
-        <div class="row">
-            <button type="submit" class="btn ">Search &raquo;</button>
+
+        <div class="row-padding left clearfix">
+            @Html.Partial("_SortOfferRadioButtons", Model)
+            <button type="submit" class="btn right">Search</button>
         </div>
     }
     @Html.Partial("_BlankSkillRowPartial", Model.SearchParams.Skills)

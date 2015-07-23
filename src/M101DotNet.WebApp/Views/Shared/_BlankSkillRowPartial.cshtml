@@ -1,22 +1,20 @@
 ﻿@model List<WebApp.Models.Candidate.SkillModel>
     <div class="skill-row blank-row hidden collection-item">
-        <div class="row">
+        <div class="">
             <input type="hidden" name="Skills.Index" value="@Model.Count" />
-            <span class="col s3 skill-name">
+            <span class="skill-name">
                 <input class="autocomplete" value="" type="text" placeholder="Name" />
             </span>
-            <span class="col s3 skill-level range-field">
+            <span class="skill-level range-field">
                 <input type="range" min="1" max="10" value="5" placeholder="Level" />
             </span>
             <span class="value-field value-field-css teal-text text-darken-2"></span>
             <button onclick="return false" class="btn-flat delete-skill ">Delete</button>
         </div>
-        <div class="row red-text text-darken-2">
-            <span class="col s3">
-                @Html.ValidationMessage("Skills[" + @Model.Count + "].Name")
-            </span>
-            <span class="col s3 ">
-                @Html.ValidationMessage("Skills[" + @Model.Count + "].Level")
-            </span>
-        </div>
+        <span class="red-text text-darken-2">
+            @Html.ValidationMessage("Skills[" + @Model.Count + "].Name")
+        </span>
+        <span class="red-text text-darken-2">
+            @Html.ValidationMessage("Skills[" + @Model.Count + "].Level")
+        </span>
     </div>

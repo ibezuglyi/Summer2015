@@ -68,12 +68,12 @@ select{
 .delete-skill{
     float: right;
     position: relative;
-    top: 25px;
+    top: 6px;
 }
 
 .range-field {
     position: relative;
-    top:25px;
+    top:7px;
 }
 
 .form-part{
@@ -96,7 +96,7 @@ select{
 }
 .value-field-css{
     position:relative;
-    top:30px;
+    top:12px;
     left: 10px;
     font-weight: 500;
     font-size: 22px;
@@ -174,17 +174,18 @@ select{
 
 
 .list-panel{
-    padding:0px;
+    padding: 0px;
+    min-height: 200px;
+    min-width: 290px;
 }
 
 .panel-part-left{
     padding: 20px;
-    flex-grow:8;
+    width: 80%;
 }
 
 .panel-part-right{
-    flex-grow:1;
-    flex-shrink:0.1;
+    width: 20%;
 }
 
 span.skill-badge{
@@ -195,20 +196,19 @@ span.skill-badge{
 }
 
 .additional-info{
-    border-left: 1px solid rgba(0,0,0,.16);
     height: 90px;
     min-width: 100px;
+    padding: 10px;
 }
 
 .additional-info-element{
     position:relative;
-    top:20px;
-    left:10px;
+    padding: 15px;
+    top:25%;
+    right:10%;
+    float: right;
 }
 
-.flex-container{
-    display: flex;
-}
 
 .additional-info-icons{
     float:right;
@@ -256,4 +256,41 @@ a  {
 }
 .small-padding-right{
     padding-right: 10px;
+}
+
+.card-panel-expanding{
+    overflow: auto;
+}
+
+.radio-buttons{
+    display: inline-block;
+    float: left;
+    padding-top: 10px;
+}
+
+.radio-buttons-section{
+    margin-right: 30px;
+}
+
+.row-padding{
+    padding-top: 20px;
+    display: block;
+    width: 100%;
+}
+
+.radio-twins input[type="radio"]+label{
+    padding-left: 25px;
+}
+
+.skill-name{
+    padding-right: 20px;
+}
+
+.skill-name input {
+    width: 250px;
+    height: 2rem;
+}
+
+input[type="range"]{
+    width: 200px;
 }

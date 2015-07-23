@@ -13,7 +13,7 @@
     </div>
 }
 
-<div class="card-panel grey lighten-5">
+<div class="card-panel grey lighten-5 card-panel-expanding">
     <div class="form-part">
         <label>Name: </label> @Model.Name
     </div>
@@ -43,8 +43,8 @@
         @Html.Label("Skills:")<br />
         @Html.Partial("_SkillFormPartial", Model.Candidate.Skills)
 
-        <div class="row">
-            <button type="submit" class="btn ">Save &raquo;</button>
+        <div class="right clearfix">
+            <button type="submit" class="btn ">Save </button>
         </div>
     }
     @Html.Partial("_BlankSkillRowPartial", Model.Candidate.Skills)
