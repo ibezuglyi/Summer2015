@@ -13,8 +13,8 @@ namespace WebApp.Helpers
         public static async Task<TDocument> FindById<TDocument>(this IMongoCollection<TDocument> collection, Expression<Func<TDocument, bool>> filter) where TDocument: class
         {
             var id = GetValueFromLambda(filter);
-            var isvalid = CheckIfIdIsValid(id);
-            if (isvalid)
+            var isValid = CheckIfIdIsValid(id);
+            if (isValid)
             {
                 return await collection.Find(filter).SingleOrDefaultAsync();
             }

@@ -29,11 +29,6 @@ namespace WebApp.Tests
             //assert 
             Assert.AreEqual(sum, expectedSum);
 
-
-
-
-
-
         }
 
         [TestCase]
@@ -78,8 +73,6 @@ namespace WebApp.Tests
 
             //assert
             Assert.IsNull(result);
-
-
         }
     }
 }

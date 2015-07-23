@@ -7,14 +7,18 @@ namespace WebApp.Models
 {
     public class SkillSuggestionModel
     {
-        public string query { get; set; }
-        public List<string> suggestions { get; set; }
+        public string Query { get; set; }
+        public List<string> Suggestions { get; set; }
 
-        public SkillSuggestionModel(string _query, List<string> _suggestions)
+        public SkillSuggestionModel(string query, List<string> suggestions)
         {
-            this.query = _query;
-            this.suggestions = _suggestions;
+            Query = query;
+            Suggestions = suggestions;
         }
 
+        public SkillSuggestionModel()
+        {
+            Suggestions = new List<string>();
+        }
     }
 }
