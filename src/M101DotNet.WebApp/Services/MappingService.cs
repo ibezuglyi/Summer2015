@@ -44,17 +44,6 @@ namespace WebApp.Services
             return offer;
         }
 
-        public Skill MapToSkill(SkillModel model)
-        {
-            var skill = new Skill
-            {
-                Name = model.Name,
-                NameToLower = model.Name.ToLower(),
-                Level = model.Level,
-            };
-            return skill;
-        }
-
         public CandidateUser MapToCandidateUser(CandidateUserModel candidateModel)
         {
             var skills = MapSkillModelsToSkills(candidateModel.Skills);
@@ -151,12 +140,7 @@ namespace WebApp.Services
                 var skills = new List<Skill>();
                 foreach (var skillModel in skillModels)
                 {
-                    var skill = new Skill()
-                    {
-                        Name = skillModel.Name,
-                        NameToLower = skillModel.Name.ToLower(),
-                        Level = skillModel.Level,
-                    };
+                    var skill = new Skill(skillModel.Name, skillModel.Level);
                     skills.Add(skill);
                 }
                 return skills;
