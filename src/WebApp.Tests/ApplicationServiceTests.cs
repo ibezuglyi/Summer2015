@@ -135,8 +135,6 @@ namespace WebApp.Tests
                 .Setup(r => r.GetJobOfferByIdAsync(It.IsAny<string>()))
                 .Returns(Task<JobOffer>.FromResult(jobOffer));
 
-            var applicationService = new ApplicationService(mappingService.Object, dbService.Object);
-
             var result = await applicationService.GetJobOfferByIdAsync("11111");
 
             Assert.IsNull(result);

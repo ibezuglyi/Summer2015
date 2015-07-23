@@ -301,7 +301,8 @@ namespace WebApp.Services
         {
             double pointsSum = 0;
             double matchFactor = 0;
-            if (referenceSkills.Count != 0 && skills.Count != 0)
+
+            if (referenceSkills != null && skills != null && referenceSkills.Count != 0 && skills.Count != 0)
             {
                 foreach (var referenceSkill in referenceSkills)
                 {
@@ -315,7 +316,7 @@ namespace WebApp.Services
                     }
                 }
                 matchFactor = pointsSum / referenceSkills.Count;
-            }
+            }            
             return matchFactor;
         }
 
