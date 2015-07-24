@@ -167,6 +167,7 @@
     <Compile Include="Controllers\CandidateSearchController.cs" />
     <Compile Include="Controllers\OfferSearchController.cs" />
     <Compile Include="Controllers\SkillSuggestionController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Helpers\JobifyMongoCollectionExtensions.cs" />
     <Compile Include="Models\Candidate\CandidatesListViewModel.cs" />
     <Compile Include="Models\Candidate\CandidateViewModel.cs" />
@@ -293,6 +294,8 @@
     <Content Include="Views\Shared\_EditRemoveButtonsPartial.cshtml" />
     <Content Include="Views\Shared\_SortCandidateRadioButtons.cshtml" />
     <Content Include="Views\Shared\_SortOfferRadioButtons.cshtml" />
+    <Content Include="Views\Test\GenerateRecruiterTestSet.cshtml" />
+    <Content Include="Views\Test\GenerateCandidateTestSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

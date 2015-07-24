@@ -75,15 +75,15 @@ namespace WebApp.Tests
         [TestCase]
         public void CanMapToSkillSuggestionModel()
         {
-            string query = "C";
+            string testQuery = "C";
             List<string> hints = new List<string>();
             var skillSuggestionModelExpected = new SkillSuggestionModel()
             {
-                Query = query,
-                Suggestions = hints,
+                query = testQuery,
+                suggestions = hints,
             };
 
-            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(query, hints);
+            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(testQuery, hints);
 
             skillSuggestionModel.ShouldBeEquivalentTo(skillSuggestionModelExpected);
         }
@@ -91,15 +91,15 @@ namespace WebApp.Tests
         [TestCase]
         public void CanMapToSkillSuggestionModelWhenQueryIsNull()
         {
-            string query = null;
+            string testQuery = null;
             List<string> hints = new List<string>();
             var skillSuggestionModelExpected = new SkillSuggestionModel()
             {
-                Query = query,
-                Suggestions = hints,
+                query = testQuery,
+                suggestions = hints,
             };
 
-            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(query, hints);
+            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(testQuery, hints);
 
             skillSuggestionModel.ShouldBeEquivalentTo(skillSuggestionModelExpected);
         }
@@ -107,15 +107,15 @@ namespace WebApp.Tests
         [TestCase]
         public void CanMapToSkillSuggestionModelWhenHintsAreNull()
         {
-            string query = "C";
+            string testQuery = "C";
             List<string> hints = null;
             var skillSuggestionModelExpected = new SkillSuggestionModel()
             {
-                Query = query,
-                Suggestions = hints,
+                query = testQuery,
+                suggestions = hints,
             };
 
-            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(query, hints);
+            var skillSuggestionModel = mappingService.MapToSkillSugestionModel(testQuery, hints);
 
             skillSuggestionModel.ShouldBeEquivalentTo(skillSuggestionModelExpected);
         }
