@@ -196,15 +196,16 @@ span.skill-badge{
 }
 
 .additional-info{
-    height: 90px;
+    height: 200px;
+    width:100%;
     min-width: 100px;
-    padding: 10px;
 }
+
 
 .additional-info-element{
     position:relative;
-    padding: 15px;
-    top:25%;
+    padding: 10px;
+    top:20%;
     right:10%;
     float: right;
 }
@@ -217,7 +218,7 @@ span.skill-badge{
 }
 
 i.custom-small{
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 a  {
@@ -293,4 +294,13 @@ a  {
 
 input[type="range"]{
     width: 200px;
+}
+
+@media(max-width: 600px){
+    .panel-part-left{
+       width:50%;
+    }
+    .panel-part-right{
+        width: 50%;
+    }
 }
