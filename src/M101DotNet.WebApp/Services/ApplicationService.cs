@@ -267,7 +267,7 @@ namespace WebApp.Services
         {
             if (query != null)
             {
-                var list = await _dbService.GetSkillsMatchingQuery(query);
+                var list = await _dbService.GetSkillsMatchingQueryAsync(query);
                 var sortedList = list
                     .GroupBy<string, string>(r => r)
                     .OrderByDescending(group => group.Count())

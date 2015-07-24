@@ -4,6 +4,7 @@ using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Offer;
 using WebApp.Models.Candidate;
+using MongoDB.Driver;
 
 namespace WebApp.Services
 {
@@ -23,8 +24,10 @@ namespace WebApp.Services
         Task InsertRecruiterUserAsync(RecruiterUser user);
         Task InsertCaniddateUserAsync(CandidateUser user);
         Task InsertJobOfferAsync(JobOffer offer);
-        Task<List<string>> GetSkillsMatchingQuery(string query);
+        Task<List<string>> GetSkillsMatchingQueryAsync(string query);
         Task<List<JobOffer>> GetAllOffersListAsync();
         Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, SortBy sortBy, List<Skill> skills);
+        Task<List<string>> GetSkillNamesFromCandidatesMatchingQueryAsync(string queryToLower, FilterDefinition<Skill> skillFilterDefinition);
+        Task<List<string>> GetSkillNamesFromOffersMatchingQueryAsync(string queryToLower, FilterDefinition<Skill> skillFilterDefinition);
     }
 }
