@@ -359,20 +359,20 @@ namespace WebApp.Services
             await dbContext.CandidateUsers.UpdateOneAsync(filter, update);
         }
 
-        public async Task<List<string>> GetSkillsMatchingQuery(string query)
+        public async Task<List<string>> GetSkillsMatchingQueryAsync(string query)
         {
             var queryToLower = query.ToLower();
             var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.NameToLower, new BsonRegularExpression(queryToLower));
             
-            var skillNames = await GetSkillNamesFromCandidatesMatchingQuery(queryToLower, skillFilterDefinition);
-            var skillNamesFromOffers = await GetSkillNamesFromOffersMatchingQuery(queryToLower, skillFilterDefinition);
+            var skillNames = await GetSkillNamesFromCandidatesMatchingQueryAsync(queryToLower, skillFilterDefinition);
+            var skillNamesFromOffers = await GetSkillNamesFromOffersMatchingQueryAsync(queryToLower, skillFilterDefinition);
 
             skillNames.AddRange(skillNamesFromOffers);
 
             return skillNames;
         }
 
-        public async Task<List<string>> GetSkillNamesFromCandidatesMatchingQuery(string queryToLower, FilterDefinition<Skill> skillFilterDefinition)
+        public async Task<List<string>> GetSkillNamesFromCandidatesMatchingQueryAsync(string queryToLower, FilterDefinition<Skill> skillFilterDefinition)
         {
             var filterFromCandidates = Builders<CandidateUser>.Filter.ElemMatch(user => user.Skills, skillFilterDefinition);
             var skillsFromCandidates = await dbContext.CandidateUsers
@@ -384,7 +384,7 @@ namespace WebApp.Services
             return skillNamesFromCandidates;
         }
 
-        public async Task<List<string>> GetSkillNamesFromOffersMatchingQuery(string queryToLower, FilterDefinition<Skill> skillFilterDefinition)
+        public async Task<List<string>> GetSkillNamesFromOffersMatchingQueryAsync(string queryToLower, FilterDefinition<Skill> skillFilterDefinition)
         {
             var filterFromOffers = Builders<JobOffer>.Filter.ElemMatch(offer => offer.Skills, skillFilterDefinition);
             var skillsFromOffers = await dbContext.JobOffers

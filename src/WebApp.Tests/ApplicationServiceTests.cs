@@ -168,7 +168,7 @@ namespace WebApp.Tests
             sortedHintsExpected.Add("C");
 
             dbService
-                .Setup(r => r.GetSkillsMatchingQuery("C"))
+                .Setup(r => r.GetSkillsMatchingQueryAsync("C"))
                 .Returns(Task<List<string>>.FromResult(hints));
 
             var sortedHints = applicationService.GetSortedSkillsMatchingQuery("C");
