@@ -5,7 +5,14 @@
         <a href="@Url.Action("Detail", "CandidateProfile", new {id = Model.CandidateId})">
             <div>
                 <div class="inline-field offer-title">
-                    <h5>@Model.Candidate.Name</h5>
+                    @if (Model.Candidate.Name.Count() <= 20)
+                    {
+                        <h5>@Model.Candidate.Name</h5>
+                    }
+                    else
+                    {
+                        <h5>@Model.Candidate.Name.Substring(0,20)...</h5>
+                    }
                 </div>
                 <div>@Model.ModificationDate</div>
                 <div class="description">

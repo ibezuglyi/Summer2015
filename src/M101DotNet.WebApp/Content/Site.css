@@ -78,6 +78,7 @@ select{
 
 .form-part{
     margin-bottom: 10px;
+    overflow-x: auto;
 }
 
 .row-profile{
@@ -303,4 +304,8 @@ input[type="range"]{
     .panel-part-right{
         width: 50%;
     }
+}
+
+.editor-field span{
+    color: red;
 }
