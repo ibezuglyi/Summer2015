@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebApp.Entities;
 using WebApp.Models;
 using WebApp.Models.Offer;
+using System.Linq;
 
 namespace WebApp.Services
 {
@@ -362,16 +363,40 @@ namespace WebApp.Services
         {
             var queryToLower = query.ToLower();
             var skillFilterDefinition = Builders<Skill>.Filter.Regex(r => r.NameToLower, new BsonRegularExpression(queryToLower));
-            var filter = Builders<CandidateUser>.Filter.ElemMatch(user => user.Skills, skillFilterDefinition);
+            
+            var skillNames = await GetSkillNamesFromCandidatesMatchingQuery(queryToLower, skillFilterDefinition);
+            var skillNamesFromOffers = await GetSkillNamesFromOffersMatchingQuery(queryToLower, skillFilterDefinition);
 
-            var skills = await dbContext.CandidateUsers
-                .Find(filter)
+            skillNames.AddRange(skillNamesFromOffers);
+
+            return skillNames;
+        }
+
+        public async Task<List<string>> GetSkillNamesFromCandidatesMatchingQuery(string queryToLower, FilterDefinition<Skill> skillFilterDefinition)
+        {
+            var filterFromCandidates = Builders<CandidateUser>.Filter.ElemMatch(user => user.Skills, skillFilterDefinition);
+            var skillsFromCandidates = await dbContext.CandidateUsers
+                .Find(filterFromCandidates)
                 .Project(r => r.Skills.Where(s => s.NameToLower.StartsWith(queryToLower)))
                 .ToListAsync();
 
-            var skillNames = skills.SelectMany(r => r).Select(r => r.Name).ToList();
-            return skillNames;
+            var skillNamesFromCandidates = skillsFromCandidates.SelectMany(r => r).Select(r => r.Name).ToList();
+            return skillNamesFromCandidates;
         }
+
+        public async Task<List<string>> GetSkillNamesFromOffersMatchingQuery(string queryToLower, FilterDefinition<Skill> skillFilterDefinition)
+        {
+            var filterFromOffers = Builders<JobOffer>.Filter.ElemMatch(offer => offer.Skills, skillFilterDefinition);
+            var skillsFromOffers = await dbContext.JobOffers
+                .Find(filterFromOffers)
+                .Project(r => r.Skills.Where(s => s.NameToLower.StartsWith(queryToLower)))
+                .ToListAsync();
+
+            var skillNamesFromOffers = skillsFromOffers.SelectMany(r => r).Select(r => r.Name).ToList();
+            return skillNamesFromOffers;
+        }
+
+
 
 
         public async Task<List<JobOffer>> GetAllOffersListAsync()

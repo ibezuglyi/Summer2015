@@ -300,9 +300,9 @@ namespace WebApp.Services
         public double MeasureScoreBetweenCandidateAndOffer(List<Skill> referenceSkills, List<Skill> skills)
         {
             double pointsSum = 0;
-            double matchFactor = 0;
+            double score = 0;
 
-            if (referenceSkills != null && skills != null && referenceSkills.Count != 0 && skills.Count != 0)
+            if (referenceSkills != null && skills != null && referenceSkills.Any() && skills.Any())
             {
                 foreach (var referenceSkill in referenceSkills)
                 {
@@ -315,9 +315,9 @@ namespace WebApp.Services
                         }
                     }
                 }
-                matchFactor = pointsSum / referenceSkills.Count;
+                score = pointsSum / referenceSkills.Count;
             }            
-            return matchFactor;
+            return score;
         }
 
         public async Task<CandidateUserModel> GetCandidateUserModelByIdAsync(string candidateId)

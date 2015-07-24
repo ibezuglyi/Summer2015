@@ -15,11 +15,11 @@ namespace WebApp.Entities
         public string RecruiterId { get; set; }
         [BsonRepresentation(BsonType.DateTime)]
         public DateTime ModificationDate { get; set; }
-        [Required]
+        
         public string Description { get; set; } 
-        [Required]
+        
         public int Salary { get; set; }
-        [Required]
+        
         public string Name { get; set; }
         public List<Skill> Skills { get; set; }
         

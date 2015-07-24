@@ -16,7 +16,7 @@ namespace WebApp.Tests
     {
         private Moq.Mock<IMappingService> mappingService;
         private Moq.Mock<IDatabaseService> dbService;
-        public ApplicationService applicationService;
+        private ApplicationService applicationService;
 
         [SetUp]
         public void SetUp()
