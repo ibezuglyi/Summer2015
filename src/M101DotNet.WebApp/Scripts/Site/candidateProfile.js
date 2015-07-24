@@ -35,12 +35,14 @@ function setRangeInputValue() {
 function deleteRowOnClick() {
     $("#skills").on('click', ".delete-skill", function (event) {
         $(this).closest(".skill-row").remove();
+        return false;
     });
 };
 
 function addRowOnClick() {
     $(".add-skill").click(function (event) {
         addRow("#skills");
+        return false;
     });
 };
 

@@ -19,7 +19,7 @@
                 <input type="range" min="1" max="10" id="@levelInputName" name="@levelInputName" value="@Model[i].Level" />
             </span>
             <span class="value-field value-field-css teal-text text-darken-2"></span>
-            <button onclick="return false" class="btn-flat delete-skill">Delete</button>
+            <button type="button" onclick="return false" class="btn-flat delete-skill">Delete</button>
         </div>
         <span class="red-text text-darken-2 col s3">
             @Html.ValidationMessage(nameInputName)
@@ -31,7 +31,7 @@
 }                   
 </div>
 <div>
-    <button onclick="return false" class="left add-skill btn">Add</button>
+    <button  onclick="return false" class="left add-skill btn">Add</button>
 </div>
 
 
