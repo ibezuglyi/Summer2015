@@ -5,7 +5,14 @@
             using (Html.BeginForm("Logout", "Candidate", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
             {
             <ul class="right hide-on-med-and-down">
-                <li>@Html.ActionLink(User.Identity.Name + " profile", "Index", "CandidateProfile")</li>
+                @if(User.Identity.Name.Count() <= 20)
+                {
+                    <li>@Html.ActionLink(User.Identity.Name.Substring(0, User.Identity.Name.Count()) + " profile", "Index", "CandidateProfile")</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(User.Identity.Name.Substring(0, 20) + "... profile", "Index", "CandidateProfile")</li>
+                }                
                 <li>@Html.ActionLink("Search offer", "Index", "OfferSearch")</li>
                 <li>@Html.ActionLink("Best offers", "Index", "BestOffers")</li>
                 <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
@@ -17,7 +24,14 @@
         using (Html.BeginForm("Logout", "Recruiter", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
         {
             <ul class="right hide-on-med-and-down">
-                <li>@Html.ActionLink(User.Identity.Name + " profile", "Index", "RecruiterProfile")</li>  
+                @if (User.Identity.Name.Count() <= 20)
+                {
+                    <li>@Html.ActionLink(User.Identity.Name.Substring(0, User.Identity.Name.Count()) + " profile", "Index", "RecruiterProfile")</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(User.Identity.Name.Substring(0, 20) + "... profile", "Index", "RecruiterProfile")</li>
+                }
                 <li>@Html.ActionLink("Offers list", "OffersList", "Offer")</li>
                 <li>@Html.ActionLink("Create an offer", "Create", "Offer")</li>
                 <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
