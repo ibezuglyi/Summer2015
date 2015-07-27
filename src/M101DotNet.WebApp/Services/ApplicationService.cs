@@ -308,7 +308,7 @@ namespace WebApp.Services
                 {
                     foreach (var skill in skills)
                     {
-                        if (referenceSkill.Name == skill.Name)
+                        if (referenceSkill.NameToLower == skill.NameToLower)
                         {
                             var difference = (referenceSkill.Level - skill.Level) / 10.0;
                             pointsSum += 1 - (difference > 0 ? difference : -difference * 0.8);

@@ -1,6 +1,7 @@
 ﻿
 var autocompleteSkillSugestionOptions = {
     serviceUrl: '/SkillSuggestion/GetHints',
+    triggerSelectOnValidInput: false,
     onSelect: function (suggestion) {
         $(this).attr('val', suggestion);
     },
