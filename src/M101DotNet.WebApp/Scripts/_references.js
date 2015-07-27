@@ -12,3 +12,4 @@
 /// <reference path="site/offer.js" />
 /// <reference path="jquery.autocomplete.js" />
 /// <reference path="site/autocompletehandling.js" />
+/// <reference path="angular.js" />

@@ -306,6 +306,19 @@ input[type="range"]{
     }
 }
 
+@media(max-width: 1200px){
+    .main-buttons{
+        float: left;
+        clear: both;
+    }
+    .wide-btn-container{
+        clear: both;
+    }
+    .wide-btn-container div {
+        padding: 0;
+    }
+}
+
 .editor-field span{
     color: red;
 }

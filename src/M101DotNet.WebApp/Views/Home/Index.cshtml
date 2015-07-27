@@ -1,35 +1,36 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
 @if (!Request.IsAuthenticated)
 {
     <div class="row card-panel grey lighten-5">
-        <div class="main-photo left">
-            <img src="~/Content/Images/manwithpen.jpg" />
-        </div>
+        <div>
+            <div class="main-photo left">
+                <img src="~/Content/Images/manwithpen.jpg" />
+            </div>
 
-        <div class="main-buttons">
-            <div class="buttons-group">
-                @Html.ActionLink("Login as a recruiter", "Login", "Recruiter", null, new { @class = "btn-large waves-effect waves-light" })<br />
-                @Html.ActionLink("Register as a recruiter", "Register", "Recruiter", null, new { @class = "btn-flat waves-effect waves-light" })<br />
-            </div>
-            <div class="buttons-group">
-                @Html.ActionLink("Login as a candidate", "Login", "Candidate", null, new { @class = "btn-large waves-effect waves-light" })<br />
-                @Html.ActionLink("Register as a candidate", "Register", "Candidate", null, new { @class = "btn-flat waves-effect waves-light" })<br />
-            </div>
-        </div>
-        <div class="clearfix">
-            <div class="left wide-btn-container">
-                <div class="small-padding-right">
-                    @Html.ActionLink("Find a candidate", "Index", "CandidateSearch", null, new { @class = "btn-large btn-wide waves-effect waves-light red lighten-2" })
+            <div class="main-buttons">
+                <div class="buttons-group">
+                    @Html.ActionLink("Login as a recruiter", "Login", "Recruiter", null, new { @class = "btn-large waves-effect waves-light" })<br />
+                    @Html.ActionLink("Register as a recruiter", "Register", "Recruiter", null, new { @class = "btn-flat waves-effect waves-light" })<br />
                 </div>
-                
+                <div class="buttons-group">
+                    @Html.ActionLink("Login as a candidate", "Login", "Candidate", null, new { @class = "btn-large waves-effect waves-light" })<br />
+                    @Html.ActionLink("Register as a candidate", "Register", "Candidate", null, new { @class = "btn-flat waves-effect waves-light" })<br />
+                </div>
             </div>
-            <div class="left wide-btn-container">
-                <div class="small-padding-left">
-                    @Html.ActionLink("Find a job offer", "Index", "OfferSearch", null, new { @class = "btn-large btn-wide waves-effect waves-light red lighten-2" })
-                </div> 
+            <div class="clearfix">
+                <div class="left wide-btn-container">
+                    <div class="small-padding-right">
+                        @Html.ActionLink("Find a candidate", "Index", "CandidateSearch", null, new { @class = "btn-large btn-wide waves-effect waves-light red lighten-2" })
+                    </div>
+
+                </div>
+                <div class="left wide-btn-container">
+                    <div class="small-padding-left">
+                        @Html.ActionLink("Find a job offer", "Index", "OfferSearch", null, new { @class = "btn-large btn-wide waves-effect waves-light red lighten-2" })
+                    </div>
+                </div>
             </div>
         </div>
     </div>
