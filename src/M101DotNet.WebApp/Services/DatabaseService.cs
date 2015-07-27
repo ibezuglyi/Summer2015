@@ -59,7 +59,7 @@ namespace WebApp.Services
         public async Task<List<JobOffer>> GetOffersByOfferSearchModelAsync(List<Skill> skills, int? minSalary, int? maxSalary, string name, SortBy sortBy)
         {
             var filter = GetSalaryNameFilter(minSalary, maxSalary, name);
-            var skillsName = skills.Select(r => r.Name).ToList();
+            var skillsName = skills.Select(r => r.NameToLower).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetOfferProjectionBson(skillsName, skills.Count);
             var sortDefinition = GetSortDefinition(sortBy);
@@ -84,7 +84,7 @@ namespace WebApp.Services
         public async Task<List<CandidateUser>> GetCandidatesListBySearchModelAsync(int? minSalary, int? maxSalary, int? minExperienceInYears, int? maxExperienceInYears, SortBy sortBy, List<Skill> skills)
         {
             var filter = GetSalaryExperienceFilter(minSalary, maxSalary, minExperienceInYears, maxExperienceInYears);
-            var skillsName = skills.Select(r => r.Name).ToList();
+            var skillsName = skills.Select(r => r.NameToLower).ToList();
             var matchBson = GetMatchedSkillsStageBson(skillsName);
             var projectBson = GetCandidateProjectionBson(skillsName, skills.Count);
             var sortDefinition = GetCandidateSortDefinition(sortBy);
@@ -219,7 +219,7 @@ namespace WebApp.Services
         {
             var mapbsonDocument = new BsonDocument("input", "$Skills");
             mapbsonDocument.Add("as", "s");
-            mapbsonDocument.Add("in", "$$s.Name");
+            mapbsonDocument.Add("in", "$$s.NameToLower");
             var bsonArray = new BsonArray();
             bsonArray.Add(new BsonDocument("$map", mapbsonDocument));
             bsonArray.Add(new BsonArray(skillsName));
@@ -228,7 +228,7 @@ namespace WebApp.Services
 
         private static BsonDocument GetMatchedSkillsStageBson(List<string> skillsName)
         {
-            var matchBson = new BsonDocument("Skills.Name", new BsonDocument("$in", new BsonArray(skillsName)));
+            var matchBson = new BsonDocument("Skills.NameToLower", new BsonDocument("$in", new BsonArray(skillsName)));
             return matchBson;
         }
 

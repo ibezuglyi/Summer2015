@@ -3,16 +3,15 @@
     ViewBag.Title = "_EditRemoveButtonsPartial";
 }
 
-<div class="additional-info-element">
-    <a href="@Url.Action("Index", "CandidateSearch", new {id = Model.Id})">
-        <i class="custom-small material-icons">search</i>
-    </a> 
-    <a href="@Url.Action("Edit", "Offer", new { id = Model.Id})">
-        <i class="custom-small material-icons">description</i>
-    </a>
-    <a data-offerid="@Model.Id" href="#remove-modal" class="modal-trigger">
-        <i class="custom-small material-icons">delete</i>
-    </a>
-</div>
+<a href="@Url.Action("Index", "CandidateSearch", new {id = Model.Id})">
+    <i class="custom-small material-icons">search</i>
+</a>
+<a href="@Url.Action("Edit", "Offer", new { id = Model.Id})">
+    <i class="custom-small material-icons">description</i>
+</a>
+<a data-offerid="@Model.Id" href="#remove-modal" class="modal-trigger">
+    <i class="custom-small material-icons">delete</i>
+</a>
+
 
 @Html.Partial("_RemoveModalPartial")
